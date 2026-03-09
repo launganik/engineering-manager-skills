@@ -1,0 +1,171 @@
+# Requirements: team-health
+
+**Defined:** 2026-03-09
+**Core Value:** Help engineering managers be more human — remembering what their people care about, noticing when someone might be struggling, keeping commitments — by surfacing what a good manager with infinite attention span would already notice.
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Setup & Infrastructure
+
+- [ ] **SETUP-01**: Skill detects which MCP sources are available (GitHub, Jira, Slack, Calendar) on first command invocation and reports capability gaps
+- [ ] **SETUP-02**: First-run setup flow collects team roster (names, roles, 1:1 cadence) and stores in `.team-health/config.json`
+- [ ] **SETUP-03**: All commands check `config.json: setup_complete` gate before executing and route to setup if not configured
+- [ ] **SETUP-04**: State file schemas defined with `schema_version` fields for `config.json`, `people/<name>.json`, `baselines.json`
+- [ ] **SETUP-05**: `.team-health/` directory is gitignored by default to prevent accidental commit of people data
+
+### Shared Reference Docs
+
+- [ ] **REF-01**: `SIGNALS.md` reference document defines each signal, how it's computed, and thresholds (opinionated defaults, configurable)
+- [ ] **REF-02**: `BASELINES.md` reference document defines rolling 8-week baseline computation methodology for inline Claude use
+- [ ] **REF-03**: `PRIVACY.md` reference document encodes output language rules: signals not diagnoses, no DM content, no team-relative scoring, no psychological labels
+- [ ] **REF-04**: `SKILL.md` installation guide covers MCP prerequisites, first-run steps, and what each command does
+
+### People Log (`/team-health:log`)
+
+- [ ] **LOG-01**: `/team-health:log <name>` appends timestamped, tagged entries to `.team-health/people/<name>.md`
+- [ ] **LOG-02**: Entry categories supported: `feedback-given`, `feedback-received`, `career`, `commitment`, `concern`, `win`, `note`
+- [ ] **LOG-03**: Manager types free-form notes; skill structures them into the log with date, category tag, and content
+- [ ] **LOG-04**: Opening the log shows the last 3-5 entries as context before prompting for new input
+- [ ] **LOG-05**: Log supports natural language queries: "when did I last discuss promotion with Alex?", "what commitments have I made this quarter?"
+- [ ] **LOG-06**: Skill handles first-time log creation for a person gracefully (creates file, does not error)
+
+### Team Pulse (`/team-health:pulse`)
+
+- [ ] **PULSE-01**: `/team-health:pulse` scans all configured direct reports and produces a team-level health dashboard
+- [ ] **PULSE-02**: Per-person signal scoring uses personal 8-week rolling baseline (not team averages) — flags changes, not absolute values
+- [ ] **PULSE-03**: Signals tracked: commit/PR frequency, review participation, Jira velocity, meeting density (if Calendar available), Slack activity shift (if Slack available)
+- [ ] **PULSE-04**: Flags are conservative: fires only when 2+ signals align OR a single signal exceeds 2 standard deviations from personal baseline
+- [ ] **PULSE-05**: Dashboard output includes summary table (green/yellow/red per person) and per-person detail sections for flagged individuals only
+- [ ] **PULSE-06**: Every flagged signal states the specific metric, delta, and source: "PR review lag: +3.2 days vs. 8-week avg" — never opaque scores
+- [ ] **PULSE-07**: Disclaimer included in every pulse output: "These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions."
+- [ ] **PULSE-08**: Computed baselines stored in `.team-health/baselines.json` with `computed_from`, `source`, and `schema_version` provenance fields after each pulse run
+- [ ] **PULSE-09**: Pulse history snapshots written to `.team-health/pulse-history/YYYY-WNN.md`
+- [ ] **PULSE-10**: Pulse degrades gracefully: operates on available MCP sources, names which signals are unavailable and why
+
+### 1:1 Prep (`/team-health:prep`)
+
+- [ ] **PREP-01**: `/team-health:prep <name>` generates a prep sheet scannable in 2 minutes
+- [ ] **PREP-02**: Output structure: (1) status snapshot, (2) signal flags, (3) standing items from people log, (4) suggested talking points, (5) context reminders from people log
+- [ ] **PREP-03**: Pulls recent GitHub activity: PRs merged/open, review participation, stale PRs (>48h without review), commit pattern
+- [ ] **PREP-04**: Pulls Jira signals when available: tickets in-progress >2 sprints, velocity vs. baseline, blocked tickets
+- [ ] **PREP-05**: Pulls Calendar signals when available: meeting load % vs. baseline, 1:1 scheduling adherence
+- [ ] **PREP-06**: Pulls Slack metadata signals when available: channel participation trend, response latency trend (not DM content)
+- [ ] **PREP-07**: Surfaces open manager commitments and IC asks from the people log
+- [ ] **PREP-08**: Surfaces career context: last noted goals, time since last promotion discussion (from people log)
+- [ ] **PREP-09**: Tone is direct and factual — no diagnoses, no loaded language; all signals framed as behavioral observations
+- [ ] **PREP-10**: Degrades gracefully to available sources; states what signals are absent
+
+### Skip-Level Brief (`/team-health:skip-level`)
+
+- [ ] **SKIP-01**: `/team-health:skip-level` generates an upward-facing brief covering: team delivery status, risks, people themes (not individuals), asks requiring escalation, team wins
+- [ ] **SKIP-02**: Default timeframe is "since last skip-level" (tracked in config); supports override (`--weeks 2`, `--quarter`)
+- [ ] **SKIP-03**: People log content is explicitly excluded from skip-level output by default — command does not read `.team-health/people/` without `--include-person <name>` flag
+- [ ] **SKIP-04**: Individual pulse flags are aggregated into themes: "two team members showing engagement indicators worth monitoring" — never named without explicit EM opt-in
+- [ ] **SKIP-05**: Output passes the test: "would I be comfortable if my entire team saw this?"
+
+### Retro Prep (`/team-health:retro-prep`)
+
+- [ ] **RETRO-01**: `/team-health:retro-prep` analyzes the most recent sprint and produces a retro agenda seeded with real data
+- [ ] **RETRO-02**: Output includes: sprint facts (velocity, carry-over), what went well (seeded), what was hard (seeded), patterns across sprints
+- [ ] **RETRO-03**: Discussion seeds are specific and attributed to work items, not individuals: "the auth service PR went through 7 revision cycles — what happened?" not "Jordan had slow reviews"
+- [ ] **RETRO-04**: Output preserves blank space for team conversation — data seeds the agenda, does not replace it
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Calendar Integration (deferred — MCP maturity uncertain)
+
+- **CAL-01**: Calendar-aware prep timing: knows when 1:1 is scheduled; can be triggered day-before
+- **CAL-02**: Focus time trend analysis: uninterrupted work blocks vs. baseline
+
+### Advanced Signals (deferred — needs multi-signal convergence mature first)
+
+- **SIG-01**: After-hours commit timestamp trend analysis (3+ consecutive weeks trending up)
+- **SIG-02**: PR size trend analysis (very large PRs as potential isolation signal)
+- **SIG-03**: Automated composite attrition risk score with explicit multi-signal requirement
+
+### Enhanced Baseline Management (deferred — keep simple for v1)
+
+- **BASE-01**: Incremental baseline updates (only recompute delta, not full 8-week window)
+- **BASE-02**: `--rebaseline` flag to force full recomputation
+- **BASE-03**: Baseline export/import for team handoffs
+
+## Out of Scope
+
+Explicitly excluded. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| Slack DM content surfacing | Privacy violation; legally fraught; destroys manager-IC trust if discovered |
+| Hard attrition probability scores ("72% likely to quit") | False precision; creates liability; EMs act on it inappropriately |
+| Team-relative scoring ("bottom 20% of team") | Surveillance framing; damages team culture |
+| Automated direct-report-facing output | Manager-side tool only; ICs must not feel surveilled |
+| Performance rating automation | Replaces manager judgment; compliance/fairness issues |
+| Psychological labeling ("Alex seems burned out") | Not EM's job; creates legal risk |
+| Cross-team benchmarking | Politically loaded, context-free |
+| "Productivity score" rollups | Gameable, reductive, misaligned with EM needs |
+| Mobile or web UI | Pure CLI/markdown output |
+| Python baseline computation scripts | Keep simple — Claude computes inline; optimize in v2 |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| SETUP-01 | Phase 1 | Pending |
+| SETUP-02 | Phase 1 | Pending |
+| SETUP-03 | Phase 1 | Pending |
+| SETUP-04 | Phase 1 | Pending |
+| SETUP-05 | Phase 1 | Pending |
+| REF-01 | Phase 1 | Pending |
+| REF-02 | Phase 1 | Pending |
+| REF-03 | Phase 1 | Pending |
+| REF-04 | Phase 1 | Pending |
+| LOG-01 | Phase 2 | Pending |
+| LOG-02 | Phase 2 | Pending |
+| LOG-03 | Phase 2 | Pending |
+| LOG-04 | Phase 2 | Pending |
+| LOG-05 | Phase 2 | Pending |
+| LOG-06 | Phase 2 | Pending |
+| PULSE-01 | Phase 3 | Pending |
+| PULSE-02 | Phase 3 | Pending |
+| PULSE-03 | Phase 3 | Pending |
+| PULSE-04 | Phase 3 | Pending |
+| PULSE-05 | Phase 3 | Pending |
+| PULSE-06 | Phase 3 | Pending |
+| PULSE-07 | Phase 3 | Pending |
+| PULSE-08 | Phase 3 | Pending |
+| PULSE-09 | Phase 3 | Pending |
+| PULSE-10 | Phase 3 | Pending |
+| PREP-01 | Phase 4 | Pending |
+| PREP-02 | Phase 4 | Pending |
+| PREP-03 | Phase 4 | Pending |
+| PREP-04 | Phase 4 | Pending |
+| PREP-05 | Phase 4 | Pending |
+| PREP-06 | Phase 4 | Pending |
+| PREP-07 | Phase 4 | Pending |
+| PREP-08 | Phase 4 | Pending |
+| PREP-09 | Phase 4 | Pending |
+| PREP-10 | Phase 4 | Pending |
+| SKIP-01 | Phase 5 | Pending |
+| SKIP-02 | Phase 5 | Pending |
+| SKIP-03 | Phase 5 | Pending |
+| SKIP-04 | Phase 5 | Pending |
+| SKIP-05 | Phase 5 | Pending |
+| RETRO-01 | Phase 5 | Pending |
+| RETRO-02 | Phase 5 | Pending |
+| RETRO-03 | Phase 5 | Pending |
+| RETRO-04 | Phase 5 | Pending |
+
+**Coverage:**
+- v1 requirements: 43 total
+- Mapped to phases: 43
+- Unmapped: 0 ✓
+
+---
+*Requirements defined: 2026-03-09*
+*Last updated: 2026-03-09 after initial definition*
