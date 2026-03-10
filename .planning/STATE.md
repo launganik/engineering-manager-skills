@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-foundation-01-PLAN.md
-last_updated: "2026-03-10T15:34:03.680Z"
+stopped_at: Completed 01-foundation-00-PLAN.md
+last_updated: "2026-03-10T15:35:11.567Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 4
-  completed_plans: 1
+  completed_plans: 2
   percent: 25
 ---
 
@@ -51,6 +51,7 @@ Progress: [███░░░░░░░] 25%
 
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 8 | 2 tasks | 2 files |
+| Phase 01-foundation P00 | 3 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Use .claude/commands/team-health/ (legacy path) for colon-namespace slash commands — .claude/skills/ produces hyphen namespace which conflicts with project naming
 - [Phase 01-foundation]: MCP probe by tool namespace not specific tool name — robust to different community MCP implementations
 - [Phase 01-foundation]: Static .gitignore entry plus dynamic setup check — defense in depth for people data protection
+- [Phase 01-foundation]: Smoke tests are exclusively manual — no automated test runner for pure markdown/JSON skill; smoke test doc is the verification contract
+- [Phase 01-foundation]: state-schemas.json locked as of 2026-03-10; schema changes require schema_version bump and migration note to prevent drift between setup command and downstream readers
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T15:34:03.678Z
-Stopped at: Completed 01-foundation-01-PLAN.md
+Last session: 2026-03-10T15:35:11.565Z
+Stopped at: Completed 01-foundation-00-PLAN.md
 Resume file: None
