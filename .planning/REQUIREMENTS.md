@@ -17,10 +17,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Shared Reference Docs
 
-- [ ] **REF-01**: `SIGNALS.md` reference document defines each signal, how it's computed, and thresholds (opinionated defaults, configurable)
-- [ ] **REF-02**: `BASELINES.md` reference document defines rolling 8-week baseline computation methodology for inline Claude use
-- [ ] **REF-03**: `PRIVACY.md` reference document encodes output language rules: signals not diagnoses, no DM content, no team-relative scoring, no psychological labels
-- [ ] **REF-04**: `SKILL.md` installation guide covers MCP prerequisites, first-run steps, and what each command does
+- [x] **REF-01**: `SIGNALS.md` reference document defines each signal, how it's computed, and thresholds (opinionated defaults, configurable)
+- [x] **REF-02**: `BASELINES.md` reference document defines rolling 8-week baseline computation methodology for inline Claude use
+- [x] **REF-03**: `PRIVACY.md` reference document encodes output language rules: signals not diagnoses, no DM content, no team-relative scoring, no psychological labels
+- [x] **REF-04**: `SKILL.md` installation guide covers MCP prerequisites, first-run steps, and what each command does
 
 ### People Log (`/team-health:log`)
 
@@ -121,10 +121,10 @@ Which phases cover which requirements. Confirmed during roadmap creation (2026-0
 | SETUP-03 | Phase 1 | Complete |
 | SETUP-04 | Phase 1 | Complete |
 | SETUP-05 | Phase 1 | Complete |
-| REF-01 | Phase 1 | Pending |
-| REF-02 | Phase 1 | Pending |
-| REF-03 | Phase 1 | Pending |
-| REF-04 | Phase 1 | Pending |
+| REF-01 | Phase 1 | Complete |
+| REF-02 | Phase 1 | Complete |
+| REF-03 | Phase 1 | Complete |
+| REF-04 | Phase 1 | Complete |
 | LOG-01 | Phase 2 | Pending |
 | LOG-02 | Phase 2 | Pending |
 | LOG-03 | Phase 2 | Pending |

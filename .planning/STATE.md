@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-foundation-00-PLAN.md
-last_updated: "2026-03-10T15:35:11.567Z"
+stopped_at: Completed 01-foundation-03-PLAN.md
+last_updated: "2026-03-11T09:55:24.154Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 2
+  completed_plans: 4
   percent: 25
 ---
 
@@ -52,6 +52,7 @@ Progress: [███░░░░░░░] 25%
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 8 | 2 tasks | 2 files |
 | Phase 01-foundation P00 | 3 | 2 tasks | 2 files |
+| Phase 01-foundation P03 | 4 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Static .gitignore entry plus dynamic setup check — defense in depth for people data protection
 - [Phase 01-foundation]: Smoke tests are exclusively manual — no automated test runner for pure markdown/JSON skill; smoke test doc is the verification contract
 - [Phase 01-foundation]: state-schemas.json locked as of 2026-03-10; schema changes require schema_version bump and migration note to prevent drift between setup command and downstream readers
+- [Phase 01-foundation]: SKILL.md is a human document without YAML front matter, distinct from Claude Code command invocation files
+- [Phase 01-foundation]: All 6 planned commands documented in SKILL.md upfront with phase availability labels — EMs see the full roadmap before installing
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T15:35:11.565Z
-Stopped at: Completed 01-foundation-00-PLAN.md
+Last session: 2026-03-11T09:55:24.151Z
+Stopped at: Completed 01-foundation-03-PLAN.md
 Resume file: None
