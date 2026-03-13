@@ -63,7 +63,11 @@ Plans:
   3. Flags only fire when 2+ signals align or a single signal exceeds 2 standard deviations from the person's personal baseline — not team averages
   4. After each run, computed baselines are stored in `baselines.json` with `computed_from`, `source`, and `schema_version` provenance fields
   5. Pulse output includes the disclaimer about signals not being diagnoses and degrades gracefully when MCP sources are absent, naming which signals are unavailable
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 03-00-PLAN.md — Wave 0: phase-3 smoke test document (manual test scenarios for PULSE-01 through PULSE-10)
+- [ ] 03-01-PLAN.md — /team-health:pulse command: full scan pipeline, baseline comparison, two-signal flagging, dashboard output, baselines.json write, pulse-history snapshot
 
 ### Phase 4: 1:1 Prep
 **Goal**: Managers can generate a scannable 2-minute prep sheet for any direct report that synthesizes live tool signals against personal baselines and surfaces standing items from the people log
@@ -96,6 +100,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-03-11 |
 | 2. People Log | 2/2 | Complete   | 2026-03-13 |
-| 3. Team Pulse | 0/TBD | Not started | - |
+| 3. Team Pulse | 0/2 | Not started | - |
 | 4. 1:1 Prep | 0/TBD | Not started | - |
 | 5. Skip-Level and Retro Prep | 0/TBD | Not started | - |
