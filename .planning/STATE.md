@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-foundation-03-PLAN.md
-last_updated: "2026-03-11T10:06:23.552Z"
+stopped_at: Completed 02-people-log-00-PLAN.md
+last_updated: "2026-03-13T10:47:16.642Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
   percent: 25
 ---
 
@@ -53,6 +53,7 @@ Progress: [███░░░░░░░] 25%
 | Phase 01-foundation P01 | 8 | 2 tasks | 2 files |
 | Phase 01-foundation P00 | 3 | 2 tasks | 2 files |
 | Phase 01-foundation P03 | 4 | 1 tasks | 1 files |
+| Phase 02-people-log P00 | 71 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,7 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: state-schemas.json locked as of 2026-03-10; schema changes require schema_version bump and migration note to prevent drift between setup command and downstream readers
 - [Phase 01-foundation]: SKILL.md is a human document without YAML front matter, distinct from Claude Code command invocation files
 - [Phase 01-foundation]: All 6 planned commands documented in SKILL.md upfront with phase availability labels — EMs see the full roadmap before installing
+- [Phase 02-people-log]: Commitment dual-write bonus scenario added as standalone to make LOG-02 structural integrity observable in isolation
 
 ### Pending Todos
 
@@ -85,6 +87,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-11T09:55:24.151Z
-Stopped at: Completed 01-foundation-03-PLAN.md
+Last session: 2026-03-13T10:47:16.640Z
+Stopped at: Completed 02-people-log-00-PLAN.md
 Resume file: None

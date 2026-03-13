@@ -24,12 +24,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### People Log (`/team-health:log`)
 
-- [ ] **LOG-01**: `/team-health:log <name>` appends timestamped, tagged entries to `.team-health/people/<name>.md`
-- [ ] **LOG-02**: Entry categories supported: `feedback-given`, `feedback-received`, `career`, `commitment`, `concern`, `win`, `note`
-- [ ] **LOG-03**: Manager types free-form notes; skill structures them into the log with date, category tag, and content
-- [ ] **LOG-04**: Opening the log shows the last 3-5 entries as context before prompting for new input
-- [ ] **LOG-05**: Log supports natural language queries: "when did I last discuss promotion with Alex?", "what commitments have I made this quarter?"
-- [ ] **LOG-06**: Skill handles first-time log creation for a person gracefully (creates file, does not error)
+- [x] **LOG-01**: `/team-health:log <name>` appends timestamped, tagged entries to `.team-health/people/<name>.md`
+- [x] **LOG-02**: Entry categories supported: `feedback-given`, `feedback-received`, `career`, `commitment`, `concern`, `win`, `note`
+- [x] **LOG-03**: Manager types free-form notes; skill structures them into the log with date, category tag, and content
+- [x] **LOG-04**: Opening the log shows the last 3-5 entries as context before prompting for new input
+- [x] **LOG-05**: Log supports natural language queries: "when did I last discuss promotion with Alex?", "what commitments have I made this quarter?"
+- [x] **LOG-06**: Skill handles first-time log creation for a person gracefully (creates file, does not error)
 
 ### Team Pulse (`/team-health:pulse`)
 
@@ -125,12 +125,12 @@ Which phases cover which requirements. Confirmed during roadmap creation (2026-0
 | REF-02 | Phase 1 | Complete |
 | REF-03 | Phase 1 | Complete |
 | REF-04 | Phase 1 | Complete |
-| LOG-01 | Phase 2 | Pending |
-| LOG-02 | Phase 2 | Pending |
-| LOG-03 | Phase 2 | Pending |
-| LOG-04 | Phase 2 | Pending |
-| LOG-05 | Phase 2 | Pending |
-| LOG-06 | Phase 2 | Pending |
+| LOG-01 | Phase 2 | Complete |
+| LOG-02 | Phase 2 | Complete |
+| LOG-03 | Phase 2 | Complete |
+| LOG-04 | Phase 2 | Complete |
+| LOG-05 | Phase 2 | Complete |
+| LOG-06 | Phase 2 | Complete |
 | PULSE-01 | Phase 3 | Pending |
 | PULSE-02 | Phase 3 | Pending |
 | PULSE-03 | Phase 3 | Pending |
