@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-people-log-00-PLAN.md
-last_updated: "2026-03-13T10:47:16.642Z"
+stopped_at: Completed 02-people-log-01-PLAN.md
+last_updated: "2026-03-13T10:49:33.324Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 25
 ---
 
@@ -54,6 +54,7 @@ Progress: [███░░░░░░░] 25%
 | Phase 01-foundation P00 | 3 | 2 tasks | 2 files |
 | Phase 01-foundation P03 | 4 | 1 tasks | 1 files |
 | Phase 02-people-log P00 | 71 | 1 tasks | 1 files |
+| Phase 02-people-log P01 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: SKILL.md is a human document without YAML front matter, distinct from Claude Code command invocation files
 - [Phase 01-foundation]: All 6 planned commands documented in SKILL.md upfront with phase availability labels — EMs see the full roadmap before installing
 - [Phase 02-people-log]: Commitment dual-write bonus scenario added as standalone to make LOG-02 structural integrity observable in isolation
+- [Phase 02-people-log]: Slug always read from config.json team array, never re-derived from argument — ensures consistency with setup
+- [Phase 02-people-log]: Commitment entries dual-written to entries + open_commitments for LOG-02 structural integrity
 
 ### Pending Todos
 
@@ -87,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T10:47:16.640Z
-Stopped at: Completed 02-people-log-00-PLAN.md
+Last session: 2026-03-13T10:49:27.463Z
+Stopped at: Completed 02-people-log-01-PLAN.md
 Resume file: None
