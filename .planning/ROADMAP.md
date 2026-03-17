@@ -78,7 +78,11 @@ Plans:
   2. All signal flags are framed as behavioral observations ("PR review participation down 40% vs. 8-week baseline") — no diagnostic language
   3. Open manager commitments and IC asks are surfaced from the people log; career context (goals, time since last promotion discussion) is included
   4. The prep sheet degrades gracefully to available MCP sources and states which signals are absent
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 04-00-PLAN.md — Wave 0: phase-4 smoke test document (manual test scenarios for PREP-01 through PREP-10)
+- [ ] 04-01-PLAN.md — /team-health:prep command: per-person prep sheet with signal snapshot, people log synthesis, talking points, lookback window, prep_run state write
 
 ### Phase 5: Skip-Level and Retro Prep
 **Goal**: Managers can generate an upward-facing team brief for their own manager and a data-seeded sprint retro agenda — both consuming pulse history with explicit privacy gates that prevent people log content from surfacing without opt-in
@@ -101,5 +105,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 4/4 | Complete   | 2026-03-11 |
 | 2. People Log | 2/2 | Complete   | 2026-03-13 |
 | 3. Team Pulse | 2/2 | Complete   | 2026-03-17 |
-| 4. 1:1 Prep | 0/TBD | Not started | - |
+| 4. 1:1 Prep | 0/2 | Not started | - |
 | 5. Skip-Level and Retro Prep | 0/TBD | Not started | - |
