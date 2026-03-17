@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-17T16:14:02.485Z"
+stopped_at: Completed 04-1-1-prep-00-PLAN.md
+last_updated: "2026-03-17T16:43:16.425Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 10
+  completed_plans: 9
   percent: 25
 ---
 
@@ -57,6 +57,7 @@ Progress: [███░░░░░░░] 25%
 | Phase 02-people-log P01 | 2 | 1 tasks | 1 files |
 | Phase 03-team-pulse P00 | 5 | 1 tasks | 1 files |
 | Phase 03-team-pulse P01 | 2 | 1 tasks | 1 files |
+| Phase 04-1-1-prep P00 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,8 @@ Recent decisions affecting current work:
 - [Phase 03-team-pulse]: Output before state writes: Phase D (dashboard) completes before Phase E (baselines.json + snapshot) to prevent baseline corruption
 - [Phase 03-team-pulse]: Atomic baselines.json write: entire file built in memory then written in a single Write tool call — prevents partial-write data corruption
 - [Phase 03-team-pulse]: Flag status PENDING distinct from GREEN: baseline-pending states never get a flag color, shown with weeks-of-data label
+- [Phase 04-1-1-prep]: Wave 0 smoke test contract written before prep command implementation — verification criteria fixed before code is written (same pattern as Phase 3)
+- [Phase 04-1-1-prep]: Lookback priority chain for prep: last_1on1_date → prep_run → 14-day default; each step independently testable in Scenarios 11–13
 
 ### Pending Todos
 
@@ -97,6 +100,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T16:14:02.477Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-1-1-prep/04-CONTEXT.md
+Last session: 2026-03-17T16:43:16.422Z
+Stopped at: Completed 04-1-1-prep-00-PLAN.md
+Resume file: None

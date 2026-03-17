@@ -105,5 +105,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 4/4 | Complete   | 2026-03-11 |
 | 2. People Log | 2/2 | Complete   | 2026-03-13 |
 | 3. Team Pulse | 2/2 | Complete   | 2026-03-17 |
-| 4. 1:1 Prep | 0/2 | Not started | - |
+| 4. 1:1 Prep | 1/2 | In Progress|  |
 | 5. Skip-Level and Retro Prep | 0/TBD | Not started | - |

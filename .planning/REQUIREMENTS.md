@@ -46,16 +46,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### 1:1 Prep (`/team-health:prep`)
 
-- [ ] **PREP-01**: `/team-health:prep <name>` generates a prep sheet scannable in 2 minutes
-- [ ] **PREP-02**: Output structure: (1) status snapshot, (2) signal flags, (3) standing items from people log, (4) suggested talking points, (5) context reminders from people log
-- [ ] **PREP-03**: Pulls recent GitHub activity: PRs merged/open, review participation, stale PRs (>48h without review), commit pattern
-- [ ] **PREP-04**: Pulls Jira signals when available: tickets in-progress >2 sprints, velocity vs. baseline, blocked tickets
-- [ ] **PREP-05**: Pulls Calendar signals when available: meeting load % vs. baseline, 1:1 scheduling adherence
-- [ ] **PREP-06**: Pulls Slack metadata signals when available: channel participation trend, response latency trend (not DM content)
-- [ ] **PREP-07**: Surfaces open manager commitments and IC asks from the people log
-- [ ] **PREP-08**: Surfaces career context: last noted goals, time since last promotion discussion (from people log)
-- [ ] **PREP-09**: Tone is direct and factual — no diagnoses, no loaded language; all signals framed as behavioral observations
-- [ ] **PREP-10**: Degrades gracefully to available sources; states what signals are absent
+- [x] **PREP-01**: `/team-health:prep <name>` generates a prep sheet scannable in 2 minutes
+- [x] **PREP-02**: Output structure: (1) status snapshot, (2) signal flags, (3) standing items from people log, (4) suggested talking points, (5) context reminders from people log
+- [x] **PREP-03**: Pulls recent GitHub activity: PRs merged/open, review participation, stale PRs (>48h without review), commit pattern
+- [x] **PREP-04**: Pulls Jira signals when available: tickets in-progress >2 sprints, velocity vs. baseline, blocked tickets
+- [x] **PREP-05**: Pulls Calendar signals when available: meeting load % vs. baseline, 1:1 scheduling adherence
+- [x] **PREP-06**: Pulls Slack metadata signals when available: channel participation trend, response latency trend (not DM content)
+- [x] **PREP-07**: Surfaces open manager commitments and IC asks from the people log
+- [x] **PREP-08**: Surfaces career context: last noted goals, time since last promotion discussion (from people log)
+- [x] **PREP-09**: Tone is direct and factual — no diagnoses, no loaded language; all signals framed as behavioral observations
+- [x] **PREP-10**: Degrades gracefully to available sources; states what signals are absent
 
 ### Skip-Level Brief (`/team-health:skip-level`)
 
@@ -141,16 +141,16 @@ Which phases cover which requirements. Confirmed during roadmap creation (2026-0
 | PULSE-08 | Phase 3 | Complete |
 | PULSE-09 | Phase 3 | Complete |
 | PULSE-10 | Phase 3 | Complete |
-| PREP-01 | Phase 4 | Pending |
-| PREP-02 | Phase 4 | Pending |
-| PREP-03 | Phase 4 | Pending |
-| PREP-04 | Phase 4 | Pending |
-| PREP-05 | Phase 4 | Pending |
-| PREP-06 | Phase 4 | Pending |
-| PREP-07 | Phase 4 | Pending |
-| PREP-08 | Phase 4 | Pending |
-| PREP-09 | Phase 4 | Pending |
-| PREP-10 | Phase 4 | Pending |
+| PREP-01 | Phase 4 | Complete |
+| PREP-02 | Phase 4 | Complete |
+| PREP-03 | Phase 4 | Complete |
+| PREP-04 | Phase 4 | Complete |
+| PREP-05 | Phase 4 | Complete |
+| PREP-06 | Phase 4 | Complete |
+| PREP-07 | Phase 4 | Complete |
+| PREP-08 | Phase 4 | Complete |
+| PREP-09 | Phase 4 | Complete |
+| PREP-10 | Phase 4 | Complete |
 | SKIP-01 | Phase 5 | Pending |
 | SKIP-02 | Phase 5 | Pending |
 | SKIP-03 | Phase 5 | Pending |
