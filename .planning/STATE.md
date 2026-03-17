@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 04-1-1-prep-00-PLAN.md
-last_updated: "2026-03-17T16:43:16.425Z"
+stopped_at: Completed 04-1-1-prep-01-PLAN.md
+last_updated: "2026-03-17T16:47:29.073Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 10
-  completed_plans: 9
+  completed_plans: 10
   percent: 25
 ---
 
@@ -58,6 +58,7 @@ Progress: [███░░░░░░░] 25%
 | Phase 03-team-pulse P00 | 5 | 1 tasks | 1 files |
 | Phase 03-team-pulse P01 | 2 | 1 tasks | 1 files |
 | Phase 04-1-1-prep P00 | 2 | 1 tasks | 1 files |
+| Phase 04-1-1-prep P01 | 1 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,8 @@ Recent decisions affecting current work:
 - [Phase 03-team-pulse]: Flag status PENDING distinct from GREEN: baseline-pending states never get a flag color, shown with weeks-of-data label
 - [Phase 04-1-1-prep]: Wave 0 smoke test contract written before prep command implementation — verification criteria fixed before code is written (same pattern as Phase 3)
 - [Phase 04-1-1-prep]: Lookback priority chain for prep: last_1on1_date → prep_run → 14-day default; each step independently testable in Scenarios 11–13
+- [Phase 04-1-1-prep]: Prep does NOT update baselines.json — consumer-only pattern prevents corrupting 8-week rolling window maintained by pulse.md
+- [Phase 04-1-1-prep]: Phase E writes both last_1on1_date and prep_run to people log — auto-records today as lookback anchor for next invocation
 
 ### Pending Todos
 
@@ -100,6 +103,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T16:43:16.422Z
-Stopped at: Completed 04-1-1-prep-00-PLAN.md
+Last session: 2026-03-17T16:47:29.070Z
+Stopped at: Completed 04-1-1-prep-01-PLAN.md
 Resume file: None
