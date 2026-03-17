@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 03-team-pulse-00-PLAN.md
-last_updated: "2026-03-17T15:37:36.153Z"
+stopped_at: Completed 03-team-pulse-01-PLAN.md
+last_updated: "2026-03-17T15:41:23.923Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 25
 ---
 
@@ -56,6 +56,7 @@ Progress: [███░░░░░░░] 25%
 | Phase 02-people-log P00 | 71 | 1 tasks | 1 files |
 | Phase 02-people-log P01 | 2 | 1 tasks | 1 files |
 | Phase 03-team-pulse P00 | 5 | 1 tasks | 1 files |
+| Phase 03-team-pulse P01 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,9 @@ Recent decisions affecting current work:
 - [Phase 02-people-log]: Commitment entries dual-written to entries + open_commitments for LOG-02 structural integrity
 - [Phase 03-team-pulse]: Wave 0 smoke test contract written before pulse command implementation — verification criteria fixed before code is written
 - [Phase 03-team-pulse]: Scenario 4 uses three sub-tests (A/B/C) to cover full two-signal rule decision tree: 1 signal moderate (no flag), 2 signals (YELLOW), 1 signal at ≥2 stddev (RED)
+- [Phase 03-team-pulse]: Output before state writes: Phase D (dashboard) completes before Phase E (baselines.json + snapshot) to prevent baseline corruption
+- [Phase 03-team-pulse]: Atomic baselines.json write: entire file built in memory then written in a single Write tool call — prevents partial-write data corruption
+- [Phase 03-team-pulse]: Flag status PENDING distinct from GREEN: baseline-pending states never get a flag color, shown with weeks-of-data label
 
 ### Pending Todos
 
@@ -93,6 +97,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T15:37:36.150Z
-Stopped at: Completed 03-team-pulse-00-PLAN.md
+Last session: 2026-03-17T15:41:23.920Z
+Stopped at: Completed 03-team-pulse-01-PLAN.md
 Resume file: None
