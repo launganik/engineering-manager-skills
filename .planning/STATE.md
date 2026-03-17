@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 04-1-1-prep-01-PLAN.md
-last_updated: "2026-03-17T16:53:39.956Z"
+stopped_at: Completed 05-00-PLAN.md
+last_updated: "2026-03-17T17:34:13.464Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
   completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 13
+  completed_plans: 11
   percent: 25
 ---
 
@@ -59,6 +59,7 @@ Progress: [███░░░░░░░] 25%
 | Phase 03-team-pulse P01 | 2 | 1 tasks | 1 files |
 | Phase 04-1-1-prep P00 | 2 | 1 tasks | 1 files |
 | Phase 04-1-1-prep P01 | 1 | 1 tasks | 1 files |
+| Phase 05-skip-level-and-retro-prep P00 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,9 @@ Recent decisions affecting current work:
 - [Phase 04-1-1-prep]: Lookback priority chain for prep: last_1on1_date → prep_run → 14-day default; each step independently testable in Scenarios 11–13
 - [Phase 04-1-1-prep]: Prep does NOT update baselines.json — consumer-only pattern prevents corrupting 8-week rolling window maintained by pulse.md
 - [Phase 04-1-1-prep]: Phase E writes both last_1on1_date and prep_run to people log — auto-records today as lookback anchor for next invocation
+- [Phase 05-skip-level-and-retro-prep]: Wave 0 smoke test contract written before skip-level and retro-prep implementation — same verification-first pattern as Phases 3 and 4
+- [Phase 05-skip-level-and-retro-prep]: Asks/Escalations section (Section 4) uses placeholder text only — Claude never pre-populates escalation items; EM fills in manually before sharing
+- [Phase 05-skip-level-and-retro-prep]: Retro-prep sprint scope fallback: when Jira unavailable, use most recent sprint_cadence_weeks pulse history weeks
 
 ### Pending Todos
 
@@ -103,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T16:47:29.070Z
-Stopped at: Completed 04-1-1-prep-01-PLAN.md
+Last session: 2026-03-17T17:34:13.461Z
+Stopped at: Completed 05-00-PLAN.md
 Resume file: None

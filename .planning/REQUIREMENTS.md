@@ -59,18 +59,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Skip-Level Brief (`/team-health:skip-level`)
 
-- [ ] **SKIP-01**: `/team-health:skip-level` generates an upward-facing brief covering: team delivery status, risks, people themes (not individuals), asks requiring escalation, team wins
-- [ ] **SKIP-02**: Default timeframe is "since last skip-level" (tracked in config); supports override (`--weeks 2`, `--quarter`)
-- [ ] **SKIP-03**: People log content is explicitly excluded from skip-level output by default — command does not read `.team-health/people/` without `--include-person <name>` flag
-- [ ] **SKIP-04**: Individual pulse flags are aggregated into themes: "two team members showing engagement indicators worth monitoring" — never named without explicit EM opt-in
-- [ ] **SKIP-05**: Output passes the test: "would I be comfortable if my entire team saw this?"
+- [x] **SKIP-01**: `/team-health:skip-level` generates an upward-facing brief covering: team delivery status, risks, people themes (not individuals), asks requiring escalation, team wins
+- [x] **SKIP-02**: Default timeframe is "since last skip-level" (tracked in config); supports override (`--weeks 2`, `--quarter`)
+- [x] **SKIP-03**: People log content is explicitly excluded from skip-level output by default — command does not read `.team-health/people/` without `--include-person <name>` flag
+- [x] **SKIP-04**: Individual pulse flags are aggregated into themes: "two team members showing engagement indicators worth monitoring" — never named without explicit EM opt-in
+- [x] **SKIP-05**: Output passes the test: "would I be comfortable if my entire team saw this?"
 
 ### Retro Prep (`/team-health:retro-prep`)
 
-- [ ] **RETRO-01**: `/team-health:retro-prep` analyzes the most recent sprint and produces a retro agenda seeded with real data
-- [ ] **RETRO-02**: Output includes: sprint facts (velocity, carry-over), what went well (seeded), what was hard (seeded), patterns across sprints
-- [ ] **RETRO-03**: Discussion seeds are specific and attributed to work items, not individuals: "the auth service PR went through 7 revision cycles — what happened?" not "Jordan had slow reviews"
-- [ ] **RETRO-04**: Output preserves blank space for team conversation — data seeds the agenda, does not replace it
+- [x] **RETRO-01**: `/team-health:retro-prep` analyzes the most recent sprint and produces a retro agenda seeded with real data
+- [x] **RETRO-02**: Output includes: sprint facts (velocity, carry-over), what went well (seeded), what was hard (seeded), patterns across sprints
+- [x] **RETRO-03**: Discussion seeds are specific and attributed to work items, not individuals: "the auth service PR went through 7 revision cycles — what happened?" not "Jordan had slow reviews"
+- [x] **RETRO-04**: Output preserves blank space for team conversation — data seeds the agenda, does not replace it
 
 ## v2 Requirements
 
@@ -151,15 +151,15 @@ Which phases cover which requirements. Confirmed during roadmap creation (2026-0
 | PREP-08 | Phase 4 | Complete |
 | PREP-09 | Phase 4 | Complete |
 | PREP-10 | Phase 4 | Complete |
-| SKIP-01 | Phase 5 | Pending |
-| SKIP-02 | Phase 5 | Pending |
-| SKIP-03 | Phase 5 | Pending |
-| SKIP-04 | Phase 5 | Pending |
-| SKIP-05 | Phase 5 | Pending |
-| RETRO-01 | Phase 5 | Pending |
-| RETRO-02 | Phase 5 | Pending |
-| RETRO-03 | Phase 5 | Pending |
-| RETRO-04 | Phase 5 | Pending |
+| SKIP-01 | Phase 5 | Complete |
+| SKIP-02 | Phase 5 | Complete |
+| SKIP-03 | Phase 5 | Complete |
+| SKIP-04 | Phase 5 | Complete |
+| SKIP-05 | Phase 5 | Complete |
+| RETRO-01 | Phase 5 | Complete |
+| RETRO-02 | Phase 5 | Complete |
+| RETRO-03 | Phase 5 | Complete |
+| RETRO-04 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 43 total
