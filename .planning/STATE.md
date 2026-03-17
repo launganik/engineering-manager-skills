@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 05-00-PLAN.md
-last_updated: "2026-03-17T17:34:13.464Z"
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-17T17:39:04.385Z"
 last_activity: 2026-03-09 — Roadmap created
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 13
-  completed_plans: 11
+  completed_plans: 12
   percent: 25
 ---
 
@@ -60,6 +60,7 @@ Progress: [███░░░░░░░] 25%
 | Phase 04-1-1-prep P00 | 2 | 1 tasks | 1 files |
 | Phase 04-1-1-prep P01 | 1 | 1 tasks | 1 files |
 | Phase 05-skip-level-and-retro-prep P00 | 2 | 1 tasks | 1 files |
+| Phase 05-skip-level-and-retro-prep P01 | 3 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,8 @@ Recent decisions affecting current work:
 - [Phase 05-skip-level-and-retro-prep]: Wave 0 smoke test contract written before skip-level and retro-prep implementation — same verification-first pattern as Phases 3 and 4
 - [Phase 05-skip-level-and-retro-prep]: Asks/Escalations section (Section 4) uses placeholder text only — Claude never pre-populates escalation items; EM fills in manually before sharing
 - [Phase 05-skip-level-and-retro-prep]: Retro-prep sprint scope fallback: when Jira unavailable, use most recent sprint_cadence_weeks pulse history weeks
+- [Phase 05-skip-level-and-retro-prep]: Compliance Check is an explicit named step after all 5 sections are generated — enforces SKIP-05 structurally, not as an assumption
+- [Phase 05-skip-level-and-retro-prep]: skip-level opt-in content appended as labeled subsection within Section 3 (People Themes) — keeps brief at exactly 5 sections as required by SKIP-01
 
 ### Pending Todos
 
@@ -107,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-17T17:34:13.461Z
-Stopped at: Completed 05-00-PLAN.md
+Last session: 2026-03-17T17:39:04.383Z
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None

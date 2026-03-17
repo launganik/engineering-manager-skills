@@ -111,4 +111,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. People Log | 2/2 | Complete   | 2026-03-13 |
 | 3. Team Pulse | 2/2 | Complete   | 2026-03-17 |
 | 4. 1:1 Prep | 2/2 | Complete   | 2026-03-17 |
-| 5. Skip-Level and Retro Prep | 1/3 | In Progress|  |
+| 5. Skip-Level and Retro Prep | 2/3 | In Progress|  |
