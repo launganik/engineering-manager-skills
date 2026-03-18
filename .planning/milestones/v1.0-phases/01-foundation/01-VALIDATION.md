@@ -7,7 +7,7 @@ wave_0_complete: false
 created: 2026-03-10
 ---
 
-# Phase 1 — Validation Strategy
+# Phase 1 - Validation Strategy
 
 > Per-phase validation contract for feedback sampling during execution.
 
@@ -17,7 +17,7 @@ created: 2026-03-10
 
 | Property | Value |
 |----------|-------|
-| **Framework** | None — pure markdown/JSON skill with no runnable code |
+| **Framework** | None - pure markdown/JSON skill with no runnable code |
 | **Config file** | n/a |
 | **Quick run command** | Manual: verify specific deliverable for each task (file exists, JSON valid, correct schema fields) |
 | **Full suite command** | Manual: fresh project, no config → run each command → verify routing and output |
@@ -54,10 +54,10 @@ created: 2026-03-10
 
 ## Wave 0 Requirements
 
-- [ ] `docs/testing/phase-1-smoke-tests.md` — step-by-step manual test procedure for all 10 scenarios above
-- [ ] `.planning/phases/01-foundation/state-schemas.json` — canonical JSON schemas for config.json, people/<slug>.json, baselines.json
+- [ ] `docs/testing/phase-1-smoke-tests.md` - step-by-step manual test procedure for all 10 scenarios above
+- [ ] `.planning/phases/01-foundation/state-schemas.json` - canonical JSON schemas for config.json, people/<slug>.json, baselines.json
 
-*No automated framework install needed — no runnable code in Phase 1.*
+*No automated framework install needed - no runnable code in Phase 1.*
 
 ---
 

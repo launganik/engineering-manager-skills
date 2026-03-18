@@ -7,7 +7,7 @@ wave_0_complete: false
 created: 2026-03-17
 ---
 
-# Phase 4 — Validation Strategy
+# Phase 4 - Validation Strategy
 
 > Per-phase validation contract for feedback sampling during execution.
 
@@ -17,7 +17,7 @@ created: 2026-03-17
 
 | Property | Value |
 |----------|-------|
-| **Framework** | Manual only — pure markdown/JSON skill; no automated test runner |
+| **Framework** | Manual only - pure markdown/JSON skill; no automated test runner |
 | **Config file** | none |
 | **Quick run command** | Manual smoke test per scenario in phase-4-smoke-tests.md |
 | **Full suite command** | Run all scenarios in phase-4-smoke-tests.md |
@@ -30,7 +30,7 @@ created: 2026-03-17
 - **After every task commit:** Visually inspect generated file for structural correctness
 - **After every plan wave:** Run Wave 0 smoke test scenarios applicable to completed tasks
 - **Before `/gsd:verify-work`:** Full smoke test suite must pass
-- **Max feedback latency:** N/A — manual verification
+- **Max feedback latency:** N/A - manual verification
 
 ---
 
@@ -38,7 +38,7 @@ created: 2026-03-17
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 04-00-01 | 00 | 1 | PREP-01–10 | manual | n/a — Wave 0 smoke test doc | ❌ W0 | ⬜ pending |
+| 04-00-01 | 00 | 1 | PREP-01–10 | manual | n/a - Wave 0 smoke test doc | ❌ W0 | ⬜ pending |
 | 04-01-01 | 01 | 2 | PREP-01,02,03,04,05,06,07,08,09,10 | manual | smoke-tests.md all scenarios | ❌ W0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
@@ -47,7 +47,7 @@ created: 2026-03-17
 
 ## Wave 0 Requirements
 
-- [ ] `docs/testing/phase-4-smoke-tests.md` — manual smoke test scenarios for PREP-01 through PREP-10
+- [ ] `docs/testing/phase-4-smoke-tests.md` - manual smoke test scenarios for PREP-01 through PREP-10
 
 *Wave 0 plan (04-00) creates this document before the command is implemented.*
 

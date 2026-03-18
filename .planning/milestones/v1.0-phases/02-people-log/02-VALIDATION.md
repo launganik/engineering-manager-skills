@@ -7,7 +7,7 @@ wave_0_complete: false
 created: 2026-03-13
 ---
 
-# Phase 2 — Validation Strategy
+# Phase 2 - Validation Strategy
 
 > Per-phase validation contract for feedback sampling during execution.
 
@@ -17,7 +17,7 @@ created: 2026-03-13
 
 | Property | Value |
 |----------|-------|
-| **Framework** | None — pure markdown/JSON skill, no runnable code |
+| **Framework** | None - pure markdown/JSON skill, no runnable code |
 | **Config file** | n/a |
 | **Quick run command** | Manual: invoke `/team-health:log <name>` in Claude Code and verify output |
 | **Full suite command** | Manual: run all 6 log scenarios in a project with Phase 1 setup complete |
@@ -53,9 +53,9 @@ created: 2026-03-13
 
 Wave 0 for this phase creates the smoke test scenarios doc:
 
-- [ ] `docs/testing/phase-2-smoke-tests.md` — manual test procedure for LOG-01 through LOG-06
+- [ ] `docs/testing/phase-2-smoke-tests.md` - manual test procedure for LOG-01 through LOG-06
 
-*All verification is manual for this phase — pure markdown/JSON skill has no automated test runner.*
+*All verification is manual for this phase - pure markdown/JSON skill has no automated test runner.*
 
 ---
 
@@ -63,7 +63,7 @@ Wave 0 for this phase creates the smoke test scenarios doc:
 
 | Behavior | Requirement | Why Manual | Test Instructions |
 |----------|-------------|------------|-------------------|
-| `/team-health:log alice` appends entry to alice-chen.json | LOG-01 | Claude Code skill — no unit test runner | Run command in live Claude Code session, inspect .team-health/people/ |
+| `/team-health:log alice` appends entry to alice-chen.json | LOG-01 | Claude Code skill - no unit test runner | Run command in live Claude Code session, inspect .team-health/people/ |
 | Category inference from free-form text | LOG-02, LOG-03 | Requires Claude inference to test | Log notes in each category domain, verify category field in JSON |
 | Last 3–5 entries shown as context | LOG-04 | Requires reading Claude's output | Add >5 entries, run log again, check display |
 | Natural language query accuracy | LOG-05 | Requires Claude's query reasoning | Log career note, query for it by question, verify correct answer |

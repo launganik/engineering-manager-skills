@@ -13,7 +13,7 @@ requires:
   - phase: 03-team-pulse
     provides: pulse history format consumed by retro-prep for cross-sprint patterns
 provides:
-  - .claude/commands/team-health/retro-prep.md — sprint retro agenda command with work-item attribution enforcement
+  - .claude/commands/team-health/retro-prep.md - sprint retro agenda command with work-item attribution enforcement
   - Updated SKILL.md with all Phase 5 commands marked available (no "not yet available" labels)
 affects:
   - End users installing the skill (SKILL.md is the installation guide)
@@ -35,10 +35,10 @@ key-files:
     - SKILL.md
 
 key-decisions:
-  - "retro-prep makes zero state writes — no Write in allowed-tools, no Phase E"
+  - "retro-prep makes zero state writes - no Write in allowed-tools, no Phase E"
   - "Sprint window fallback: when Jira unavailable, use most recent sprint_cadence_weeks pulse history weeks"
-  - "Attribution check (Phase C) is an explicit named step before output — enforces RETRO-03 structurally"
-  - "Action Items section has only blank checkboxes — team fills in during the retro, Claude never pre-populates"
+  - "Attribution check (Phase C) is an explicit named step before output - enforces RETRO-03 structurally"
+  - "Action Items section has only blank checkboxes - team fills in during the retro, Claude never pre-populates"
   - "SKILL.md availability: remove all 'Phase N (not yet available)' labels rather than replace with 'Available' tag"
 
 patterns-established:
@@ -67,7 +67,7 @@ completed: 2026-03-17
 ## Accomplishments
 
 - Created `.claude/commands/team-health/retro-prep.md` (199 lines) with full 5-section retro agenda: Sprint Facts, What Went Well, What Was Hard, Patterns Across Sprints, Action Items
-- Implemented work-item attribution enforcement as explicit Phase C step — scans all generated seeds for team member names before output and rewrites to work-item references
+- Implemented work-item attribution enforcement as explicit Phase C step - scans all generated seeds for team member names before output and rewrites to work-item references
 - Structured sprint window determination: Jira sprint lookup (with --sprint flag or auto most-recent) with pulse history fallback using sprint_cadence_weeks when Jira unavailable
 - Removed all 5 "Phase N (not yet available)" status labels from SKILL.md and updated Installation ls output to show all 6 command files
 
@@ -80,12 +80,12 @@ Each task was committed atomically:
 
 ## Files Created/Modified
 
-- `.claude/commands/team-health/retro-prep.md` — Sprint retro agenda command with Pre-flight Check, Required Reference Reads (SIGNALS.md, PRIVACY.md), Phase A (sprint window), Phase B (sprint data collection from Jira/GitHub/pulse history), Phase C (attribution check), Phase D (agenda output). No state writes.
-- `SKILL.md` — Removed "not yet available" labels from log, pulse, prep, skip-level, and retro-prep commands; updated Installation ls output to show all 6 command files.
+- `.claude/commands/team-health/retro-prep.md` - Sprint retro agenda command with Pre-flight Check, Required Reference Reads (SIGNALS.md, PRIVACY.md), Phase A (sprint window), Phase B (sprint data collection from Jira/GitHub/pulse history), Phase C (attribution check), Phase D (agenda output). No state writes.
+- `SKILL.md` - Removed "not yet available" labels from log, pulse, prep, skip-level, and retro-prep commands; updated Installation ls output to show all 6 command files.
 
 ## Decisions Made
 
-- retro-prep makes zero state writes: Write is absent from allowed-tools, and no Phase E exists. The retro agenda is a one-shot output — there is no "since last retro" anchor to track.
+- retro-prep makes zero state writes: Write is absent from allowed-tools, and no Phase E exists. The retro agenda is a one-shot output - there is no "since last retro" anchor to track.
 - Sprint window fallback: when `sources.jira` is false, use most recent `sprint_cadence_weeks` pulse history weeks (from config.json, default 2). State this explicitly in output.
 - Phase C attribution check is a named, explicit step (not an implicit assumption): after data collection, before output, scan for team member names and rewrite to work-item attribution. This enforces RETRO-03 structurally.
 - Action Items section is structurally blank: the command instructions prohibit pre-populating action items. The team fills in actions during the retro.

@@ -6,7 +6,7 @@ score: 7/7 must-haves verified
 human_verification:
   - test: "Run /team-health:prep Alice in a live Claude Code session with Phase 1-3 fixtures loaded"
     expected: "5-section prep sheet renders within ~60 lines, prep_run written to alice-chen.json after output completes, lookback says 'since last 1:1 on 2026-03-10'"
-    why_human: "Command is a Claude slash command — runtime behavior (MCP tool invocation, file write sequencing, actual output length) cannot be verified by static analysis"
+    why_human: "Command is a Claude slash command - runtime behavior (MCP tool invocation, file write sequencing, actual output length) cannot be verified by static analysis"
   - test: "Run /team-health:prep Alice with all sources set to false in config.json"
     expected: "All 4 PRIVACY.md degradation phrases appear verbatim; Sections 3-5 still render from people log; disclaimer present at end"
     why_human: "Graceful degradation rendering sequence requires a live session to confirm"
@@ -22,8 +22,8 @@ human_verification:
 
 **Phase Goal:** Managers can generate a scannable 2-minute prep sheet for any direct report that synthesizes live tool signals against personal baselines and surfaces standing items from the people log
 **Verified:** 2026-03-17
-**Status:** human_needed — all automated checks passed; 4 runtime behaviors require live session verification
-**Re-verification:** No — initial verification
+**Status:** human_needed - all automated checks passed; 4 runtime behaviors require live session verification
+**Re-verification:** No - initial verification
 
 ---
 
@@ -34,12 +34,12 @@ human_verification:
 | #  | Truth | Status | Evidence |
 |----|-------|--------|----------|
 | 1  | Manager can run `/team-health:prep <name>` and receive a structured prep sheet with 5 sections | VERIFIED | prep.md (235 lines) contains all 5 numbered section headers (Status Snapshot, Signal Flags, Standing Items, Suggested Talking Points, Context Reminders) and verbatim disclaimer at line 204 |
-| 2  | Signal flags show specific metric, delta, and source — no opaque scores or diagnostic language | VERIFIED | Phase D output template (lines 142-153) mandates format: `current_value [unit] vs. 8-week avg [mean] [unit] ([delta], [stddev_delta] stddev) Source: [name] MCP`; Phase D includes compliance check against PRIVACY.md Rules 1 and 4 |
+| 2  | Signal flags show specific metric, delta, and source - no opaque scores or diagnostic language | VERIFIED | Phase D output template (lines 142-153) mandates format: `current_value [unit] vs. 8-week avg [mean] [unit] ([delta], [stddev_delta] stddev) Source: [name] MCP`; Phase D includes compliance check against PRIVACY.md Rules 1 and 4 |
 | 3  | Open commitments and career context from people log appear in sections 3 and 5 | VERIFIED | Phase B (lines 66-68) extracts `open_commitments` (status=="open") and `career_context`; Section 3 template (lines 157-169) renders commitments with date and days-open; Section 5 template (lines 189-200) renders goals, last_promo_discussion, and notes |
 | 4  | Talking points are 3-5 questions framed as behavioral observations, not scripts | VERIFIED | Phase D (lines 175-185) specifies "Each is a QUESTION the manager can ask", priority ordering, source labels, and a compliance check: "Every point must be a behavioral observation framed as a question" |
 | 5  | Prep sheet degrades gracefully when MCP sources are unavailable | VERIFIED | Phase A (lines 43-44) gates each source on `config.json` value; Phase C (line 75) skips entire source block if false; Phase D (lines 149-153) contains all 4 verbatim PRIVACY.md degradation phrases, confirmed character-for-character match |
 | 6  | prep_run timestamp is written to people log only after output is fully rendered | VERIFIED | Phase D (line 120) begins: "Output ALL of this before any state writes"; Phase E (lines 207-235) executes only after Phase D, writes `last_1on1_date` and `prep_run` to `<slug>.json` |
-| 7  | Lookback window is dynamic — reads last_1on1_date or prep_run, falls back to 14-day default | VERIFIED | Phase B (lines 53-63) implements exact priority chain: `last_1on1_date` → `prep_run` → `today - 14 days`; `lookback_source` string set at each branch and surfaced in output header |
+| 7  | Lookback window is dynamic - reads last_1on1_date or prep_run, falls back to 14-day default | VERIFIED | Phase B (lines 53-63) implements exact priority chain: `last_1on1_date` → `prep_run` → `today - 14 days`; `lookback_source` string set at each branch and surfaced in output header |
 
 **Score:** 7/7 truths verified
 
@@ -76,13 +76,13 @@ human_verification:
 | PREP-03 | 04-00, 04-01 | Pulls recent GitHub activity: PRs merged/open, review participation, stale PRs (>48h), commit pattern | SATISFIED | Phase C GitHub block (lines 77-84): `github_prs_merged`, `github_pr_review_count`, `github_pr_review_lag_days` (with >48h absolute threshold), `github_commit_days` all defined |
 | PREP-04 | 04-00, 04-01 | Pulls Jira signals when available: in-progress >2 sprints, velocity vs. baseline, blocked tickets | SATISFIED | Phase C Jira block (lines 86-92): all three signal types defined; source-gated on `sources.jira` |
 | PREP-05 | 04-00, 04-01 | Pulls Calendar signals when available: meeting load % vs. baseline, 1:1 adherence | SATISFIED | Phase C Calendar block (lines 98-101): `calendar_meeting_load_pct` and `calendar_1on1_adherence` defined; source-gated |
-| PREP-06 | 04-00, 04-01 | Pulls Slack metadata only — channel participation trend, response latency trend (not DM content) | SATISFIED | Phase C Slack block (lines 93-97): `PRIVACY CONSTRAINT: public channel metadata only. Do NOT request or use DM content.` explicit; signals are `slack_channel_participation` and `slack_response_latency` |
+| PREP-06 | 04-00, 04-01 | Pulls Slack metadata only - channel participation trend, response latency trend (not DM content) | SATISFIED | Phase C Slack block (lines 93-97): `PRIVACY CONSTRAINT: public channel metadata only. Do NOT request or use DM content.` explicit; signals are `slack_channel_participation` and `slack_response_latency` |
 | PREP-07 | 04-00, 04-01 | Surfaces open manager commitments and IC asks from people log | SATISFIED | Phase B (line 66) filters `open_commitments` by status=="open"; Section 3 template renders content, date, and days-open count |
 | PREP-08 | 04-00, 04-01 | Surfaces career context: last noted goals, time since last promo discussion | SATISFIED | Phase B (line 67) reads `career_context`; Section 5 renders `stated_goals`, `last_promo_discussion` with months-ago calculation, and `notes` |
-| PREP-09 | 04-00, 04-01 | Tone is direct and factual — no diagnoses, no loaded language; all signals framed as behavioral observations | SATISFIED (runtime caveat) | Phase D includes explicit COMPLIANCE CHECK against PRIVACY.md Rules 1 and 4; smoke test Scenario 9 enumerates 10 prohibited words; static structure enforces behavioral framing — actual output compliance requires human verification |
+| PREP-09 | 04-00, 04-01 | Tone is direct and factual - no diagnoses, no loaded language; all signals framed as behavioral observations | SATISFIED (runtime caveat) | Phase D includes explicit COMPLIANCE CHECK against PRIVACY.md Rules 1 and 4; smoke test Scenario 9 enumerates 10 prohibited words; static structure enforces behavioral framing - actual output compliance requires human verification |
 | PREP-10 | 04-00, 04-01 | Degrades gracefully to available sources; states what signals are absent | SATISFIED | Phase A gates all sources; verbatim degradation phrases for all 4 sources in Phase D template; exact match to PRIVACY.md confirmed |
 
-**Coverage:** 10/10 PREP requirements satisfied. No orphaned requirements — REQUIREMENTS.md traceability table confirms all PREP-01 through PREP-10 mapped to Phase 4, all marked Complete.
+**Coverage:** 10/10 PREP requirements satisfied. No orphaned requirements - REQUIREMENTS.md traceability table confirms all PREP-01 through PREP-10 mapped to Phase 4, all marked Complete.
 
 ---
 
@@ -93,9 +93,9 @@ No anti-patterns detected in either deliverable.
 | File | Pattern Checked | Result |
 |------|----------------|--------|
 | `.claude/commands/team-health/prep.md` | TODO/FIXME/PLACEHOLDER | None found |
-| `.claude/commands/team-health/prep.md` | Empty implementations (`return null`, `return {}`) | None found — command is instructional markdown, not code |
+| `.claude/commands/team-health/prep.md` | Empty implementations (`return null`, `return {}`) | None found - command is instructional markdown, not code |
 | `docs/testing/phase-4-smoke-tests.md` | TODO/FIXME/PLACEHOLDER | None found |
-| `docs/testing/phase-4-smoke-tests.md` | Incomplete scenarios | None found — all 13 scenarios have preconditions, invocation, pass criteria, and fail indicators |
+| `docs/testing/phase-4-smoke-tests.md` | Incomplete scenarios | None found - all 13 scenarios have preconditions, invocation, pass criteria, and fail indicators |
 
 ---
 

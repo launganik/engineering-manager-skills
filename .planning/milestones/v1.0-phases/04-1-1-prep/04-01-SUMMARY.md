@@ -6,7 +6,7 @@ tags: [claude-code-command, slash-command, mcp, people-log, baselines, signals, 
 
 requires:
   - phase: 04-1-1-prep-00
-    provides: Wave 0 smoke test contract (13 scenarios) — verification anchor for this plan
+    provides: Wave 0 smoke test contract (13 scenarios) - verification anchor for this plan
 
 provides:
   - /team-health:prep <name> slash command at .claude/commands/team-health/prep.md
@@ -16,16 +16,16 @@ provides:
   - prep_run timestamp written to people log after output renders
 
 affects:
-  - Phase 05 (skip-level prep) — same Phase A-E structure applies
-  - Phase 06 (retro prep) — same structure applies
+  - Phase 05 (skip-level prep) - same Phase A-E structure applies
+  - Phase 06 (retro prep) - same structure applies
 
 tech-stack:
   added: []
   patterns:
     - "Phase A-E execution structure for prep commands (pre-flight → reference reads → data collection → output → state write)"
     - "Dynamic lookback window derived from people log fields (last_1on1_date -> prep_run -> 14-day default)"
-    - "Output before state writes — prep sheet renders fully before prep_run timestamp is written"
-    - "Consumer-only baseline pattern — prep reads baselines.json but never updates it (only pulse.md updates baselines)"
+    - "Output before state writes - prep sheet renders fully before prep_run timestamp is written"
+    - "Consumer-only baseline pattern - prep reads baselines.json but never updates it (only pulse.md updates baselines)"
     - "Talking point generation with source labels (signal/commitment/career/pattern) and priority ordering"
 
 key-files:
@@ -35,8 +35,8 @@ key-files:
 
 key-decisions:
   - "Lookback priority chain locked: last_1on1_date -> prep_run -> 14-day default; each independently testable in Scenarios 11-13"
-  - "Prep does NOT update baselines.json — it is a consumer only; this prevents corrupting baseline history on non-pulse runs"
-  - "Phase E writes both last_1on1_date and prep_run to people log — auto-records today as the new lookback anchor"
+  - "Prep does NOT update baselines.json - it is a consumer only; this prevents corrupting baseline history on non-pulse runs"
+  - "Phase E writes both last_1on1_date and prep_run to people log - auto-records today as the new lookback anchor"
   - "Talking points use priority ordering: RED flags > overdue commitments >30d > YELLOW flags > career context >90d > log patterns > wins"
 
 patterns-established:
@@ -64,7 +64,7 @@ completed: 2026-03-17
 
 ## Accomplishments
 
-- Created `.claude/commands/team-health/prep.md` (235 lines) — the sole Phase 4 deliverable
+- Created `.claude/commands/team-health/prep.md` (235 lines) - the sole Phase 4 deliverable
 - Implemented all 5 execution phases (A: setup, B: people log + lookback derivation, C: MCP signal collection, D: 5-section prep sheet output, E: state write)
 - Lookback window logic: reads `last_1on1_date` → falls back to `prep_run` → falls back to 14-day default, each step independently testable against Scenarios 11-13
 - All 10 PREP requirements addressed; command structured to pass all 13 smoke test scenarios
@@ -86,12 +86,12 @@ Each task was committed atomically:
 
 - Copied Pre-flight Check, Name Resolution, and Required Reference Reads verbatim from existing commands (pulse.md and log.md) to maintain exact consistency
 - Phase C explicitly uses `lookback_start` from Phase B for all MCP queries, not the fixed weekly windows from SIGNALS.md
-- Phase E writes both `last_1on1_date` and `prep_run` to people log — this means next invocation will use today as the anchor for both fields, ensuring no gap in lookback continuity
+- Phase E writes both `last_1on1_date` and `prep_run` to people log - this means next invocation will use today as the anchor for both fields, ensuring no gap in lookback continuity
 - Prep is consumer-only for baselines.json; updating it would corrupt the 8-week rolling window maintained by pulse.md
 
 ## Deviations from Plan
 
-None — plan executed exactly as written.
+None - plan executed exactly as written.
 
 ## Issues Encountered
 
@@ -99,11 +99,11 @@ None.
 
 ## User Setup Required
 
-None — no external service configuration required for the command file itself.
+None - no external service configuration required for the command file itself.
 
 ## Self-Check
 
-- [x] `.claude/commands/team-health/prep.md` exists (235 lines — exceeds 150 line minimum)
+- [x] `.claude/commands/team-health/prep.md` exists (235 lines - exceeds 150 line minimum)
 - [x] `disable-model-invocation: true` present
 - [x] 5 phases (A-E) present (`grep -c "^## Phase [A-E]"` returns 5)
 - [x] Pre-flight Check, Name Resolution, Required Reference Reads present
@@ -120,9 +120,9 @@ None — no external service configuration required for the command file itself.
 
 ## Next Phase Readiness
 
-- Phase 4 Plan 01 complete — `/team-health:prep <name>` command ready for manual smoke testing against the 13 scenarios in `docs/testing/phase-4-smoke-tests.md`
+- Phase 4 Plan 01 complete - `/team-health:prep <name>` command ready for manual smoke testing against the 13 scenarios in `docs/testing/phase-4-smoke-tests.md`
 - Smoke testing requires: `.team-health/config.json` (setup complete), people log fixtures for Alice Chen and Bob Smith, baselines.json with 8-week data, and at least one MCP source active (GitHub)
-- Phase 5 (skip-level prep) can begin — it follows the same Phase A-E structure established here
+- Phase 5 (skip-level prep) can begin - it follows the same Phase A-E structure established here
 
 ---
 *Phase: 04-1-1-prep*

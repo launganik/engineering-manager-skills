@@ -1,6 +1,6 @@
-# Phase 2 — People Log: Manual Smoke Tests
+# Phase 2 - People Log: Manual Smoke Tests
 
-**Phase:** 2 — People Log
+**Phase:** 2 - People Log
 **Command under test:** `/team-health:log`
 **Last updated:** 2026-03-13
 
@@ -10,7 +10,7 @@
 
 Before running any scenario:
 
-1. Phase 1 setup complete — `.team-health/config.json` exists with `setup_complete: true`
+1. Phase 1 setup complete - `.team-health/config.json` exists with `setup_complete: true`
 2. At least two team members configured with the following canonical fixtures:
    - **Alice Chen** / slug `alice-chen`
    - **Bob Smith** / slug `bob-smith`
@@ -19,7 +19,7 @@ Before running any scenario:
 
 ---
 
-## Scenario 1 — LOG-01: Append entry creates file and adds entry
+## Scenario 1 - LOG-01: Append entry creates file and adds entry
 
 **Requirement:** LOG-01
 **Precondition:** `.team-health/people/alice-chen.json` does NOT exist
@@ -44,7 +44,7 @@ rm -f .team-health/people/alice-chen.json
 
 ---
 
-## Scenario 2 — LOG-02: All 7 category values written correctly
+## Scenario 2 - LOG-02: All 7 category values written correctly
 
 **Requirement:** LOG-02
 **Precondition:** `alice-chen.json` exists (from Scenario 1 or freshly created)
@@ -58,7 +58,7 @@ rm -f .team-health/people/alice-chen.json
 | `Alice mentioned she wants to move toward staff engineer` | `career` |
 | `I promised to introduce Alice to the platform lead by end of month` | `commitment` |
 | `Alice seems stressed and less engaged this week` | `concern` |
-| `Alice shipped the auth refactor ahead of schedule — great win` | `win` |
+| `Alice shipped the auth refactor ahead of schedule - great win` | `win` |
 | `Alice asked about the on-call rotation schedule` | `note` |
 
 **Pass criteria (check after each invocation):**
@@ -70,26 +70,26 @@ rm -f .team-health/people/alice-chen.json
 
 ---
 
-## Scenario 3 — LOG-03: Free-form note is structured with date, category, content
+## Scenario 3 - LOG-03: Free-form note is structured with date, category, content
 
 **Requirement:** LOG-03
 **Precondition:** `alice-chen.json` exists
 
 **Invocation:**
 1. Run `/team-health:log alice`
-2. Type: `gave great code review feedback on the auth refactor PR — clean API design`
+2. Type: `gave great code review feedback on the auth refactor PR - clean API design`
 
 **Pass criteria:**
 - [ ] New entry has `date` = today's date (`YYYY-MM-DD`)
 - [ ] `category` = `"feedback-given"` (inferred from "gave")
-- [ ] `content` contains the original note text — not paraphrased or summarised away
+- [ ] `content` contains the original note text - not paraphrased or summarised away
 - [ ] `created_at` is a valid ISO 8601 timestamp (e.g. `2026-03-13T14:32:00Z`)
 
 **Fail signal:** Category is wrong, content is rewritten rather than preserved, or `created_at` is missing or malformed.
 
 ---
 
-## Scenario 4 — LOG-04: Last 3–5 entries shown as context before prompting
+## Scenario 4 - LOG-04: Last 3–5 entries shown as context before prompting
 
 **Requirement:** LOG-04
 **Precondition:** `alice-chen.json` exists with 6 or more entries
@@ -97,11 +97,11 @@ rm -f .team-health/people/alice-chen.json
 **Setup:** If fewer than 6 entries exist, log additional notes until there are at least 6.
 
 **Invocation:**
-1. Run `/team-health:log alice` (do not type a note — just open the log)
+1. Run `/team-health:log alice` (do not type a note - just open the log)
 
 **Pass criteria:**
 - [ ] Claude's response displays exactly 5 recent entries before asking for a new note
-- [ ] Entries are shown in `[YYYY-MM-DD] · [category] — [content]` format
+- [ ] Entries are shown in `[YYYY-MM-DD] · [category] - [content]` format
 - [ ] Entries 1 through N-5 (the oldest entries) are NOT shown
 - [ ] After showing recent entries, Claude asks: "What would you like to log?" or equivalent
 
@@ -109,14 +109,14 @@ rm -f .team-health/people/alice-chen.json
 
 ---
 
-## Scenario 5 — LOG-05: Natural language query returns accurate answer
+## Scenario 5 - LOG-05: Natural language query returns accurate answer
 
 **Requirement:** LOG-05
 **Precondition:** `alice-chen.json` exists with at least 3 entries, including one with `category: "career"` and the word "promotion" in the content
 
 **Setup:** If no career/promotion entry exists, log one first:
 1. Run `/team-health:log alice`
-2. Type: `Alice brought up her promotion timeline — aiming for staff by Q4`
+2. Type: `Alice brought up her promotion timeline - aiming for staff by Q4`
 
 **Invocation:**
 ```
@@ -132,7 +132,7 @@ rm -f .team-health/people/alice-chen.json
 
 ---
 
-## Scenario 6 — LOG-06: First-time log creation is graceful
+## Scenario 6 - LOG-06: First-time log creation is graceful
 
 **Requirement:** LOG-06
 **Precondition:** `.team-health/people/bob-smith.json` does NOT exist (Bob is in config but has never been logged)
@@ -159,7 +159,7 @@ rm -f .team-health/people/bob-smith.json
 
 ---
 
-## Bonus Scenario — Commitment dual-write (validates LOG-02 integrity)
+## Bonus Scenario - Commitment dual-write (validates LOG-02 integrity)
 
 **Requirement:** LOG-02 (commitment category dual-write)
 **Precondition:** `alice-chen.json` exists
@@ -180,7 +180,7 @@ rm -f .team-health/people/bob-smith.json
 
 ## Notes
 
-- All tests are manual — invoke commands in a live Claude Code session with Phase 1 setup complete
+- All tests are manual - invoke commands in a live Claude Code session with Phase 1 setup complete
 - People log files are stored at `.team-health/people/<slug>.json`
 - Schema reference: `.planning/phases/01-foundation/state-schemas.json`
 - Canonical test fixtures: Alice Chen (`alice-chen`), Bob Smith (`bob-smith`)

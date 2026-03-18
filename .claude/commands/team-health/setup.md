@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 ## /team-health:setup
 
-### Step 0 — Already configured check
+### Step 0 - Already configured check
 
 Read `.team-health/config.json` using the Read tool.
 
@@ -19,7 +19,7 @@ If `$ARGUMENTS` contains `--reset`, skip this check and proceed to Step 1 even i
 
 ---
 
-### Step 1 — MCP availability probe
+### Step 1 - MCP availability probe
 
 Detect which MCP sources are available by attempting minimal tool calls for each source. Because MCP server implementations vary, probe by namespace rather than specific tool name.
 
@@ -35,36 +35,36 @@ After probing all four sources, present a capabilities summary before asking any
 
 ```
 MCP Sources Detected:
-- GitHub: [available / NOT AVAILABLE — PR/commit signals will be absent]
-- Jira: [available / NOT AVAILABLE — ticket velocity signals will be absent]
-- Slack: [available / NOT AVAILABLE — participation metadata signals will be absent]
-- Calendar: [available / NOT AVAILABLE — meeting load signals will be absent]
+- GitHub: [available / NOT AVAILABLE - PR/commit signals will be absent]
+- Jira: [available / NOT AVAILABLE - ticket velocity signals will be absent]
+- Slack: [available / NOT AVAILABLE - participation metadata signals will be absent]
+- Calendar: [available / NOT AVAILABLE - meeting load signals will be absent]
 ```
 
-Note: Full functionality requires all four sources. The skill degrades gracefully — GitHub-only is a supported configuration.
+Note: Full functionality requires all four sources. The skill degrades gracefully - GitHub-only is a supported configuration.
 
 ---
 
-### Step 2 — Collect manager info
+### Step 2 - Collect manager info
 
 Ask the manager for all of the following in a single message (do not ask one field at a time):
 
 1. Your full name
 2. Your GitHub username
-3. Your timezone (e.g. America/New_York) — optional, defaults to UTC if not provided
+3. Your timezone (e.g. America/New_York) - optional, defaults to UTC if not provided
 4. Your GitHub organization or username for the team repos (e.g. "acme-corp" or "jlee")
 
 Wait for the manager's response before continuing.
 
 ---
 
-### Step 3 — Collect team roster
+### Step 3 - Collect team roster
 
 Ask the manager to list their direct reports. For each person, collect:
 - Full name (required)
 - Role (required)
-- GitHub username (optional — leave null if not provided)
-- Default 1:1 cadence in weeks (optional — default is 1 if not specified)
+- GitHub username (optional - leave null if not provided)
+- Default 1:1 cadence in weeks (optional - default is 1 if not specified)
 
 Additional optional fields (skip if not provided, set to null):
 - Jira user ID (usually their email)
@@ -83,19 +83,19 @@ Wait for confirmation before continuing.
 
 ---
 
-### Step 4 — Gitignore check
+### Step 4 - Gitignore check
 
 Read `.gitignore` using the Read tool.
 
 - If `.gitignore` does not exist or does not contain `.team-health/`:
-  - Use Bash to append the entry: `echo "# team-health — people data must not be committed\n.team-health/" >> .gitignore`
+  - Use Bash to append the entry: `echo "# team-health - people data must not be committed\n.team-health/" >> .gitignore`
   - Tell the user: ".team-health/ added to .gitignore to keep people data out of version control."
 - If `.team-health/` is already present in `.gitignore`:
   - Note it silently and continue.
 
 ---
 
-### Step 5 — Write config.json
+### Step 5 - Write config.json
 
 Write `.team-health/config.json` using the Write tool. Use the exact schema shape below with `schema_version: "1"`.
 
@@ -141,7 +141,7 @@ Required fields that must be present for `setup_complete: true`: `schema_version
 
 ---
 
-### Step 6 — Confirm and summarize
+### Step 6 - Confirm and summarize
 
 After writing `config.json`, output the following confirmation:
 
@@ -157,7 +157,7 @@ Next steps:
 - Run /team-health:prep <name> before your next 1:1
 
 Config saved to .team-health/config.json
-.team-health/ is gitignored — your people data stays local.
+.team-health/ is gitignored - your people data stays local.
 ```
 
 Replace [N] with the actual count of team members, and [yes/no] with the actual detection results from Step 1.

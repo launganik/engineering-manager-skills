@@ -1,6 +1,6 @@
-# Phase 5 — Skip-Level and Retro Prep: Manual Smoke Tests
+# Phase 5 - Skip-Level and Retro Prep: Manual Smoke Tests
 
-**Phase: 5** — Skip-Level and Retro Prep
+**Phase: 5** - Skip-Level and Retro Prep
 **Commands under test:** `/team-health:skip-level` and `/team-health:retro-prep`
 **Document status:** Wave 0 validation contract (written before command implementation)
 **Purpose:** This document is the verification anchor for Plan 05-01. The executor of the skip-level and retro-prep commands verifies their work against these scenarios.
@@ -11,9 +11,9 @@
 
 Before running any scenario, confirm all of the following:
 
-1. Phase 1 setup is complete — `.team-health/config.json` exists with `setup_complete: true`
-2. Phase 3 pulse history exists — `.team-health/pulse-history/` contains at least 2-3 weekly snapshot files
-3. Phase 2 people log exists for at least one person (for `--include-person` testing) — `.team-health/people/alice-chen.json` exists with entries populated
+1. Phase 1 setup is complete - `.team-health/config.json` exists with `setup_complete: true`
+2. Phase 3 pulse history exists - `.team-health/pulse-history/` contains at least 2-3 weekly snapshot files
+3. Phase 2 people log exists for at least one person (for `--include-person` testing) - `.team-health/people/alice-chen.json` exists with entries populated
 4. `.claude/team-health/SIGNALS.md`, `BASELINES.md`, and `PRIVACY.md` all exist
 5. A live Claude Code session is open with the project loaded
 
@@ -27,7 +27,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 |------|------|-----------------|-----------------|
 | Alice Chen | `alice-chen` | `achen` | 8 weeks of data present |
 | Bob Smith | `bob-smith` | `bsmith` | 8 weeks of data present |
-| Carol Davis | `carol-davis` | `cdavis` | NEW — no baseline entry |
+| Carol Davis | `carol-davis` | `cdavis` | NEW - no baseline entry |
 
 **Source configuration (default for most scenarios):**
 
@@ -49,7 +49,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 "last_skip_level": null
 ```
 
-**Alice Chen's people log fixture (`.team-health/people/alice-chen.json`)** — same as Phase 4 canonical fixture, including:
+**Alice Chen's people log fixture (`.team-health/people/alice-chen.json`)** - same as Phase 4 canonical fixture, including:
 - `entries`: 5 entries including concern, win, and career categories
 - `open_commitments`: 1 open commitment ("Will introduce Alice to the platform team lead")
 - `career_context.stated_goals`: `["Staff Engineer track"]`
@@ -57,7 +57,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 1 — SKIP-01: Skip-level produces 5-section brief
+## Scenario 1 - SKIP-01: Skip-level produces 5-section brief
 
 **Requirement:** SKIP-01
 
@@ -72,7 +72,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 ```
 
 **Pass criteria:**
-1. Output contains a header line with "Team Brief" and a date range (e.g., `# Team Brief — 2026-02-24 to 2026-03-17`)
+1. Output contains a header line with "Team Brief" and a date range (e.g., `# Team Brief - 2026-02-24 to 2026-03-17`)
 2. Output contains a "Sources" or "Covering" line listing pulse history weeks and active MCP sources
 3. Output contains **exactly these 5 section headers** in this order:
    - `## 1. Delivery Status`
@@ -81,7 +81,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
    - `## 4. Asks / Escalations`
    - `## 5. Team Wins`
 4. Each section has substantive content (not empty or placeholder-only)
-5. Section 4 contains a placeholder prompt such as "[ Add escalation items here before sharing this brief ]" — Claude does NOT fabricate escalation items
+5. Section 4 contains a placeholder prompt such as "[ Add escalation items here before sharing this brief ]" - Claude does NOT fabricate escalation items
 
 **Fail indicators:**
 - Fewer than 5 section headers in the output
@@ -91,7 +91,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 2 — SKIP-02: Lookback defaults to "since last skip-level" or 14-day fallback
+## Scenario 2 - SKIP-02: Lookback defaults to "since last skip-level" or 14-day fallback
 
 **Requirement:** SKIP-02
 
@@ -99,7 +99,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 - `config.json last_skip_level = null` (first run)
 - Pulse history files present for 2026-W09, W10, W11
 
-**Part A — First run (14-day default):**
+**Part A - First run (14-day default):**
 
 **Invocation:**
 ```
@@ -108,11 +108,11 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 **Pass criteria (Part A):**
 1. Output states the lookback window covers approximately 14 days (2-week default)
-2. Output uses language like "Covering: [14-day period] (default — no prior skip-level recorded)" or equivalent
-3. After the output is fully rendered, open `.team-health/config.json` — `last_skip_level` is now set to today's date (`YYYY-MM-DD`)
+2. Output uses language like "Covering: [14-day period] (default - no prior skip-level recorded)" or equivalent
+3. After the output is fully rendered, open `.team-health/config.json` - `last_skip_level` is now set to today's date (`YYYY-MM-DD`)
 4. `last_updated` in config.json is also set to today's date
 
-**Part B — Second run (since last skip-level):**
+**Part B - Second run (since last skip-level):**
 
 **Invocation** (run immediately after Part A):
 ```
@@ -131,7 +131,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 3 — SKIP-02 override: --weeks flag
+## Scenario 3 - SKIP-02 override: --weeks flag
 
 **Requirement:** SKIP-02
 
@@ -145,7 +145,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 **Pass criteria:**
 1. Output states the lookback covers 4 weeks (28 days) from today
-2. Output does NOT reference "since last skip-level" — the `--weeks 4` flag explicitly overrides the stored anchor
+2. Output does NOT reference "since last skip-level" - the `--weeks 4` flag explicitly overrides the stored anchor
 3. The lookback period covers 4 full weeks of pulse history (W08 through W11 if all exist)
 4. config.json `last_skip_level` is still updated to today's date after the run (flag overrides the input window, not the output write)
 
@@ -156,7 +156,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 4 — SKIP-03: People log excluded by default
+## Scenario 4 - SKIP-03: People log excluded by default
 
 **Requirement:** SKIP-03
 
@@ -187,7 +187,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 5 — SKIP-03 + SKIP-04: --include-person opt-in
+## Scenario 5 - SKIP-03 + SKIP-04: --include-person opt-in
 
 **Requirements:** SKIP-03, SKIP-04
 
@@ -205,7 +205,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 1. Alice's people log themes appear in the People Themes section (Section 3)
 2. Alice's log themes are clearly labeled as "(opt-in content)" or equivalent
 3. Alice may be named in the People Themes section for the opt-in content block
-4. Bob and Carol remain **unnamed** throughout the output — referenced only by count language (e.g., "N team members")
+4. Bob and Carol remain **unnamed** throughout the output - referenced only by count language (e.g., "N team members")
 5. No other team member's people log content appears in the output
 
 **Fail indicators:**
@@ -216,7 +216,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 6 — SKIP-04: Pulse flags aggregated anonymously
+## Scenario 6 - SKIP-04: Pulse flags aggregated anonymously
 
 **Requirement:** SKIP-04
 
@@ -246,7 +246,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 7 — SKIP-05: "Would my team be comfortable seeing this?" compliance
+## Scenario 7 - SKIP-05: "Would my team be comfortable seeing this?" compliance
 
 **Requirement:** SKIP-05
 
@@ -274,7 +274,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 8 — RETRO-01: Retro agenda generated from sprint data
+## Scenario 8 - RETRO-01: Retro agenda generated from sprint data
 
 **Requirement:** RETRO-01
 
@@ -291,7 +291,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 1. Output contains the header line `# Sprint Retro Agenda` with a sprint identifier or date range
 2. Output contains a data sources line noting which sources were used (e.g., "Data sources: GitHub MCP, pulse history weeks W10-W11")
 3. Output contains a **Sprint Facts** section with at least one of: velocity, PR count, carry-over count, or avg review cycle time
-4. Output does NOT error when Jira is disabled — it proceeds with GitHub and pulse history data
+4. Output does NOT error when Jira is disabled - it proceeds with GitHub and pulse history data
 5. Output includes the line: "Sprint window estimated from last [N] pulse history weeks (no Jira MCP configured)" or equivalent degradation language for the sprint scope
 
 **Fail indicators:**
@@ -302,7 +302,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 9 — RETRO-02: All 4 content sections present
+## Scenario 9 - RETRO-02: All 4 content sections present
 
 **Requirement:** RETRO-02
 
@@ -316,10 +316,10 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 **Pass criteria:**
 1. Section `## Sprint Facts` is present and contains at least one data point
-2. Section `## What Went Well — Seeds` is present and contains at least one seeded item
-3. Section `## What Was Hard — Seeds` is present and contains at least one seeded item
+2. Section `## What Went Well - Seeds` is present and contains at least one seeded item
+3. Section `## What Was Hard - Seeds` is present and contains at least one seeded item
 4. Section `## Patterns Across Sprints` is present (may state "Insufficient history for cross-sprint patterns" if only 1 qualifying week, but must be present as a section)
-5. Section `## Action Items` is present (blank — team fills in during retro)
+5. Section `## Action Items` is present (blank - team fills in during retro)
 6. All 5 sections appear in the output in the order listed above
 
 **Fail indicators:**
@@ -329,7 +329,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 10 — RETRO-03: Seeds attributed to work items, not individuals
+## Scenario 10 - RETRO-03: Seeds attributed to work items, not individuals
 
 **Requirement:** RETRO-03
 
@@ -344,17 +344,17 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 **Steps:**
 1. Run the command and capture the output
-2. Read the `## What Went Well — Seeds` section
-3. Read the `## What Was Hard — Seeds` section
+2. Read the `## What Went Well - Seeds` section
+3. Read the `## What Was Hard - Seeds` section
 4. Search both sections for team member names: "Alice", "Bob", "Carol", "Alice Chen", "Bob Smith", "Carol Davis"
 
 **Pass criteria:**
-1. Every seeded item in "What Went Well" references a work item, PR title, ticket, or work area — NOT a person:
-   - Acceptable: "Auth service refactor shipped — 22 PRs merged cleanly"
+1. Every seeded item in "What Went Well" references a work item, PR title, ticket, or work area - NOT a person:
+   - Acceptable: "Auth service refactor shipped - 22 PRs merged cleanly"
    - Acceptable: "Sprint velocity was 15% above 8-week baseline"
    - Prohibited: "Alice shipped the auth refactor"
-2. Every seeded item in "What Was Hard" references a work item, process, or metric — NOT a person:
-   - Acceptable: "The payments API PR went through 7 revision cycles — what happened?"
+2. Every seeded item in "What Was Hard" references a work item, process, or metric - NOT a person:
+   - Acceptable: "The payments API PR went through 7 revision cycles - what happened?"
    - Prohibited: "Bob had 7 revision cycles on his PR"
 3. Zero occurrences of any team member name in the seeded items of either section
 
@@ -365,7 +365,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 11 — RETRO-04: Blank discussion space and empty action items
+## Scenario 11 - RETRO-04: Blank discussion space and empty action items
 
 **Requirement:** RETRO-04
 
@@ -378,15 +378,15 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 3. Examine the "Action Items" section
 
 **Pass criteria:**
-1. Each content section (`## What Went Well — Seeds`, `## What Was Hard — Seeds`, `## Patterns Across Sprints`) contains a visible "Team discussion space" marker, such as:
-   - `**[ Team discussion space — what else went well? ]**`
-   - `**[ Team discussion space — what else was hard? ]**`
-   - `**[ Team discussion space — what patterns do you see? ]**`
+1. Each content section (`## What Went Well - Seeds`, `## What Was Hard - Seeds`, `## Patterns Across Sprints`) contains a visible "Team discussion space" marker, such as:
+   - `**[ Team discussion space - what else went well? ]**`
+   - `**[ Team discussion space - what else was hard? ]**`
+   - `**[ Team discussion space - what patterns do you see? ]**`
 2. The `## Action Items` section contains **only** blank checkboxes (3-5 of them):
    - `- [ ]`
    - `- [ ]`
    - `- [ ]`
-3. The Action Items section has **zero** pre-populated items — Claude must not write any action item text
+3. The Action Items section has **zero** pre-populated items - Claude must not write any action item text
 4. The blank discussion space markers appear at the end of each section (after seeded items), not replacing them
 
 **Fail indicators:**
@@ -397,7 +397,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 12 — Edge case: No pulse history available
+## Scenario 12 - Edge case: No pulse history available
 
 **Preconditions:**
 - `.team-health/pulse-history/` directory is empty or does not exist
@@ -409,7 +409,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 ```
 
 **Pass criteria:**
-1. Command does **not** error — output is generated without a stack trace or failure message
+1. Command does **not** error - output is generated without a stack trace or failure message
 2. Output states "No pulse history found for this period" or equivalent
 3. If GitHub MCP is active, the brief continues with available MCP data and notes the limitation
 4. If no MCPs are active either, the command states the limitation and stops gracefully (no error)
@@ -422,7 +422,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 13 — Edge case: Retro-prep without Jira
+## Scenario 13 - Edge case: Retro-prep without Jira
 
 **Preconditions:**
 - `sources.jira = false`, `sources.github = true`
@@ -437,8 +437,8 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 1. Output states that the sprint window was estimated from pulse history (not Jira): "Sprint window estimated from last [N] pulse history weeks (no Jira MCP configured)" or equivalent
 2. GitHub data populates PR-related content in Sprint Facts and seed sections
 3. Sprint Facts section shows **degradation language** for Jira-specific data:
-   - Velocity (from Jira tickets closed) — either omitted with explanation or stated as "unavailable — Jira MCP not configured"
-   - Carry-over count — same: unavailable or estimated from pulse flags
+   - Velocity (from Jira tickets closed) - either omitted with explanation or stated as "unavailable - Jira MCP not configured"
+   - Carry-over count - same: unavailable or estimated from pulse flags
 4. The output is coherent and useful despite missing Jira data
 5. No Jira ticket data is fabricated when `sources.jira = false`
 
@@ -452,16 +452,16 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ## Footer
 
-**Testing environment:** All tests are manual — invoke `/team-health:skip-level` or `/team-health:retro-prep` in a live Claude Code session with Phases 1-4 setup complete and pulse history populated.
+**Testing environment:** All tests are manual - invoke `/team-health:skip-level` or `/team-health:retro-prep` in a live Claude Code session with Phases 1-4 setup complete and pulse history populated.
 
-**State files location:** `.team-health/` directory (gitignored — this directory is never committed)
+**State files location:** `.team-health/` directory (gitignored - this directory is never committed)
 
-**Schema reference:** `.planning/phases/01-foundation/state-schemas.json` — locked canonical schemas for `config.json`, `baselines.json`, and `people/<slug>.json`
+**Schema reference:** `.planning/phases/01-foundation/state-schemas.json` - locked canonical schemas for `config.json`, `baselines.json`, and `people/<slug>.json`
 
 **Reference documents:**
-- `.claude/team-health/SIGNALS.md` — 11 signals, thresholds, two-signal rule, severity levels
-- `.claude/team-health/BASELINES.md` — rolling baseline computation algorithm, first-run behavior, provenance fields
-- `.claude/team-health/PRIVACY.md` — output language rules, required disclaimer, graceful degradation language
+- `.claude/team-health/SIGNALS.md` - 11 signals, thresholds, two-signal rule, severity levels
+- `.claude/team-health/BASELINES.md` - rolling baseline computation algorithm, first-run behavior, provenance fields
+- `.claude/team-health/PRIVACY.md` - output language rules, required disclaimer, graceful degradation language
 
 **Skip-level lookback window logic:** `--weeks N` / `--quarter` override → `last_skip_level` anchor → 14-day default (in priority order). See 05-RESEARCH.md for full derivation.
 
@@ -476,11 +476,11 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 | 3 | SKIP-02 | --weeks 4 overrides stored anchor; still updates last_skip_level |
 | 4 | SKIP-03 | People log content absent from output without --include-person |
 | 5 | SKIP-03, SKIP-04 | --include-person Alice shows Alice's log themes labeled "(opt-in content)"; Bob and Carol unnamed |
-| 6 | SKIP-04 | All pulse flags aggregated anonymously — count language only; no individual names |
+| 6 | SKIP-04 | All pulse flags aggregated anonymously - count language only; no individual names |
 | 7 | SKIP-05 | Zero prohibited words; no individual names; no people log content; team-comfort test |
 | 8 | RETRO-01 | Retro agenda generated from sprint data; sprint window stated; graceful without Jira |
 | 9 | RETRO-02 | All 4 content sections + Action Items present in output |
 | 10 | RETRO-03 | Zero individual names in seed items; all attributed to work items |
 | 11 | RETRO-04 | Blank discussion space in every section; Action Items blank checkboxes only |
-| 12 | — | No pulse history → no crash; limitation stated; continues gracefully |
-| 13 | — | Jira disabled → sprint scope estimated from pulse history; Jira data degradation language |
+| 12 | - | No pulse history → no crash; limitation stated; continues gracefully |
+| 13 | - | Jira disabled → sprint scope estimated from pulse history; Jira data degradation language |

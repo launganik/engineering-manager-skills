@@ -29,7 +29,7 @@ metrics:
 
 ## What Was Built
 
-Created `docs/testing/phase-2-smoke-tests.md` — the Wave 0 validation contract for Phase 2. This document defines the verification anchor that Plan 02-01 (the log command executor) will verify against.
+Created `docs/testing/phase-2-smoke-tests.md` - the Wave 0 validation contract for Phase 2. This document defines the verification anchor that Plan 02-01 (the log command executor) will verify against.
 
 The file contains:
 - Prerequisites block (Phase 1 setup, canonical fixtures alice-chen / bob-smith)
@@ -49,7 +49,7 @@ The file contains:
 
 ## Deviations from Plan
 
-None — plan executed exactly as written.
+None - plan executed exactly as written.
 
 ## Self-Check: PASSED
 

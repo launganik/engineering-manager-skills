@@ -7,16 +7,16 @@ tags: [smoke-tests, verification-contract, team-health, prep, 1on1]
 
 requires:
   - phase: 03-team-pulse
-    provides: "smoke test format and pattern — Scenarios numbered per requirement, canonical fixtures, sub-tests A/B/C structure"
+    provides: "smoke test format and pattern - Scenarios numbered per requirement, canonical fixtures, sub-tests A/B/C structure"
   - phase: 02-people-log
     provides: "people log schema (entries, open_commitments, career_context) used in fixture definitions"
   - phase: 01-foundation
-    provides: "SIGNALS.md, PRIVACY.md graceful degradation language, BASELINES.md — all referenced verbatim in pass criteria"
+    provides: "SIGNALS.md, PRIVACY.md graceful degradation language, BASELINES.md - all referenced verbatim in pass criteria"
 
 provides:
   - "Wave 0 verification contract for Plan 04-01 (prep command implementation)"
   - "13 numbered scenarios: PREP-01 through PREP-10 plus 3 edge cases (first use, prep_run lookback, last_1on1_date lookback)"
-  - "Canonical test fixtures: Alice (full data), Bob (partial), Carol (new — no file)"
+  - "Canonical test fixtures: Alice (full data), Bob (partial), Carol (new - no file)"
   - "Enumerated prohibited diagnosis words for Scenario 9 (PREP-09)"
   - "Verbatim PRIVACY.md degradation phrases quoted per scenario (4A, 5A, 6A, 10)"
 
@@ -26,9 +26,9 @@ affects:
 tech-stack:
   added: []
   patterns:
-    - "Wave 0 contract pattern: smoke test document written before command implementation — all prior phases follow this"
+    - "Wave 0 contract pattern: smoke test document written before command implementation - all prior phases follow this"
     - "Sub-test A/B pattern for source-enabled/disabled scenarios (borrowed from Phase 3 Scenario 4)"
-    - "Edge case triad: first use / prep_run fallback / last_1on1_date primary — covers full lookback priority chain"
+    - "Edge case triad: first use / prep_run fallback / last_1on1_date primary - covers full lookback priority chain"
 
 key-files:
   created:
@@ -62,7 +62,7 @@ completed: 2026-03-17
 
 # Phase 4 Plan 00: 1:1 Prep Smoke Tests Summary
 
-**Wave 0 verification contract for `/team-health:prep` — 13 scenarios covering PREP-01 through PREP-10 plus first-use, prep_run lookback, and last_1on1_date lookback edge cases**
+**Wave 0 verification contract for `/team-health:prep` - 13 scenarios covering PREP-01 through PREP-10 plus first-use, prep_run lookback, and last_1on1_date lookback edge cases**
 
 ## Performance
 
@@ -76,7 +76,7 @@ completed: 2026-03-17
 
 - Created `docs/testing/phase-4-smoke-tests.md` with 13 scenarios following the exact format of `phase-3-smoke-tests.md`
 - All 10 PREP requirement IDs (PREP-01 through PREP-10) appear mapped to individual scenarios
-- Canonical test fixtures defined: Alice (full data with `last_1on1_date`, open commitments, career context, 3 concern entries), Bob (partial — `prep_run` only, no open commitments), Carol (new — no people log file)
+- Canonical test fixtures defined: Alice (full data with `last_1on1_date`, open commitments, career context, 3 concern entries), Bob (partial - `prep_run` only, no open commitments), Carol (new - no people log file)
 - Verbatim PRIVACY.md graceful degradation phrases quoted in Scenarios 4A, 5A, 6A, and 10 to enable character-for-character verification
 - Lookback priority chain (first-use → `prep_run` → `last_1on1_date`) covered by Scenarios 11, 12, 13 in order
 
@@ -84,11 +84,11 @@ completed: 2026-03-17
 
 1. **Task 1: Create Phase 4 smoke test document** - `ab84274` (feat)
 
-**Plan metadata:** [pending — final metadata commit]
+**Plan metadata:** [pending - final metadata commit]
 
 ## Files Created/Modified
 
-- `docs/testing/phase-4-smoke-tests.md` — Wave 0 verification contract: 13 scenarios, canonical fixtures, traceability table
+- `docs/testing/phase-4-smoke-tests.md` - Wave 0 verification contract: 13 scenarios, canonical fixtures, traceability table
 
 ## Decisions Made
 
@@ -98,15 +98,15 @@ completed: 2026-03-17
 
 ## Deviations from Plan
 
-None — plan executed exactly as written.
+None - plan executed exactly as written.
 
 ## Issues Encountered
 
-Minor: the plan's acceptance criterion `grep "Phase: 4"` required the literal substring `Phase: 4` in the document. The initial draft used `**Phase:** 4` (following Markdown bold convention), which would fail the grep. Fixed by reformatting to `**Phase: 4**` — cosmetically equivalent in rendered Markdown and passes the grep check.
+Minor: the plan's acceptance criterion `grep "Phase: 4"` required the literal substring `Phase: 4` in the document. The initial draft used `**Phase:** 4` (following Markdown bold convention), which would fail the grep. Fixed by reformatting to `**Phase: 4**` - cosmetically equivalent in rendered Markdown and passes the grep check.
 
 ## User Setup Required
 
-None — no external service configuration required.
+None - no external service configuration required.
 
 ## Next Phase Readiness
 
@@ -122,4 +122,4 @@ None — no external service configuration required.
 
 - FOUND: `docs/testing/phase-4-smoke-tests.md`
 - FOUND: `.planning/phases/04-1-1-prep/04-00-SUMMARY.md`
-- FOUND: commit `ab84274` — feat(04-1-1-prep-00): add Phase 4 smoke test document
+- FOUND: commit `ab84274` - feat(04-1-1-prep-00): add Phase 4 smoke test document

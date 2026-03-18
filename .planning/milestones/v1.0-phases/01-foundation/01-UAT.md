@@ -9,14 +9,14 @@ updated: 2026-03-11T10:00:00Z
 ## Current Test
 
 number: 1
-name: SKILL.md — readable installation guide
+name: SKILL.md - readable installation guide
 expected: |
   Open SKILL.md at the project root. An EM with no prior context should be able to follow it to a working /team-health:setup invocation. It should cover: prerequisites (MCP installs), numbered setup steps with verify commands, a command reference for all 6 planned commands (with phase availability labels), and a privacy section.
 awaiting: user response
 
 ## Tests
 
-### 1. SKILL.md — readable installation guide
+### 1. SKILL.md - readable installation guide
 expected: Open SKILL.md at the project root. An EM with no prior context should be able to follow it to a working /team-health:setup invocation. It should cover: prerequisites (MCP installs), numbered setup steps with verify commands, a command reference for all 6 planned commands (with phase availability labels), and a privacy section.
 result: [pending]
 
@@ -29,7 +29,7 @@ expected: .gitignore at the project root contains a .team-health/ entry. Running
 result: [pending]
 
 ### 4. MCP probe is namespace-based (not tool-name-based)
-expected: Open .claude/commands/team-health/setup.md and find the MCP probe step. The probe should check for tool namespaces (e.g., "any tool containing 'github'") rather than specific tool names — making it robust to different community MCP implementations.
+expected: Open .claude/commands/team-health/setup.md and find the MCP probe step. The probe should check for tool namespaces (e.g., "any tool containing 'github'") rather than specific tool names - making it robust to different community MCP implementations.
 result: [pending]
 
 ### 5. setup command writes config.json with schema_version "1"
@@ -37,7 +37,7 @@ expected: The setup.md command file contains instructions to write a config.json
 result: [pending]
 
 ### 6. SIGNALS.md covers all 11 signals
-expected: .claude/team-health/SIGNALS.md defines signals across 4 sections: 4 GitHub signals, 3 Jira signals, 2 Slack signals, 2 Calendar signals — 11 total. The Two-Signal Rule section should state that a person is only flagged if 2+ signals are below threshold OR 1 signal exceeds 2 standard deviations from their personal baseline.
+expected: .claude/team-health/SIGNALS.md defines signals across 4 sections: 4 GitHub signals, 3 Jira signals, 2 Slack signals, 2 Calendar signals - 11 total. The Two-Signal Rule section should state that a person is only flagged if 2+ signals are below threshold OR 1 signal exceeds 2 standard deviations from their personal baseline.
 result: [pending]
 
 ### 7. BASELINES.md has a worked numerical example

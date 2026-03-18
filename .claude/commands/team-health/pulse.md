@@ -1,5 +1,5 @@
 ---
-description: "Weekly team health pulse — scans all direct reports, scores signals against personal baselines, and produces a flagged team dashboard."
+description: "Weekly team health pulse - scans all direct reports, scores signals against personal baselines, and produces a flagged team dashboard."
 argument-hint: ""
 allowed-tools: Read, Write, Bash(date +%Y-%m-%d), Bash(date +%Y-W%V), Bash(mkdir -p .team-health/pulse-history)
 disable-model-invocation: true
@@ -20,13 +20,13 @@ Before doing anything else:
 ## Required Reference Reads
 
 Before doing any analysis, read these files using the Read tool (in order):
-1. .claude/team-health/SIGNALS.md — 11 signals, thresholds, two-signal rule, severity levels
-2. .claude/team-health/BASELINES.md — baseline computation algorithm, first-run behavior, provenance fields
-3. .claude/team-health/PRIVACY.md — output language rules, required disclaimer, degradation language
+1. .claude/team-health/SIGNALS.md - 11 signals, thresholds, two-signal rule, severity levels
+2. .claude/team-health/BASELINES.md - baseline computation algorithm, first-run behavior, provenance fields
+3. .claude/team-health/PRIVACY.md - output language rules, required disclaimer, degradation language
 
 Follow these documents exactly. Do not improvise signal thresholds, flagging rules, or output language.
 
-## Phase A — Setup
+## Phase A - Setup
 
 After reading reference docs:
 1. Read .team-health/baselines.json using the Read tool.
@@ -35,10 +35,10 @@ After reading reference docs:
 2. Read the sources map from config.json (already read in Pre-flight Check):
    - sources.github, sources.jira, sources.slack, sources.calendar
 3. Note unavailable sources. For each source where the value is false, use PRIVACY.md Graceful Degradation Language to state which signals will be absent.
-   Output at start of pulse run: "Sources active: [list true sources] | Unavailable: [list false sources] — [PRIVACY.md degradation phrasing]"
+   Output at start of pulse run: "Sources active: [list true sources] | Unavailable: [list false sources] - [PRIVACY.md degradation phrasing]"
    If ALL sources are false: state all 4 are unavailable, list all 11 signals as absent, render the summary table with "no signals available" per person, include the disclaimer, then stop.
 
-## Phase B — Per-person signal collection
+## Phase B - Per-person signal collection
 
 For each team member in config.json team array (iterate in order):
   Record their: name, slug, github_username, jira_user_id, slack_user_id
@@ -53,12 +53,12 @@ For each team member in config.json team array (iterate in order):
   - github_pr_review_lag_days: average days from PR creation to first review for PRs where this person is the author (within github_org, this week). Use 0 if no PRs awaiting review.
   - github_commit_days_per_week: count of distinct calendar days with at least one commit by this person in github_org this week
 
-  Use whichever commit-listing and PR-listing tools are available from the GitHub MCP — probe by namespace (any tool containing 'github' or starting with 'mcp_github'). Adapt tool names to what the manager has installed.
+  Use whichever commit-listing and PR-listing tools are available from the GitHub MCP - probe by namespace (any tool containing 'github' or starting with 'mcp_github'). Adapt tool names to what the manager has installed.
 
   ### Jira signals (if sources.jira is true):
   Query the Jira MCP for this person's jira_user_id:
   - jira_tickets_closed_per_week: count of tickets resolved/closed by this person this week
-  - jira_tickets_in_progress_over_2_sprints: count of tickets assigned to this person that have been "in progress" for more than 2 sprint cycles (absolute threshold from SIGNALS.md — check window length before flagging as absolute threshold)
+  - jira_tickets_in_progress_over_2_sprints: count of tickets assigned to this person that have been "in progress" for more than 2 sprint cycles (absolute threshold from SIGNALS.md - check window length before flagging as absolute threshold)
   - jira_blocked_tickets: count of tickets assigned to this person with a "blocked" or impediment status
 
   Scope to the project(s) associated with this team, using JQL where supported.
@@ -66,7 +66,7 @@ For each team member in config.json team array (iterate in order):
   ### Slack signals (if sources.slack is true):
   PRIVACY CONSTRAINT: Only use public channel data. Do not request or use DM content or private channel content. If the Slack MCP returns DM content, ignore it.
   Query for this person's slack_user_id:
-  - slack_public_channel_participation_trend: relative participation trend this week vs. recent history (use a 0–1 normalized score or categorical: up/stable/down — note the unit so baseline comparison is consistent)
+  - slack_public_channel_participation_trend: relative participation trend this week vs. recent history (use a 0–1 normalized score or categorical: up/stable/down - note the unit so baseline comparison is consistent)
   - slack_response_latency_trend: trend in response latency in public channels (up/stable/down or normalized score)
 
   ### Calendar signals (if sources.calendar is true):
@@ -76,22 +76,22 @@ For each team member in config.json team array (iterate in order):
 
   Record all collected signal values as: { slug, metric_name, current_value, week_queried }
 
-## Phase C — Baseline comparison and flag determination
+## Phase C - Baseline comparison and flag determination
 
 For each person:
   1. Retrieve their entry from CURRENT_BASELINES.people[slug] (may not exist for new team members).
   2. For each metric with a collected current_value:
      a. Look up the metric's window in CURRENT_BASELINES (may not exist).
      b. Apply BASELINES.md first-run window-thinness check:
-        - window does not exist OR len(window) == 0: label "(baseline pending — 0 weeks of data)"; do NOT compute deviation; do NOT flag
-        - len(window) == 1 or 2: label "(baseline pending — N weeks of data)"; do NOT flag
+        - window does not exist OR len(window) == 0: label "(baseline pending - 0 weeks of data)"; do NOT compute deviation; do NOT flag
+        - len(window) == 1 or 2: label "(baseline pending - N weeks of data)"; do NOT flag
         - len(window) >= 3: proceed to deviation computation
      c. If computing deviation:
         - deviation_stddev = (current_value - mean) / stddev
           NOTE: if stddev == 0 and current_value != mean: treat as extreme deviation (>2 stddev); if stddev == 0 and current_value == mean: treat as 0 deviation
         - For lag metrics (github_pr_review_lag_days, calendar_meeting_load_pct): flag on UPWARD deviation (deviation_stddev > 0 is concerning)
         - For all other metrics: flag on DOWNWARD deviation (deviation_stddev < 0 is concerning)
-  3. Apply SIGNALS.md two-signal rule (verbatim — do not substitute):
+  3. Apply SIGNALS.md two-signal rule (verbatim - do not substitute):
      - RED: any single signal at absolute deviation_stddev >= 2 in the concerning direction
      - YELLOW: 2 or more signals each at deviation_stddev >= 1 in the concerning direction, AND no signal hits RED threshold
      - GREEN: everything else (including all baseline-pending states)
@@ -99,13 +99,13 @@ For each person:
 
 CRITICAL: Do NOT update baselines.json during this phase. Baseline updates happen in Phase E, after output is generated. Using this week's value in the baseline before comparing it would corrupt the deviation calculation.
 
-## Phase D — Dashboard output
+## Phase D - Dashboard output
 
 Render the following dashboard. Follow the format exactly.
 
 ### Summary table
 
-## Team Health Pulse — [ISO week from injected date]
+## Team Health Pulse - [ISO week from injected date]
 
 Sources active: [list sources where true] | Unavailable: [list sources where false] (or "None unavailable" if all active)
 
@@ -113,13 +113,13 @@ Sources active: [list sources where true] | Unavailable: [list sources where fal
 |------|--------|-----------------|
 [One row per team member. Status: GREEN / YELLOW / RED / PENDING]
 [Signals Checked: "N/11 (source names)" where N is the count of signals queryable with active sources]
-[PENDING rows: "(baseline pending — N weeks of data)"]
+[PENDING rows: "(baseline pending - N weeks of data)"]
 
 ### Detail sections (flagged individuals only)
 
 For each team member where flag_status is YELLOW or RED:
 
-### [Full Name] — [STATUS] ([yellow: "watch" / red: "immediate attention"])
+### [Full Name] - [STATUS] ([yellow: "watch" / red: "immediate attention"])
 
 Signals triggering flag ([N] of [threshold] required):
 
@@ -128,18 +128,18 @@ Signals triggering flag ([N] of [threshold] required):
   Source: [GitHub / Jira / Slack / Calendar] MCP
 
 Other signals (within baseline):
-[Brief one-line summary: "PRs merged: N (baseline avg: N.N) — within normal range"]
+[Brief one-line summary: "PRs merged: N (baseline avg: N.N) - within normal range"]
 
-DO NOT render a detail section for GREEN or PENDING team members — table row only.
+DO NOT render a detail section for GREEN or PENDING team members - table row only.
 DO NOT use psychological language (see PRIVACY.md Rules 1 and 4). All observations are behavioral.
 DO NOT compare one person to another. Every signal references only that person's own baseline.
 
-### Disclaimer (mandatory — append after all output, verbatim)
+### Disclaimer (mandatory - append after all output, verbatim)
 
 ---
 *These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions.*
 
-## Phase E — State writes
+## Phase E - State writes
 
 Execute Phase E only after Phase D output is complete. Do not write state before output.
 
@@ -159,16 +159,16 @@ For each person × metric (where a current_value was collected this week):
 Build the ENTIRE updated baselines.json in memory first.
 Then write with a SINGLE Write tool call to .team-health/baselines.json.
 The file must include schema_version, last_updated (today), and the complete people object.
-DO NOT call Write multiple times (once per person) — this risks partial writes.
+DO NOT call Write multiple times (once per person) - this risks partial writes.
 
 ### Step 2: Write pulse history snapshot
 
 First, run: Bash(mkdir -p .team-health/pulse-history)
 Then write to: .team-health/pulse-history/<ISO-week>.md
-(ISO week is the value injected at the top: !`date +%Y-W%V` — e.g., 2026-W11)
+(ISO week is the value injected at the top: !`date +%Y-W%V` - e.g., 2026-W11)
 
 Contents:
-# Team Pulse — [ISO week]
+# Team Pulse - [ISO week]
 
 **Run date:** [today YYYY-MM-DD]
 **Sources active:** [list sources where true, or "None"]

@@ -7,7 +7,7 @@ re_verification: false
 human_verification:
   - test: "LOG-01: Append entry creates file and adds entry"
     expected: ".team-health/people/alice-chen.json created with 1 entry containing id, date, category, content, created_at, schema_version=1"
-    why_human: "Command is a markdown prompt file — execution and JSON output can only be observed in a live Claude Code session"
+    why_human: "Command is a markdown prompt file - execution and JSON output can only be observed in a live Claude Code session"
   - test: "LOG-02: All 7 category values written and commitment dual-write"
     expected: "All 7 category strings appear exactly; commitment entries written to both entries and open_commitments with status=open"
     why_human: "Category inference and dual-write logic require live invocation to verify output"
@@ -15,7 +15,7 @@ human_verification:
     expected: "category=feedback-given inferred from 'gave'; content preserved verbatim; created_at is valid ISO 8601"
     why_human: "Category inference and content preservation can only be confirmed by running the command"
   - test: "LOG-04: Last 3-5 entries shown as context before prompting"
-    expected: "Exactly 5 recent entries shown in [YYYY-MM-DD] · [category] — [content] format; oldest entries not shown"
+    expected: "Exactly 5 recent entries shown in [YYYY-MM-DD] · [category] - [content] format; oldest entries not shown"
     why_human: "Context display behaviour requires live invocation with 6+ entries in the file"
   - test: "LOG-05: Natural language query returns accurate answer without prompting for new entry"
     expected: "Claude answers with date and content of matching career entry; does not enter append mode"
@@ -27,10 +27,10 @@ human_verification:
 
 # Phase 2: People Log Verification Report
 
-**Phase Goal:** Managers can record and query longitudinal notes about each direct report — the memory layer that 1:1 prep and commitment tracking depend on
+**Phase Goal:** Managers can record and query longitudinal notes about each direct report - the memory layer that 1:1 prep and commitment tracking depend on
 **Verified:** 2026-03-13
 **Status:** human_needed
-**Re-verification:** No — initial verification
+**Re-verification:** No - initial verification
 
 ## Goal Achievement
 
@@ -45,13 +45,13 @@ human_verification:
 | 5 | Commitment entries are written to both the entries array and the open_commitments array | ? HUMAN NEEDED | Step 4 step 6: dual-write to open_commitments with status=open explicitly specified. Logic complete. Live run required. |
 | 6 | Running any log command before setup is complete routes to the setup flow instead of erroring | ? HUMAN NEEDED | Pre-flight Check verbatim boilerplate present: reads config.json, checks setup_complete, stops with setup message if false. Logic complete. Live run required. |
 
-**Score:** 6/6 truths — all automated checks pass, all require human confirmation
+**Score:** 6/6 truths - all automated checks pass, all require human confirmation
 
 ### Required Artifacts
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `.claude/commands/team-health/log.md` | /team-health:log command — append and query modes for people log | VERIFIED | 154 lines; complete implementation; all required sections present |
+| `.claude/commands/team-health/log.md` | /team-health:log command - append and query modes for people log | VERIFIED | 154 lines; complete implementation; all required sections present |
 | `docs/testing/phase-2-smoke-tests.md` | Manual test procedure for all 6 LOG scenarios | VERIFIED | 188 lines; 6 numbered scenarios + bonus; unambiguous pass/fail criteria |
 
 ### Key Link Verification
@@ -79,13 +79,13 @@ No orphaned requirements. All 6 LOG IDs claimed by both plans and fully implemen
 
 | File | Line | Pattern | Severity | Impact |
 |------|------|---------|----------|--------|
-| None | — | — | — | — |
+| None | - | - | - | - |
 
 No TODOs, FIXMEs, placeholders, empty handlers, or stub returns found in either artifact.
 
 ### Human Verification Required
 
-All automated structural checks pass. The command file is a markdown prompt — it cannot be executed programmatically. Every LOG requirement has corresponding logic in the file, but correctness of that logic (correct inference, correct file I/O, correct mode switching) can only be confirmed by running the command in a live Claude Code session with Phase 1 setup complete.
+All automated structural checks pass. The command file is a markdown prompt - it cannot be executed programmatically. Every LOG requirement has corresponding logic in the file, but correctness of that logic (correct inference, correct file I/O, correct mode switching) can only be confirmed by running the command in a live Claude Code session with Phase 1 setup complete.
 
 Run all 6 scenarios (plus the bonus dual-write scenario) from `docs/testing/phase-2-smoke-tests.md`.
 
@@ -103,14 +103,14 @@ Run all 6 scenarios (plus the bonus dual-write scenario) from `docs/testing/phas
 
 **3. LOG-03: Free-form note structured correctly**
 
-**Test:** Run `/team-health:log alice`, type `gave great code review feedback on the auth refactor PR — clean API design`
+**Test:** Run `/team-health:log alice`, type `gave great code review feedback on the auth refactor PR - clean API design`
 **Expected:** `category` = `"feedback-given"`; `content` contains the original note verbatim; `created_at` is valid ISO 8601
 **Why human:** Inference correctness and content preservation require live execution
 
 **4. LOG-04: Context display shows last 5 entries**
 
 **Test:** Ensure alice-chen.json has 6+ entries, then run `/team-health:log alice` with no note
-**Expected:** Exactly 5 entries shown in `[YYYY-MM-DD] · [category] — [content]` format; oldest entries not shown; prompt follows
+**Expected:** Exactly 5 entries shown in `[YYYY-MM-DD] · [category] - [content]` format; oldest entries not shown; prompt follows
 **Why human:** Context display behaviour requires live invocation
 
 **5. LOG-05: Natural language query**

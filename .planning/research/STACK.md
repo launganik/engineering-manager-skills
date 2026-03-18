@@ -12,11 +12,11 @@
 
 | Technology | Version | Purpose | Why |
 |------------|---------|---------|-----|
-| Claude Code custom commands | Current (≥1.0) | Slash command registration | Native mechanism — no runtime needed, commands are pure markdown files that Claude reads as system context |
+| Claude Code custom commands | Current (≥1.0) | Slash command registration | Native mechanism - no runtime needed, commands are pure markdown files that Claude reads as system context |
 | Markdown command files (`.md`) | n/a | Skill definition per command | Each slash command maps 1:1 to a `.md` file; the file IS the prompt template |
 | YAML front matter in command files | n/a | Command metadata (description, allowed-tools) | Lets Claude Code display descriptions in autocomplete and restrict which MCP tools a command may call |
 
-**Confidence: HIGH** — This is how Claude Code custom slash commands work as of August 2025, based on direct experience with the system.
+**Confidence: HIGH** - This is how Claude Code custom slash commands work as of August 2025, based on direct experience with the system.
 
 #### Slash Command File Structure
 
@@ -40,9 +40,9 @@ allowed-tools: [mcp__github, mcp__jira, mcp__slack, mcp__gcal]
 [Full prompt template that Claude executes]
 ```
 
-The `allowed-tools` front matter key restricts which MCP tools Claude will call for that command — critical for the privacy model (e.g., `:skip-level` should not allow mcp__slack).
+The `allowed-tools` front matter key restricts which MCP tools Claude will call for that command - critical for the privacy model (e.g., `:skip-level` should not allow mcp__slack).
 
-**No SKILL.md concept exists in core Claude Code.** The term "SKILL.md" is a GSD framework convention (used by the `get-shit-done` scaffolding tool that orchestrated this research). In Claude Code itself, the skill is the collection of command `.md` files. The GSD framework likely uses SKILL.md as a skill-level manifest or README — write one as documentation, but it is not loaded by Claude Code natively.
+**No SKILL.md concept exists in core Claude Code.** The term "SKILL.md" is a GSD framework convention (used by the `get-shit-done` scaffolding tool that orchestrated this research). In Claude Code itself, the skill is the collection of command `.md` files. The GSD framework likely uses SKILL.md as a skill-level manifest or README - write one as documentation, but it is not loaded by Claude Code natively.
 
 ### MCP Server Layer
 
@@ -50,13 +50,13 @@ The `allowed-tools` front matter key restricts which MCP tools Claude will call 
 |------------|---------|--------|-------|
 | `@modelcontextprotocol/server-github` | GitHub signal collection | Official Anthropic/MCP org | PR activity, review participation, commit cadence, issue engagement |
 | `mcp-server-jira` (community) | Jira ticket signal collection | Community (multiple implementations) | Ticket velocity, blocked time, comment activity |
-| `@modelcontextprotocol/server-slack` | Slack metadata (not content) | Official or community | Channel activity metadata; NOT DM content — enforce in prompt |
+| `@modelcontextprotocol/server-slack` | Slack metadata (not content) | Official or community | Channel activity metadata; NOT DM content - enforce in prompt |
 | Google Calendar MCP / `mcp-google-calendar` | Calendar load signals | Community implementations | Meeting density, focus block availability, after-hours patterns |
 
-**Confidence on GitHub MCP: HIGH** — Official server, well-documented, stable.
-**Confidence on Jira MCP: MEDIUM** — Multiple community implementations exist; no single canonical official server as of Aug 2025. Requires validation at implementation time to choose a maintained fork.
-**Confidence on Slack MCP: MEDIUM** — Official MCP Slack server exists; Slack API rate limits and workspace permissions are the real constraint.
-**Confidence on Calendar MCP: LOW** — Google Calendar MCP is community-built. Availability, maintenance status, and OAuth flow need verification at implementation time. May require building a thin wrapper.
+**Confidence on GitHub MCP: HIGH** - Official server, well-documented, stable.
+**Confidence on Jira MCP: MEDIUM** - Multiple community implementations exist; no single canonical official server as of Aug 2025. Requires validation at implementation time to choose a maintained fork.
+**Confidence on Slack MCP: MEDIUM** - Official MCP Slack server exists; Slack API rate limits and workspace permissions are the real constraint.
+**Confidence on Calendar MCP: LOW** - Google Calendar MCP is community-built. Availability, maintenance status, and OAuth flow need verification at implementation time. May require building a thin wrapper.
 
 #### MCP Configuration Pattern
 
@@ -93,7 +93,7 @@ MCP servers are registered in Claude Code's `claude_desktop_config.json` (or pro
 }
 ```
 
-**The skill itself does not configure MCP servers** — MCP is a user/workspace concern. The skill's first-run flow (`setup` command) should detect which MCP servers are available and communicate what's missing.
+**The skill itself does not configure MCP servers** - MCP is a user/workspace concern. The skill's first-run flow (`setup` command) should detect which MCP servers are available and communicate what's missing.
 
 ### State Storage Layer
 
@@ -101,9 +101,9 @@ MCP servers are registered in Claude Code's `claude_desktop_config.json` (or pro
 |------------|---------|---------|-----|
 | JSON files in `.team-health/` | n/a | Structured state (config, baselines, pulse history) | Machine-readable by Claude, diffable in git, no external dependencies |
 | Markdown files in `.team-health/people/` | n/a | People logs (longitudinal notes per person) | Human-readable, appendable, natural for free-text observations |
-| `.gitignore` entry for `.team-health/` | n/a | Keep people data out of version control | Privacy invariant — people logs must never be accidentally committed |
+| `.gitignore` entry for `.team-health/` | n/a | Keep people data out of version control | Privacy invariant - people logs must never be accidentally committed |
 
-**Confidence: HIGH** — File-based state is the standard pattern for stateful Claude Code skills. No database, no external storage.
+**Confidence: HIGH** - File-based state is the standard pattern for stateful Claude Code skills. No database, no external storage.
 
 #### State File Layout
 
@@ -189,9 +189,9 @@ MCP servers are registered in Claude Code's `claude_desktop_config.json` (or pro
 | Category | Recommended | Alternative | Why Not |
 |----------|-------------|-------------|---------|
 | State storage | JSON + Markdown files | SQLite via MCP | No SQLite MCP exists for this use case; adds runtime dependency; overkill for team of 3–15 |
-| State storage | JSON + Markdown files | External database (Postgres, Notion) | Requires network, auth, external service — violates "keeps data with the manager" principle |
+| State storage | JSON + Markdown files | External database (Postgres, Notion) | Requires network, auth, external service - violates "keeps data with the manager" principle |
 | Baseline computation | Claude inline reasoning | Python script | Python requires environment setup; breaks cross-platform install; Claude is capable of computing mean/stddev over <50 data points |
-| MCP for Calendar | Google Calendar MCP | Build custom calendar tool | Custom tool is correct fallback IF community MCP is unmaintained — but try community server first |
+| MCP for Calendar | Google Calendar MCP | Build custom calendar tool | Custom tool is correct fallback IF community MCP is unmaintained - but try community server first |
 | Skill packaging | Raw markdown files | npm package | npm adds versioning complexity with no benefit; markdown files are trivially diff-able and installable via git clone |
 | Command namespace | `team-health:` prefix | Flat commands like `/prep` | Namespacing prevents collision with other installed skills; required pattern for shareable skills |
 | Jira MCP | Community server | Atlassian REST API via `curl` in prompt | Direct curl in prompts is fragile; MCP abstraction is the right layer; pick most-maintained community server |
@@ -210,13 +210,13 @@ Out of scope by design. Every signal must come from tool integrations, not from 
 `.team-health/` as flat files is the correct call. JSON is human-inspectable, git-trackable, and requires zero infrastructure.
 
 ### Slack DM content
-The Slack MCP must only be queried for channel-level activity metadata (message count per day, days active). DM content is explicitly out of scope — enforce this in every prompt that calls the Slack MCP.
+The Slack MCP must only be queried for channel-level activity metadata (message count per day, days active). DM content is explicitly out of scope - enforce this in every prompt that calls the Slack MCP.
 
 ### Skip-level auto-population from people logs
 The `:skip-level` command must not include people log content unless the manager explicitly invokes a flag. Enforce in the command's prompt, not left to Claude's judgment.
 
 ### Psychological labels in output
-No "Alice seems depressed" — only observable signal language: "PR review participation is down 2.3 std devs from Alice's 8-week baseline." Enforce in output formatting instructions in every command.
+No "Alice seems depressed" - only observable signal language: "PR review participation is down 2.3 std devs from Alice's 8-week baseline." Enforce in output formatting instructions in every command.
 
 ---
 
@@ -269,7 +269,7 @@ Detection mechanism: The `:setup` command (or the first run of any command) atte
 
 ## Sources
 
-**Note:** This document is based on training data (August 2025 cutoff). The following are authoritative sources to verify at implementation time — web access was not available during this research session:
+**Note:** This document is based on training data (August 2025 cutoff). The following are authoritative sources to verify at implementation time - web access was not available during this research session:
 
 - Claude Code documentation: https://docs.anthropic.com/en/docs/claude-code
 - Claude Code custom commands reference: https://docs.anthropic.com/en/docs/claude-code/slash-commands

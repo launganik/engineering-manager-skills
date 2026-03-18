@@ -31,10 +31,10 @@ key-files:
   modified: []
 
 key-decisions:
-  - "Wave 0 smoke test contract written before skip-level and retro-prep implementation — same verification-first pattern as Phases 3 and 4"
-  - "Asks/Escalations section (Section 4) uses placeholder text only — Claude never pre-populates escalation items; EM fills in manually"
+  - "Wave 0 smoke test contract written before skip-level and retro-prep implementation - same verification-first pattern as Phases 3 and 4"
+  - "Asks/Escalations section (Section 4) uses placeholder text only - Claude never pre-populates escalation items; EM fills in manually"
   - "Retro-prep sprint scope fallback: when Jira unavailable, use most recent sprint_cadence_weeks pulse history weeks"
-  - "Scenario 5 combines SKIP-03 and SKIP-04 to test opt-in jointly — Alice named with label, all others anonymous"
+  - "Scenario 5 combines SKIP-03 and SKIP-04 to test opt-in jointly - Alice named with label, all others anonymous"
 
 patterns-established:
   - "Privacy gate scenario pattern: test exclusion by default (Scenario 4), then opt-in (Scenario 5)"
@@ -55,7 +55,7 @@ duration: 2min
 completed: 2026-03-17
 ---
 
-# Phase 5 Plan 00: Skip-Level and Retro Prep — Wave 0 Smoke Tests Summary
+# Phase 5 Plan 00: Skip-Level and Retro Prep - Wave 0 Smoke Tests Summary
 
 **13-scenario manual test contract covering all 9 Phase 5 requirements with pulse history fixtures for privacy gate and aggregation verification**
 
@@ -85,17 +85,17 @@ Each task was committed atomically:
 
 ## Files Created/Modified
 
-- `docs/testing/phase-5-smoke-tests.md` — 13 manual smoke test scenarios for `/team-health:skip-level` and `/team-health:retro-prep`; Wave 0 validation contract for all Phase 5 requirements
+- `docs/testing/phase-5-smoke-tests.md` - 13 manual smoke test scenarios for `/team-health:skip-level` and `/team-health:retro-prep`; Wave 0 validation contract for all Phase 5 requirements
 
 ## Decisions Made
 
-- **Asks/Escalations section placeholder:** Section 4 of the skip-level brief uses a placeholder only (`[ Add escalation items here before sharing this brief ]`). The plan's RESEARCH.md recommendation was to keep this manual. Scenario 1 tests this explicitly — pre-populated escalation items are a FAIL indicator.
+- **Asks/Escalations section placeholder:** Section 4 of the skip-level brief uses a placeholder only (`[ Add escalation items here before sharing this brief ]`). The plan's RESEARCH.md recommendation was to keep this manual. Scenario 1 tests this explicitly - pre-populated escalation items are a FAIL indicator.
 - **Retro-prep sprint scope fallback:** When `sources.jira = false`, Scenario 13 verifies the fallback to most recent `sprint_cadence_weeks` pulse history weeks (derived from RESEARCH.md Open Question 4).
-- **Two-part lookback scenario:** Scenario 2 tests SKIP-02 as two sequential sub-runs to verify both the 14-day default (Part A) and the "since last skip-level" behavior (Part B) — the state write in Part A creates the fixture for Part B.
+- **Two-part lookback scenario:** Scenario 2 tests SKIP-02 as two sequential sub-runs to verify both the 14-day default (Part A) and the "since last skip-level" behavior (Part B) - the state write in Part A creates the fixture for Part B.
 
 ## Deviations from Plan
 
-None — plan executed exactly as written.
+None - plan executed exactly as written.
 
 ## Issues Encountered
 
@@ -103,7 +103,7 @@ None.
 
 ## User Setup Required
 
-None — no external service configuration required.
+None - no external service configuration required.
 
 ## Next Phase Readiness
 

@@ -7,7 +7,7 @@ wave_0_complete: false
 created: 2026-03-17
 ---
 
-# Phase 5 — Validation Strategy
+# Phase 5 - Validation Strategy
 
 > Per-phase validation contract for feedback sampling during execution.
 
@@ -17,7 +17,7 @@ created: 2026-03-17
 
 | Property | Value |
 |----------|-------|
-| **Framework** | Manual only — pure markdown/JSON skill; no automated test runner |
+| **Framework** | Manual only - pure markdown/JSON skill; no automated test runner |
 | **Config file** | none |
 | **Quick run command** | Manual smoke test per scenario in phase-5-smoke-tests.md |
 | **Full suite command** | Run all scenarios in phase-5-smoke-tests.md |
@@ -30,7 +30,7 @@ created: 2026-03-17
 - **After every task commit:** Visually inspect generated file for structural correctness (section headers, placeholder structure, privacy gate language)
 - **After every plan wave:** Run applicable Wave 0 smoke test scenarios
 - **Before `/gsd:verify-work`:** Full smoke test suite must pass
-- **Max feedback latency:** N/A — manual verification
+- **Max feedback latency:** N/A - manual verification
 
 ---
 
@@ -38,7 +38,7 @@ created: 2026-03-17
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 05-00-01 | 00 | 1 | SKIP-01–05, RETRO-01–04 | manual | n/a — Wave 0 smoke test doc | ❌ W0 | ⬜ pending |
+| 05-00-01 | 00 | 1 | SKIP-01–05, RETRO-01–04 | manual | n/a - Wave 0 smoke test doc | ❌ W0 | ⬜ pending |
 | 05-01-01 | 01 | 2 | SKIP-01,02,03,04,05 | manual | smoke-tests.md scenarios 1-6 | ❌ W0 | ⬜ pending |
 | 05-01-02 | 01 | 2 | RETRO-01,02,03,04 | manual | smoke-tests.md scenarios 7-10 | ❌ W0 | ⬜ pending |
 | 05-01-03 | 01 | 2 | REF-04 | manual | grep "skip-level\|retro-prep" .claude/team-health/SKILL.md | ❌ W0 | ⬜ pending |
@@ -49,7 +49,7 @@ created: 2026-03-17
 
 ## Wave 0 Requirements
 
-- [ ] `docs/testing/phase-5-smoke-tests.md` — manual smoke test scenarios for SKIP-01–05 and RETRO-01–04
+- [ ] `docs/testing/phase-5-smoke-tests.md` - manual smoke test scenarios for SKIP-01–05 and RETRO-01–04
 
 *Wave 0 plan (05-00) creates this document before commands are implemented.*
 

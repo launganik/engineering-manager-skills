@@ -15,7 +15,7 @@ requires:
 provides:
   - /team-health:skip-level slash command with privacy gate and 5-section team brief output
 affects:
-  - phase-05-plan-02 (retro-prep command — parallel deliverable in same phase)
+  - phase-05-plan-02 (retro-prep command - parallel deliverable in same phase)
   - SKILL.md update (flip skip-level availability label from "Phase 5" to "Available")
 
 # Tech tracking
@@ -35,8 +35,8 @@ key-files:
   modified: []
 
 key-decisions:
-  - "Asks/Escalations section (Section 4) uses placeholder text only — Claude never pre-populates escalation items; EM fills in manually before sharing"
-  - "Compliance Check is an explicit named step after all 5 sections are generated — enforces SKIP-05 structurally, not as an assumption"
+  - "Asks/Escalations section (Section 4) uses placeholder text only - Claude never pre-populates escalation items; EM fills in manually before sharing"
+  - "Compliance Check is an explicit named step after all 5 sections are generated - enforces SKIP-05 structurally, not as an assumption"
   - "Phase E writes both last_skip_level and last_updated atomically; uses the config.json already in memory from Pre-flight Check to avoid partial-write data loss"
 
 patterns-established:
@@ -65,7 +65,7 @@ completed: 2026-03-17
 ## Accomplishments
 
 - Created skip-level.md command file (206 lines) following the established Phase 3/4 structural pattern
-- Privacy Gate section structurally blocks .team-health/people/ reads by default — enforces SKIP-03 at the instruction level before any data collection begins
+- Privacy Gate section structurally blocks .team-health/people/ reads by default - enforces SKIP-03 at the instruction level before any data collection begins
 - Anonymized aggregation rules prevent individual names from pulse history "Flagged Members" sections from leaking into the brief output (SKIP-04)
 - 5-section output format (Delivery Status, Risks and Watch Areas, People Themes, Asks/Escalations, Team Wins) satisfies SKIP-01
 - Lookback window priority chain (--weeks / --quarter override → last_skip_level → 14-day fallback) satisfies SKIP-02
@@ -78,21 +78,21 @@ Each task was committed atomically:
 
 1. **Task 1: Create skip-level.md command file** - `e0dd78a` (feat)
 
-**Plan metadata:** (docs commit — in progress)
+**Plan metadata:** (docs commit - in progress)
 
 ## Files Created/Modified
 
-- `.claude/commands/team-health/skip-level.md` — Skip-level slash command: pre-flight check, privacy gate, required reference reads, Phase A-E execution pattern, 5-section output, compliance check, atomic config.json write
+- `.claude/commands/team-health/skip-level.md` - Skip-level slash command: pre-flight check, privacy gate, required reference reads, Phase A-E execution pattern, 5-section output, compliance check, atomic config.json write
 
 ## Decisions Made
 
-- Compliance Check is placed after Phase D output generation (not inline during each section) to give a complete view of the entire brief before scanning for violations — this catches cross-section issues a per-section check would miss
-- opt-in content from --include-person is appended as a labeled subsection within Section 3 (People Themes) rather than a separate section — keeps the brief at exactly 5 sections as required by SKIP-01
+- Compliance Check is placed after Phase D output generation (not inline during each section) to give a complete view of the entire brief before scanning for violations - this catches cross-section issues a per-section check would miss
+- opt-in content from --include-person is appended as a labeled subsection within Section 3 (People Themes) rather than a separate section - keeps the brief at exactly 5 sections as required by SKIP-01
 - Privacy Gate placed before Required Reference Reads to establish the prohibition before any instructions to read data appear in the command
 
 ## Deviations from Plan
 
-None — plan executed exactly as written.
+None - plan executed exactly as written.
 
 ## Issues Encountered
 
@@ -100,13 +100,13 @@ None.
 
 ## User Setup Required
 
-None — no external service configuration required.
+None - no external service configuration required.
 
 ## Next Phase Readiness
 
 - skip-level.md is complete and committed; satisfies SKIP-01 through SKIP-05
 - Phase 05-02 can now implement retro-prep.md as the parallel deliverable
-- SKILL.md needs a small update to flip skip-level from "Phase 5 — not yet available" to "Available" (noted in Research open question 5; can be bundled with 05-02)
+- SKILL.md needs a small update to flip skip-level from "Phase 5 - not yet available" to "Available" (noted in Research open question 5; can be bundled with 05-02)
 
 ---
 *Phase: 05-skip-level-and-retro-prep*

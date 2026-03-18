@@ -1,4 +1,4 @@
-# Team Health — Output Language Rules
+# Team Health - Output Language Rules
 
 Loaded by: ALL commands that generate output (/team-health:pulse, /team-health:prep, /team-health:skip-level, /team-health:retro-prep)
 Purpose: Mandatory language rules. These rules protect your direct reports from being described in ways that are inaccurate, unfair, or harmful to their careers.
@@ -67,13 +67,13 @@ Compare each person to their own history. Never compare people to each other or 
 - "Jordan's PR review count is below their personal baseline (current: 1, baseline mean: 3.2)"
 - "Sam's ticket closure rate is consistent with their baseline"
 
-**Why:** Team-relative scoring creates surveillance culture and penalizes people in high-performing teams for being "merely good." It also creates perverse incentives — a person can improve while still being flagged because a teammate improved faster. Personal baselines measure each person against themselves only.
+**Why:** Team-relative scoring creates surveillance culture and penalizes people in high-performing teams for being "merely good." It also creates perverse incentives - a person can improve while still being flagged because a teammate improved faster. Personal baselines measure each person against themselves only.
 
 ---
 
 ## Rule 4: No Psychological Labels
 
-Do not name mental health states, personality traits, or psychological conditions — even tentatively.
+Do not name mental health states, personality traits, or psychological conditions - even tentatively.
 
 **Prohibited:**
 - "Alice may be experiencing burnout"
@@ -89,7 +89,7 @@ Do not name mental health states, personality traits, or psychological condition
 - "David's calendar meeting load is 72% this week (threshold: 60%)"
 - "Eve's @-mention response latency is up to 8.4 hours (baseline: 2.1 hours)"
 
-**Why:** Psychological labeling is outside an EM's scope, creates legal risk, and is usually wrong. The same behavioral signals can have many causes — illness, personal circumstances, context switching, or simply a slow week. Surface what the data shows. The manager's job is to have the conversation, not reach a conclusion before it.
+**Why:** Psychological labeling is outside an EM's scope, creates legal risk, and is usually wrong. The same behavioral signals can have many causes - illness, personal circumstances, context switching, or simply a slow week. Surface what the data shows. The manager's job is to have the conversation, not reach a conclusion before it.
 
 ---
 
@@ -107,15 +107,15 @@ Every pulse and prep output must include this disclaimer, verbatim:
 
 When an MCP source is unavailable, state clearly what data is absent and why it matters. Do not make the limitation about the tool.
 
-**Pattern:** "[Source] signals are unavailable — [MCP name] MCP is not configured. [What data cannot be included]."
+**Pattern:** "[Source] signals are unavailable - [MCP name] MCP is not configured. [What data cannot be included]."
 
 **Examples:**
-- "GitHub signals are unavailable — GitHub MCP is not configured. PR and commit data cannot be included."
-- "Jira signals are unavailable — Jira MCP is not configured. Ticket velocity and blocked-ticket data cannot be included."
-- "Slack signals are unavailable — Slack MCP is not configured. Channel participation and response latency cannot be included."
-- "Calendar signals are unavailable — Calendar MCP is not configured. Meeting load and 1:1 adherence cannot be checked."
+- "GitHub signals are unavailable - GitHub MCP is not configured. PR and commit data cannot be included."
+- "Jira signals are unavailable - Jira MCP is not configured. Ticket velocity and blocked-ticket data cannot be included."
+- "Slack signals are unavailable - Slack MCP is not configured. Channel participation and response latency cannot be included."
+- "Calendar signals are unavailable - Calendar MCP is not configured. Meeting load and 1:1 adherence cannot be checked."
 
-**Do not say:** "I can't access GitHub" — this focuses on the tool's limitation.
+**Do not say:** "I can't access GitHub" - this focuses on the tool's limitation.
 **Do say:** What data is absent and what questions the manager cannot answer as a result.
 
 When fewer than all four sources are available, note at the top of the output which sources are active and which are unavailable, then proceed with the available data only.

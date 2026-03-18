@@ -23,10 +23,10 @@ human_verification:
 
 # Phase 5: Skip-Level and Retro Prep Verification Report
 
-**Phase Goal:** Managers can generate an upward-facing team brief for their own manager and a data-seeded sprint retro agenda — both consuming pulse history with explicit privacy gates that prevent people log content from surfacing without opt-in
+**Phase Goal:** Managers can generate an upward-facing team brief for their own manager and a data-seeded sprint retro agenda - both consuming pulse history with explicit privacy gates that prevent people log content from surfacing without opt-in
 **Verified:** 2026-03-17
-**Status:** human_needed — all automated checks passed; 5 behavioral tests require live execution
-**Re-verification:** No — initial verification
+**Status:** human_needed - all automated checks passed; 5 behavioral tests require live execution
+**Re-verification:** No - initial verification
 
 ---
 
@@ -38,7 +38,7 @@ human_verification:
 |---|-------|--------|----------|
 | 1 | Every Phase 5 requirement (SKIP-01 through SKIP-05, RETRO-01 through RETRO-04) has at least one smoke test scenario | VERIFIED | 13 scenarios in phase-5-smoke-tests.md; all 9 req IDs each have 3+ matches in the doc |
 | 2 | Each scenario has preconditions, steps, and expected results specific enough for a human tester to execute | VERIFIED | All 13 scenarios follow "Preconditions / Invocation / Pass criteria / Fail indicators" structure; concrete fixture paths specified |
-| 3 | Smoke test doc follows the same structure as phase-3-smoke-tests.md and phase-4-smoke-tests.md | VERIFIED | Header block, Prerequisites, Canonical Test Fixtures, numbered scenarios, Traceability table — same pattern |
+| 3 | Smoke test doc follows the same structure as phase-3-smoke-tests.md and phase-4-smoke-tests.md | VERIFIED | Header block, Prerequisites, Canonical Test Fixtures, numbered scenarios, Traceability table - same pattern |
 | 4 | Manager can run /team-health:skip-level and receive a 5-section team brief | VERIFIED | Phase D output format in skip-level.md specifies exactly 5 numbered sections: Delivery Status, Risks and Watch Areas, People Themes, Asks/Escalations, Team Wins |
 | 5 | People log content never appears in output unless --include-person is explicitly passed | VERIFIED (structure) | Privacy Gate section explicitly blocks Read to .team-health/people/ by default; requires human confirmation of runtime behavior |
 | 6 | Individual names never appear in pulse aggregations without --include-person opt-in | VERIFIED (structure) | Phase C aggregation rules prohibit carrying forward names from Flagged Members sections; Compliance Check step scans for violations; requires human confirmation |
@@ -46,7 +46,7 @@ human_verification:
 | 8 | config.json last_skip_level is updated after output is rendered | VERIFIED (structure) | Phase E writes last_skip_level after Phase D output; order enforced in command text; requires live execution to confirm |
 | 9 | Manager can run /team-health:retro-prep and receive a retro agenda seeded with sprint facts | VERIFIED | Phase D output format specifies Sprint Facts + 4 content sections; Jira/GitHub collection in Phase B |
 | 10 | All discussion seeds are attributed to work items (PRs, tickets), never to individuals | VERIFIED (structure) | Phase C Attribution Check explicitly rewrites person names to work-item references before output; requires human confirmation of runtime behavior |
-| 11 | Every content section has blank discussion space for the team | VERIFIED | "[ Team discussion space — ... ]" markers present in What Went Well, What Was Hard, and Patterns Across Sprints sections |
+| 11 | Every content section has blank discussion space for the team | VERIFIED | "[ Team discussion space - ... ]" markers present in What Went Well, What Was Hard, and Patterns Across Sprints sections |
 | 12 | Action items section is structurally blank (empty checkboxes only) | VERIFIED | Action Items section contains only 3 blank "- [ ]" checkboxes; command instructions prohibit pre-populating items |
 
 **Score:** 12/12 truths structurally verified; 5 require human execution to confirm runtime behavior
@@ -103,7 +103,7 @@ All acceptance criteria patterns confirmed via grep:
 | Team fills in during retro | 1 |
 | attributed to work items, not individuals | 2 |
 | sprint_cadence_weeks | 2 |
-| Write absent from allowed-tools | CONFIRMED — allowed-tools line: Read, Bash(date), Bash(ls) only |
+| Write absent from allowed-tools | CONFIRMED - allowed-tools line: Read, Bash(date), Bash(ls) only |
 
 ---
 
@@ -134,7 +134,7 @@ All acceptance criteria patterns confirmed via grep:
 | RETRO-03 | 05-00, 05-02 | Discussion seeds attributed to work items, not individuals | SATISFIED | Phase C Attribution Check rewrites person names to work-item references; Scenario 10 verifies search-and-find test |
 | RETRO-04 | 05-00, 05-02 | Blank discussion space preserved; Action Items blank | SATISFIED | "Team discussion space" markers in 3 content sections; Action Items has only blank checkboxes; Scenario 11 verifies |
 
-All 9 requirements accounted for. No orphaned requirements found — all SKIP/RETRO IDs are claimed by plans 05-00, 05-01, and 05-02.
+All 9 requirements accounted for. No orphaned requirements found - all SKIP/RETRO IDs are claimed by plans 05-00, 05-01, and 05-02.
 
 ---
 
@@ -148,13 +148,13 @@ No anti-patterns detected. Grep scans for TODO, FIXME, XXX, HACK, PLACEHOLDER, "
 
 All automated structural checks passed. The following items require a live Claude Code session with Phases 1-4 setup complete and pulse history fixtures populated (W09, W10, W11 as defined in phase-5-smoke-tests.md Canonical Test Fixtures).
 
-### 1. Privacy Gate — Default Exclusion (Scenario 4)
+### 1. Privacy Gate - Default Exclusion (Scenario 4)
 
 **Test:** Run `/team-health:skip-level` with no `--include-person` flag. Alice Chen has a people log with entries containing "Staff Engineer track", "platform team lead", and "auth refactor".
 **Expected:** Zero occurrences of any of those phrases, or any content from alice-chen.json, appear in the output.
-**Why human:** The Privacy Gate is structurally correct — the command instructs Claude not to call Read on .team-health/people/ — but only live execution confirms Claude honors that instruction during output generation.
+**Why human:** The Privacy Gate is structurally correct - the command instructs Claude not to call Read on .team-health/people/ - but only live execution confirms Claude honors that instruction during output generation.
 
-### 2. Privacy Gate — Opt-in Labeling (Scenario 5)
+### 2. Privacy Gate - Opt-in Labeling (Scenario 5)
 
 **Test:** Run `/team-health:skip-level --include-person Alice`. Bob and Carol have pulse history entries.
 **Expected:** Alice's log themes appear in People Themes labeled "(opt-in content)". Bob and Carol are referenced only by count language throughout the full output.
@@ -169,14 +169,14 @@ All automated structural checks passed. The following items require a live Claud
 ### 4. Retro-prep Jira Degradation (Scenario 13)
 
 **Test:** Run `/team-health:retro-prep` with `sources.jira=false` and `sources.github=true`. Two pulse history weeks present.
-**Expected:** Sprint Facts shows degradation language for velocity/carry-over ("Ticket velocity unavailable — Jira MCP not configured"). Sprint window stated as "last N weeks from pulse history". GitHub PR data populates PR sections.
+**Expected:** Sprint Facts shows degradation language for velocity/carry-over ("Ticket velocity unavailable - Jira MCP not configured"). Sprint window stated as "last N weeks from pulse history". GitHub PR data populates PR sections.
 **Why human:** Source-conditional rendering and degradation language require live MCP state to confirm.
 
 ### 5. Action Items Blank (Scenario 11)
 
 **Test:** Run `/team-health:retro-prep` with standard fixtures. Examine Action Items section in full output.
 **Expected:** Section contains exactly 3 blank `- [ ]` checkboxes and no pre-populated text.
-**Why human:** Whether Claude generates action item text during live sprint data synthesis cannot be confirmed statically — the command prohibits it structurally but live confirmation is needed.
+**Why human:** Whether Claude generates action item text during live sprint data synthesis cannot be confirmed statically - the command prohibits it structurally but live confirmation is needed.
 
 ---
 
@@ -197,7 +197,7 @@ All 4 commits documented in summaries confirmed present in git log:
 
 Phase 5 goal is structurally achieved. All 4 artifacts exist, are substantive (206, 199, 487, and 213 lines respectively), and are correctly wired to their dependencies. All 9 requirements (SKIP-01 through SKIP-05, RETRO-01 through RETRO-04) have explicit coverage in the smoke test contract and in the command implementations.
 
-The privacy gates for both skip-level (Privacy Gate section + Compliance Check) and retro-prep (Phase C Attribution Check) are implemented as named, explicit steps — not assumptions. The SKILL.md installation guide reflects all 6 commands as available with zero "not yet available" labels remaining.
+The privacy gates for both skip-level (Privacy Gate section + Compliance Check) and retro-prep (Phase C Attribution Check) are implemented as named, explicit steps - not assumptions. The SKILL.md installation guide reflects all 6 commands as available with zero "not yet available" labels remaining.
 
 5 behavioral tests require a live Claude Code session to confirm that the structural prohibitions (privacy gate, aggregation rules, state write order, degradation language, action item prohibition) hold during actual runtime execution.
 

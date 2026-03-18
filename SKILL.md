@@ -1,6 +1,6 @@
 # team-health
 
-Help for engineering managers who want to be more human — remembering what their people care about, noticing when someone might be struggling, keeping commitments.
+Help for engineering managers who want to be more human - remembering what their people care about, noticing when someone might be struggling, keeping commitments.
 
 This skill surfaces what a good manager with infinite attention span would already notice.
 
@@ -8,9 +8,9 @@ This skill surfaces what a good manager with infinite attention span would alrea
 
 ## What This Does
 
-team-health synthesizes signals from tools your team already uses — GitHub, Jira, Slack, and Google Calendar — into situational intelligence for engineering managers. It tracks behavioral signals (PR activity, ticket velocity, meeting load, participation patterns) against each person's own personal 8-week rolling baseline, so you see deviations from their norm rather than comparisons to the rest of the team.
+team-health synthesizes signals from tools your team already uses - GitHub, Jira, Slack, and Google Calendar - into situational intelligence for engineering managers. It tracks behavioral signals (PR activity, ticket velocity, meeting load, participation patterns) against each person's own personal 8-week rolling baseline, so you see deviations from their norm rather than comparisons to the rest of the team.
 
-The skill does not diagnose, score, or judge your direct reports. It surfaces observations — not conclusions. Every output is framed as a behavioral pattern for a manager to interpret, not a verdict. This tool is designed for engineering managers who want a thoughtful, private prep aid, not automated pipelines or HR reporting.
+The skill does not diagnose, score, or judge your direct reports. It surfaces observations - not conclusions. Every output is framed as a behavioral pattern for a manager to interpret, not a verdict. This tool is designed for engineering managers who want a thoughtful, private prep aid, not automated pipelines or HR reporting.
 
 All data stays local on your machine. Nothing is sent to an external service.
 
@@ -24,7 +24,7 @@ All data stays local on your machine. Nothing is sent to an external service.
 
 ### Optional MCP Sources
 
-The skill works without any MCP sources — you will just have fewer signals. GitHub is the most valuable source for most engineering teams.
+The skill works without any MCP sources - you will just have fewer signals. GitHub is the most valuable source for most engineering teams.
 
 | MCP Source | Signals Enabled | Install Command | Absent Signals |
 |---|---|---|---|
@@ -140,7 +140,7 @@ Generate a 2-minute prep sheet for an upcoming 1:1. Synthesizes live tool signal
 
 ### `/team-health:skip-level`
 
-Generate an upward-facing team brief. Aggregates team-level themes — individual names do not appear without explicit opt-in.
+Generate an upward-facing team brief. Aggregates team-level themes - individual names do not appear without explicit opt-in.
 
 **Syntax:** `/team-health:skip-level`
 
@@ -163,7 +163,7 @@ Generate a data-seeded sprint retro agenda. Discussion seeds are attributed to w
 ## Where Data Lives
 
 ```
-.team-health/              # Gitignored — stays on your machine
+.team-health/              # Gitignored - stays on your machine
   config.json              # Team roster, MCP sources, settings
   baselines.json           # 8-week rolling baselines per person per signal
   people/                  # One file per direct report
@@ -185,7 +185,7 @@ The `.team-health/` directory is added to `.gitignore` automatically during setu
 
 ## Privacy Design
 
-All people data is stored locally in `.team-health/` and gitignored by default — nothing leaves your machine unless you explicitly commit it, which the gitignore prevents. Slack signals use channel participation metadata only: message counts, distinct channel activity, and @-mention response latency in public channels. DM content is never accessed and this is not configurable — DM content access is permanently out of scope. All outputs use behavioral observations ("PR activity dropped 40% below their 8-week baseline") rather than diagnoses or judgments. The `/team-health:skip-level` command aggregates team-level themes without attributing observations to individuals unless you explicitly include a person by name. The goal throughout is a briefing tool that passes the test: would you be comfortable if your direct report saw this output?
+All people data is stored locally in `.team-health/` and gitignored by default - nothing leaves your machine unless you explicitly commit it, which the gitignore prevents. Slack signals use channel participation metadata only: message counts, distinct channel activity, and @-mention response latency in public channels. DM content is never accessed and this is not configurable - DM content access is permanently out of scope. All outputs use behavioral observations ("PR activity dropped 40% below their 8-week baseline") rather than diagnoses or judgments. The `/team-health:skip-level` command aggregates team-level themes without attributing observations to individuals unless you explicitly include a person by name. The goal throughout is a briefing tool that passes the test: would you be comfortable if your direct report saw this output?
 
 ---
 
@@ -193,7 +193,7 @@ All people data is stored locally in `.team-health/` and gitignored by default �
 
 ### Upgrading
 
-Pull or copy new skill files over `.claude/commands/team-health/` and `.claude/team-health/`. Your `.team-health/` data is unaffected — it lives in your project directory and is not part of the skill install.
+Pull or copy new skill files over `.claude/commands/team-health/` and `.claude/team-health/`. Your `.team-health/` data is unaffected - it lives in your project directory and is not part of the skill install.
 
 ```bash
 cp -r /path/to/updated-antigravity-skills/.claude/commands/team-health/ .claude/commands/team-health/

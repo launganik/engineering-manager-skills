@@ -25,7 +25,7 @@ key_files:
     - .claude/commands/team-health/log.md
   modified: []
 decisions:
-  - Slug always read from config.json team array — never re-derived from argument text — ensures consistency with setup
+  - Slug always read from config.json team array - never re-derived from argument text - ensures consistency with setup
   - Mode detection defaults to APPEND if genuinely ambiguous
   - Commitment entries dual-written to entries + open_commitments for LOG-02 structural integrity
   - career_context.last_promo_discussion updated automatically when note contains "promotion" or "promo"
@@ -43,11 +43,11 @@ requirements_satisfied: [LOG-01, LOG-02, LOG-03, LOG-04, LOG-05, LOG-06]
 
 ## What Was Built
 
-`.claude/commands/team-health/log.md` — a complete Claude Code slash command that gives managers persistent, queryable memory about each direct report.
+`.claude/commands/team-health/log.md` - a complete Claude Code slash command that gives managers persistent, queryable memory about each direct report.
 
 The command handles two modes, detected from the argument text:
 
-**Append Mode** — triggered when the argument is a name with no query keywords:
+**Append Mode** - triggered when the argument is a name with no query keywords:
 - Reads or creates `.team-health/people/<slug>.json` (graceful first-use)
 - Shows last 5 entries as context before prompting for note
 - Infers category from keyword signals (7 valid categories)
@@ -55,10 +55,10 @@ The command handles two modes, detected from the argument text:
 - Commitment entries written to both `entries` and `open_commitments`
 - Career notes with "promo/promotion" update `career_context.last_promo_discussion`
 
-**Query Mode** — triggered by question mark or query-keyword prefix (when, what, show, list, find, have, did, has, how many, which):
+**Query Mode** - triggered by question mark or query-keyword prefix (when, what, show, list, find, have, did, has, how many, which):
 - Reads full person file
 - Answers from entries + open_commitments + career_context combined
-- Stops after answering — never prompts for a new entry
+- Stops after answering - never prompts for a new entry
 
 Both modes share:
 - Pre-flight Check (gates on `setup_complete` in config.json)
@@ -78,7 +78,7 @@ Both modes share:
 
 ## Deviations from Plan
 
-None — plan executed exactly as written.
+None - plan executed exactly as written.
 
 ## Commits
 

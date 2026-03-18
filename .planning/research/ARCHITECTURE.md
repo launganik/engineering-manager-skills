@@ -2,7 +2,7 @@
 
 **Domain:** Claude Code skill with multi-source MCP integration and persistent longitudinal state
 **Researched:** 2026-03-09
-**Confidence:** MEDIUM — Based on Claude Code documentation knowledge (training cutoff Aug 2025) and established patterns for MCP-integrated skills. External verification was blocked; flag for validation before phase build.
+**Confidence:** MEDIUM - Based on Claude Code documentation knowledge (training cutoff Aug 2025) and established patterns for MCP-integrated skills. External verification was blocked; flag for validation before phase build.
 
 ---
 
@@ -41,7 +41,7 @@
 
 ### Layer 1: Skill Entry Points (`.claude/commands/team-health/*.md`)
 
-These are the prompt files Claude Code loads when a slash command is invoked. Each file is a complete instruction set for one command — it defines what data to gather, how to compute, what to output, and what to write back.
+These are the prompt files Claude Code loads when a slash command is invoked. Each file is a complete instruction set for one command - it defines what data to gather, how to compute, what to output, and what to write back.
 
 | Component | Responsibility | Reads | Writes |
 |-----------|---------------|-------|--------|
@@ -51,11 +51,11 @@ These are the prompt files Claude Code loads when a slash command is invoked. Ea
 | `skip-level.md` | Build upward-facing team brief | GitHub MCP, Jira MCP, `pulse-history/` (last N), `config.json` | Nothing (read-only analysis, no people log) |
 | `retro-prep.md` | Seed sprint retro agenda with real data | GitHub MCP, Jira MCP, `pulse-history/` (current sprint), `config.json` | `retro-history/YYYY-MM-DD.json` |
 
-**Key rule:** Each skill file is self-contained. It includes the full instruction prompt — it does not `include` or `import` other skill files. Shared logic (signal taxonomy, baseline math) lives in reference docs the skill is instructed to read.
+**Key rule:** Each skill file is self-contained. It includes the full instruction prompt - it does not `include` or `import` other skill files. Shared logic (signal taxonomy, baseline math) lives in reference docs the skill is instructed to read.
 
 ### Layer 2: Reference Documents (`.claude/team-health/*.md`)
 
-Static markdown files that encode domain logic. Skills are instructed to read specific reference docs at the start of their run. They do not execute — they are knowledge.
+Static markdown files that encode domain logic. Skills are instructed to read specific reference docs at the start of their run. They do not execute - they are knowledge.
 
 | Component | Responsibility | Read By |
 |-----------|---------------|---------|
@@ -78,14 +78,14 @@ Written and read by skills at runtime. This directory lives in the manager's pro
 
 ### Layer 4: MCP Data Sources (External)
 
-Skills call these via MCP tool invocations. They are not owned by the skill — they are queried at runtime.
+Skills call these via MCP tool invocations. They are not owned by the skill - they are queried at runtime.
 
 | Source | What It Provides | Degradation Level |
 |--------|-----------------|-------------------|
-| GitHub MCP | PR activity, review turnaround, commit patterns, issue ownership | Core — usable solo |
-| Jira MCP | Ticket velocity, blocked items, sprint completion, scope changes | Tier 2 — improves scoring |
-| Slack MCP | Participation metadata (no DM content), response lag, channel activity | Tier 2 — sentiment proxy |
-| Calendar MCP | 1:1 adherence, meeting load, focus time trends | Tier 3 — context enrichment |
+| GitHub MCP | PR activity, review turnaround, commit patterns, issue ownership | Core - usable solo |
+| Jira MCP | Ticket velocity, blocked items, sprint completion, scope changes | Tier 2 - improves scoring |
+| Slack MCP | Participation metadata (no DM content), response lag, channel activity | Tier 2 - sentiment proxy |
+| Calendar MCP | 1:1 adherence, meeting load, focus time trends | Tier 3 - context enrichment |
 
 ---
 
@@ -197,13 +197,13 @@ The skill prompt instructs Claude to attempt a minimal probe call per source (e.
 ```
 Data gathering:
 - GitHub: list repos via mcp_github_list_repos. If unavailable, note:
-  "GitHub MCP not connected — PR/commit signals omitted."
+  "GitHub MCP not connected - PR/commit signals omitted."
 - Jira: list projects via mcp_jira_list_projects. If unavailable, note:
-  "Jira MCP not connected — velocity/blocker signals omitted."
+  "Jira MCP not connected - velocity/blocker signals omitted."
 - Slack: test connection via mcp_slack_list_channels. If unavailable, note:
-  "Slack MCP not connected — participation signals omitted."
+  "Slack MCP not connected - participation signals omitted."
 - Calendar: test via mcp_calendar_list_events. If unavailable, note:
-  "Calendar MCP not connected — meeting load signals omitted."
+  "Calendar MCP not connected - meeting load signals omitted."
 ```
 
 **Degradation tiers:**
@@ -223,18 +223,18 @@ Data gathering:
 
 **When:** Every `/team-health:pulse` run.
 
-**Implementation — BASELINES.md instructs Claude to:**
+**Implementation - BASELINES.md instructs Claude to:**
 
 1. Read `baselines.json` for each person.
 2. For each metric (e.g., `pr_merge_rate`, `review_turnaround_hours`), extract the `window` array (up to 8 weekly values).
 3. Compute rolling mean: `sum(window) / len(window)`.
 4. Compute std dev: `sqrt(sum((x - mean)^2 for x in window) / len(window))`.
-5. Compute z-score for this week's value: `(current - mean) / stddev` (handle stddev = 0 gracefully — flag as "insufficient history" not as an alert).
+5. Compute z-score for this week's value: `(current - mean) / stddev` (handle stddev = 0 gracefully - flag as "insufficient history" not as an alert).
 6. Flag if `|z| > 2.0` with direction (high/low) and metric name.
 7. After all scoring, append current week's values to each person's window arrays and drop oldest entry if `len(window) > 8`.
 8. Write updated `baselines.json`.
 
-**Confidence note:** Claude's inline arithmetic is reliable for simple statistics over small arrays (8 values per metric per person). This is a deliberate constraint — keep metric counts per person under ~10 to avoid compounding arithmetic errors in long sessions.
+**Confidence note:** Claude's inline arithmetic is reliable for simple statistics over small arrays (8 values per metric per person). This is a deliberate constraint - keep metric counts per person under ~10 to avoid compounding arithmetic errors in long sessions.
 
 ### Pattern 4: Privacy Enforcement Layer
 
@@ -283,7 +283,7 @@ Before doing anything else, read:
 
 **Why bad:** False precision erodes trust. A manager seeing "Slack participation: 7/10" when Slack is not connected will make decisions on made-up data.
 
-**Instead:** Explicitly mark categories as "unavailable — [Source] MCP not connected." Omit them from rankings and trend lines.
+**Instead:** Explicitly mark categories as "unavailable - [Source] MCP not connected." Omit them from rankings and trend lines.
 
 ### Anti-Pattern 3: Putting Shared Logic Inline in Each Skill
 
@@ -297,7 +297,7 @@ Before doing anything else, read:
 
 **What:** Including observations from `people/<name>.json` in the `/skip-level` output.
 
-**Why bad:** People logs contain the manager's private assessments of individuals. Skip-level output goes upward — surfacing individual assessments violates the trust model.
+**Why bad:** People logs contain the manager's private assessments of individuals. Skip-level output goes upward - surfacing individual assessments violates the trust model.
 
 **Instead:** `skip-level.md` is explicitly forbidden from reading `people/` directory. It reads only `pulse-history/` (aggregates) and MCP delivery data.
 
@@ -353,7 +353,7 @@ This is a local-state, single-user skill. Scalability here means graceful behavi
 | Concern | At 3 team members | At 15 team members | Notes |
 |---------|------------------|--------------------|-------|
 | Baseline computation | Trivial inline | Still manageable (~10 metrics × 15 people = 150 values) | Keep metric count under 10/person |
-| Pulse run duration | Fast | Slower — 15 MCP queries per source | Consider grouping MCP calls where APIs support batch |
+| Pulse run duration | Fast | Slower - 15 MCP queries per source | Consider grouping MCP calls where APIs support batch |
 | People log size | Small | `people/<name>.json` can grow large over months | Recommend log truncation strategy after 6 months |
 | Pulse history size | Small | Daily/weekly JSON files accumulate | Skip-level/retro reads last N, not all history |
 | Context window | Fine | Long pulse runs with 15 people may approach limits | Pulse output should be structured/compact, not verbose |
@@ -363,7 +363,7 @@ This is a local-state, single-user skill. Scalability here means graceful behavi
 ## Sources
 
 - PROJECT.md: authoritative project requirements and constraints (HIGH confidence)
-- Claude Code custom commands architecture: based on training knowledge of `.claude/commands/` structure and prompt file conventions (MEDIUM confidence — verify against current Claude Code docs)
-- MCP tool availability detection: pattern derived from how Claude handles missing tool namespaces at runtime (MEDIUM confidence — verify probe call behavior in current Claude Code version)
-- Rolling statistics inline computation: established practice for small-N stats without external dependencies (HIGH confidence — arithmetic is well-defined)
+- Claude Code custom commands architecture: based on training knowledge of `.claude/commands/` structure and prompt file conventions (MEDIUM confidence - verify against current Claude Code docs)
+- MCP tool availability detection: pattern derived from how Claude handles missing tool namespaces at runtime (MEDIUM confidence - verify probe call behavior in current Claude Code version)
+- Rolling statistics inline computation: established practice for small-N stats without external dependencies (HIGH confidence - arithmetic is well-defined)
 - Privacy/output filtering pattern: derived from project constraints in PROJECT.md (HIGH confidence)

@@ -29,14 +29,14 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 **Detection (warning signs):**
 - Setup instructions say "requires GitHub, Jira, Slack, and Calendar MCPs" without qualification.
-- Commands have no fallback branches — single code path assumes all tools present.
+- Commands have no fallback branches - single code path assumes all tools present.
 - Testing only done with author's own MCP config.
 
 **Phase:** Address in Phase 1 (foundation/setup flow). Every subsequent phase inherits the degradation framework.
 
 ---
 
-### Pitfall 2: Conflating Signal with Diagnosis — The "Surveillance Label" Problem
+### Pitfall 2: Conflating Signal with Diagnosis - The "Surveillance Label" Problem
 
 **What goes wrong:** The skill surfaces an insight like "Jordan has been disengaged this week" or "Maria shows signs of burnout." The manager reads it, acts on it, and the direct report eventually finds out their manager is using an AI to psychologically profile them. The tool gets labeled as surveillance. The manager loses trust with their team. The skill gets uninstalled.
 
@@ -47,7 +47,7 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 **Prevention:**
 - Every signal output must be framed as observable behavior, not internal state. "Commit frequency dropped 40% vs. 8-week baseline" not "Jordan seems disengaged."
 - Add an explicit output review step in the prompt: "Before outputting, verify: does this read as observation or diagnosis?"
-- Establish a phrase blocklist for the prompt templates: "signs of burnout," "disengaged," "struggling," "checked out," "low morale" — replace with behavioral descriptions.
+- Establish a phrase blocklist for the prompt templates: "signs of burnout," "disengaged," "struggling," "checked out," "low morale" - replace with behavioral descriptions.
 - The PROJECT.md constraint ("signals not diagnoses") must be encoded into every command's system prompt, not just stated in docs.
 
 **Detection (warning signs):**
@@ -61,17 +61,17 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 ### Pitfall 3: Baseline Drift and Statistical Incoherence
 
-**What goes wrong:** The rolling 8-week baseline is computed inconsistently across runs. Claude reads different data windows each time (depending on what GitHub/Jira returns), computes different averages, and generates contradictory signals. A person flagged as "unusually active" one week is flagged "unusually quiet" the next — for the same behavior.
+**What goes wrong:** The rolling 8-week baseline is computed inconsistently across runs. Claude reads different data windows each time (depending on what GitHub/Jira returns), computes different averages, and generates contradictory signals. A person flagged as "unusually active" one week is flagged "unusually quiet" the next - for the same behavior.
 
-**Why it happens:** Inline baseline computation (no external script) is powerful but fragile. If the data window fetched from MCP tools varies — due to API pagination, date range interpretation, or tool rate limits — the baseline shifts. Without a stable stored baseline, every computation is a one-shot estimate.
+**Why it happens:** Inline baseline computation (no external script) is powerful but fragile. If the data window fetched from MCP tools varies - due to API pagination, date range interpretation, or tool rate limits - the baseline shifts. Without a stable stored baseline, every computation is a one-shot estimate.
 
-**Consequences:** Manager loses confidence in the signals. "The tool said Alex was doing great last week and now it's saying he's flagged — what changed?" The answer is "nothing, the baseline shifted." The skill becomes noise.
+**Consequences:** Manager loses confidence in the signals. "The tool said Alex was doing great last week and now it's saying he's flagged - what changed?" The answer is "nothing, the baseline shifted." The skill becomes noise.
 
 **Prevention:**
 - Store computed baselines in `.team-health/baselines.json` after each successful pulse run. Use the stored baseline for signal comparison; only recompute the baseline itself on explicit refresh or after N weeks.
 - Document the exact data window and source for each baseline value inside the JSON (e.g., `"computed_from": "2025-11-01 to 2026-01-24", "source": ["github", "jira"]`).
 - Treat baseline recomputation as an explicit user action (`/team-health:pulse --rebaseline`), not automatic per run.
-- When MCP data is incomplete (partial window), do not recompute — use stored baseline and note the gap.
+- When MCP data is incomplete (partial window), do not recompute - use stored baseline and note the gap.
 
 **Detection (warning signs):**
 - Baselines are computed fresh every command invocation.
@@ -84,16 +84,16 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 ### Pitfall 4: State File Corruption and Schema Drift
 
-**What goes wrong:** The `.team-health/` state files (people log, baselines, config, pulse history) are written as freeform JSON or markdown by Claude. After a few months of use, entries are inconsistent — some have fields others lack, schema has evolved across versions, and reads produce unexpected nulls. Querying the log fails silently.
+**What goes wrong:** The `.team-health/` state files (people log, baselines, config, pulse history) are written as freeform JSON or markdown by Claude. After a few months of use, entries are inconsistent - some have fields others lack, schema has evolved across versions, and reads produce unexpected nulls. Querying the log fails silently.
 
 **Why it happens:** Claude writes files conversationally. Without an enforced schema and a migration strategy, the format drifts with each new feature. Early entries have different structure than later ones. The skill has no version field in its state files.
 
-**Consequences:** `/team-health:log <name>` returns garbled or incomplete history. Baseline computation reads malformed data and produces wrong averages. Manager loses longitudinal context — the core value proposition.
+**Consequences:** `/team-health:log <name>` returns garbled or incomplete history. Baseline computation reads malformed data and produces wrong averages. Manager loses longitudinal context - the core value proposition.
 
 **Prevention:**
 - Define all state file schemas explicitly in a reference doc (`STATE_SCHEMA.md`) before writing any commands that touch state.
 - Include a `schema_version` field in every state file root.
-- All writes must append (log) or replace (config, baseline) full valid entries — no partial writes.
+- All writes must append (log) or replace (config, baseline) full valid entries - no partial writes.
 - Each command that reads state must validate required fields before using them, with clear error messages when fields are missing.
 - On schema version mismatch, prompt the manager to run a migration step rather than silently failing.
 
@@ -108,7 +108,7 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 ### Pitfall 5: Over-reliance on Single-Source Signals
 
-**What goes wrong:** The skill surfaces a flag based on a single metric — PR count dropped this week, or no Slack messages on Friday. The manager has a 1:1 conversation with their report based on this single data point. The report explains they took Friday off (calendar not connected) and submitted one giant PR instead of many small ones. The manager looks foolish. The tool loses credibility.
+**What goes wrong:** The skill surfaces a flag based on a single metric - PR count dropped this week, or no Slack messages on Friday. The manager has a 1:1 conversation with their report based on this single data point. The report explains they took Friday off (calendar not connected) and submitted one giant PR instead of many small ones. The manager looks foolish. The tool loses credibility.
 
 **Why it happens:** Easier to implement and more dramatic-seeming to surface single-metric spikes. Multi-signal correlation is harder to reason about in a prompt.
 
@@ -117,7 +117,7 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 **Prevention:**
 - The PROJECT.md constraint ("no single metric means anything in isolation; flags require multiple aligned signals or a strong outlier >2 std devs") must be encoded directly in the pulse command prompt, not just documented.
 - Pulse output should explicitly show which signals are aligned before raising a flag. "3 of 4 signals suggest reduced engagement" is credible. "PR count is down" is not.
-- When only one or two data sources are available (degraded mode), lower the sensitivity threshold or add a disclaimer: "Limited data sources — treat with caution."
+- When only one or two data sources are available (degraded mode), lower the sensitivity threshold or add a disclaimer: "Limited data sources - treat with caution."
 
 **Detection (warning signs):**
 - Pulse output flags someone based on a single metric.
@@ -130,14 +130,14 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 ### Pitfall 6: Skip-Level Output Leaking People Log Content
 
-**What goes wrong:** `/team-health:skip-level` generates a brief for the manager's own manager. It pulls context from the people log — including sensitive 1:1 notes, personal context, or performance concerns — and surfaces them upward. The manager's manager now has information the direct reports never consented to share at that level.
+**What goes wrong:** `/team-health:skip-level` generates a brief for the manager's own manager. It pulls context from the people log - including sensitive 1:1 notes, personal context, or performance concerns - and surfaces them upward. The manager's manager now has information the direct reports never consented to share at that level.
 
 **Why it happens:** The prompt for skip-level pulls from "all available context" without scoping what's excluded. The people log is available in context; Claude uses it.
 
 **Consequences:** Direct reports feel surveilled. If it leaks (screenshots, forwarded emails), legal and HR consequences are possible. The manager who installed the tool is now in an awkward position.
 
 **Prevention:**
-- Skip-level command must explicitly exclude people log content from its context window — not rely on Claude to know not to use it.
+- Skip-level command must explicitly exclude people log content from its context window - not rely on Claude to know not to use it.
 - The prompt template for skip-level should scope its data sources: "Use only aggregate metrics, sprint outcomes, delivery data, and anything explicitly marked as skip-level-safe."
 - Add an explicit manager opt-in gate: "This brief will include only delivery metrics and aggregate team health. To include specific context, run `/team-health:skip-level --include-context` and confirm."
 
@@ -161,7 +161,7 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 **Prevention:**
 - Every MCP data collection step must return a data completeness signal: how many records were fetched, what date range, whether the call succeeded fully.
 - The pulse prompt should include a pre-computation step: "Summarize data completeness before analyzing signals. If any source returned fewer than expected records or failed, flag this in the output."
-- Treat rate-limit failures as "source unavailable" for that run — fall back to stored baseline, do not recompute from partial data.
+- Treat rate-limit failures as "source unavailable" for that run - fall back to stored baseline, do not recompute from partial data.
 
 **Detection (warning signs):**
 - Pulse runs silently succeed even when MCP calls time out or return errors.
@@ -178,7 +178,7 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 ### Pitfall 8: People Log Becoming a Liability Document
 
-**What goes wrong:** The people log accumulates candid managerial notes over months. The manager writes things like "Alex is clearly checked out, thinking about whether to PIP," or "Jordan mentioned their marriage is struggling." This log is stored in the project directory — it is discoverable in a legal or HR investigation.
+**What goes wrong:** The people log accumulates candid managerial notes over months. The manager writes things like "Alex is clearly checked out, thinking about whether to PIP," or "Jordan mentioned their marriage is struggling." This log is stored in the project directory - it is discoverable in a legal or HR investigation.
 
 **Why it happens:** The log interface is too permissive. The EM treats it like a private diary. No guidance on what's appropriate to record.
 
@@ -199,7 +199,7 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 **Prevention:**
 - Design setup as progressive disclosure: minimal required config first (team roster, primary GitHub org), everything else optional and prompted contextually.
-- The skill should be usable with minimal config — `/team-health:prep` with just a name and GitHub org, no Jira, no Slack.
+- The skill should be usable with minimal config - `/team-health:prep` with just a name and GitHub org, no Jira, no Slack.
 - Save config incrementally after each question, so partial setup is resumable.
 - Limit required setup questions to 3 or fewer.
 
@@ -225,13 +225,13 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 ### Pitfall 11: Skill Installed as Root CLAUDE.md (Global State Bleed)
 
-**What goes wrong:** The skill is installed at the user's global CLAUDE.md level. Now every Claude Code session — including non-EM work — has team-health context loaded. The skill's state paths conflict with project-specific usage. The "team" being tracked bleeds across different projects.
+**What goes wrong:** The skill is installed at the user's global CLAUDE.md level. Now every Claude Code session - including non-EM work - has team-health context loaded. The skill's state paths conflict with project-specific usage. The "team" being tracked bleeds across different projects.
 
 **Why it happens:** Easy to install globally; scoping to per-project is a documentation and design problem.
 
 **Prevention:**
 - Skill documentation must explicitly recommend project-level installation, not global.
-- State paths (`./team-health/`) are relative to project root — document this clearly.
+- State paths (`./team-health/`) are relative to project root - document this clearly.
 - The first-run setup flow should warn if it detects it's running from a global context.
 
 **Phase:** Address in Phase 1 (installation design and documentation).
@@ -244,7 +244,7 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 
 ### Pitfall 12: Calendar MCP Timezone Handling
 
-**What goes wrong:** Calendar MCP returns meeting times in UTC or the server timezone, not the manager's or report's local timezone. Meeting load analysis is wrong — a report in London appears to have all their meetings at midnight.
+**What goes wrong:** Calendar MCP returns meeting times in UTC or the server timezone, not the manager's or report's local timezone. Meeting load analysis is wrong - a report in London appears to have all their meetings at midnight.
 
 **Prevention:**
 - Prompt templates for calendar analysis must specify timezone normalization: "Interpret all timestamps in the context of [user's timezone from config]."
@@ -273,7 +273,7 @@ Mistakes that cause rewrites, manager rejection, or harm to direct reports.
 **What goes wrong:** `/team-health:retro-prep` generates an agenda seeded with real data including individual-level signals. This agenda gets shared in a team retrospective meeting. People in the retro now know the manager is tracking individual-level signals. The tool's existence creates a team culture problem.
 
 **Prevention:**
-- Retro prep output must aggregate signals to team level — no individual names attached to flags.
+- Retro prep output must aggregate signals to team level - no individual names attached to flags.
 - Document clearly: retro-prep generates team-level talking points, not individual-level reports.
 - Prompt template must anonymize: "Describe themes at the team level. Do not attribute signals to specific individuals."
 

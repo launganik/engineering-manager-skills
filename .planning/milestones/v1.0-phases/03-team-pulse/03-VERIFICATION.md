@@ -6,12 +6,12 @@ score: 8/8 must-haves verified (automated checks)
 human_verification:
   - test: "Run all 10 smoke test scenarios in a live Claude Code session"
     expected: "All 10 scenarios in docs/testing/phase-3-smoke-tests.md pass without deviation"
-    why_human: "pulse.md is a Claude Code slash command — it runs as a live LLM prompt, not executable code. Correctness of signal collection, flagging logic, and output formatting can only be confirmed by invoking the command against real (or fixture-injected) state files."
-  - test: "Scenario 4 Sub-test A: Bob has 1 signal at -1.5 stddev — verify GREEN, no detail section"
+    why_human: "pulse.md is a Claude Code slash command - it runs as a live LLM prompt, not executable code. Correctness of signal collection, flagging logic, and output formatting can only be confirmed by invoking the command against real (or fixture-injected) state files."
+  - test: "Scenario 4 Sub-test A: Bob has 1 signal at -1.5 stddev - verify GREEN, no detail section"
     expected: "Bob shows GREEN. No detail section rendered."
     why_human: "The conservative two-signal rule false-negative path must be confirmed by actually running the command with manually edited baselines.json."
   - test: "Scenario 7: Disclaimer verbatim check"
-    expected: "Last block of output is exactly: 'These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions.' — no paraphrase."
+    expected: "Last block of output is exactly: 'These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions.' - no paraphrase."
     why_human: "LLM compliance with verbatim disclaimer requires live invocation. The command file includes the text correctly but only runtime behavior confirms it is not paraphrased."
   - test: "Scenario 9: Verify macOS date +%Y-W%V produces valid ISO week filename"
     expected: "pulse-history/2026-WNN.md created with correct ISO week number; second run following week creates new file."
@@ -27,7 +27,7 @@ human_verification:
 
 **Verified:** 2026-03-17
 **Status:** human_needed (all automated checks passed; 5 items require live invocation)
-**Re-verification:** No — initial verification
+**Re-verification:** No - initial verification
 
 ---
 
@@ -38,7 +38,7 @@ human_verification:
 | # | Truth | Status | Evidence |
 |---|-------|--------|---------|
 | 1 | Manager can run /team-health:pulse and receive a dashboard with a per-person green/yellow/red summary table | ? HUMAN | Command exists and specifies summary table format verbatim in Phase D; runtime behavior requires live test |
-| 2 | Flagged individuals have detail sections with specific metric name, delta, stddev delta, and MCP source — unflagged persons have table row only | ? HUMAN | Phase C/D logic is fully implemented and correct; format template matches PULSE-06 spec exactly; requires live run to confirm no paraphrase |
+| 2 | Flagged individuals have detail sections with specific metric name, delta, stddev delta, and MCP source - unflagged persons have table row only | ? HUMAN | Phase C/D logic is fully implemented and correct; format template matches PULSE-06 spec exactly; requires live run to confirm no paraphrase |
 | 3 | Flags fire only when 2+ signals align OR a single signal exceeds 2 standard deviations from the person's own baseline | ? HUMAN | Phase C implements the rule verbatim from SIGNALS.md with stddev==0 edge case handled; requires live test of all 3 sub-test branches |
 | 4 | After each run, baselines.json is updated with computed_from, computed_to, source, and schema_version provenance fields | ? HUMAN | Phase E Step 1 implements provenance fields and atomic write explicitly; first-run (Carol) behavior implemented; requires live run to confirm file is actually written |
 | 5 | A pulse-history/YYYY-WNN.md snapshot file is written after each run | ? HUMAN | Phase E Step 2 implements mkdir -p guard and ISO week filename; macOS date compatibility risk flagged; requires live run |
@@ -54,7 +54,7 @@ human_verification:
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `.claude/commands/team-health/pulse.md` | /team-health:pulse command — full pulse scan pipeline | ✓ VERIFIED | 190 lines; all 5 phases (A-E) present; front matter complete; date injection present |
+| `.claude/commands/team-health/pulse.md` | /team-health:pulse command - full pulse scan pipeline | ✓ VERIFIED | 190 lines; all 5 phases (A-E) present; front matter complete; date injection present |
 | `docs/testing/phase-3-smoke-tests.md` | Manual test procedure for all 10 PULSE scenarios | ✓ VERIFIED | 463 lines; all 10 PULSE IDs present; 3 sub-tests for Scenario 4; traceability table at footer |
 
 ---
@@ -94,7 +94,7 @@ human_verification:
 
 | File | Pattern | Severity | Impact |
 |------|---------|----------|--------|
-| None found | — | — | — |
+| None found | - | - | - |
 
 No TODO, FIXME, placeholder comments, empty implementations, or stub handlers found in either deliverable.
 
@@ -108,7 +108,7 @@ No TODO, FIXME, placeholder comments, empty implementations, or stub handlers fo
 
 **Expected:** Each scenario's pass criteria are met without deviation.
 
-**Why human:** `pulse.md` is a Claude Code slash command (a prompt file). Its correctness is the runtime behavior of the LLM following the instructions — not statically verifiable. The file structure, all phases, logic, and text are confirmed correct; live execution is the only way to confirm the LLM follows the instructions faithfully.
+**Why human:** `pulse.md` is a Claude Code slash command (a prompt file). Its correctness is the runtime behavior of the LLM following the instructions - not statically verifiable. The file structure, all phases, logic, and text are confirmed correct; live execution is the only way to confirm the LLM follows the instructions faithfully.
 
 ### 2. Conservative Flagging False-Negative Path (Scenario 4A)
 
@@ -116,17 +116,17 @@ No TODO, FIXME, placeholder comments, empty implementations, or stub handlers fo
 
 **Expected:** Bob shows GREEN. No detail section appears for Bob.
 
-**Why human:** The two-signal rule false-negative (do NOT flag) branch is the most critical behavioral check — over-flagging would erode manager trust. Cannot confirm without live run against fixture data.
+**Why human:** The two-signal rule false-negative (do NOT flag) branch is the most critical behavioral check - over-flagging would erode manager trust. Cannot confirm without live run against fixture data.
 
 ### 3. Verbatim Disclaimer Check (Scenario 7)
 
 **Test:** Run `/team-health:pulse` with an all-GREEN team state. Copy the last block of output.
 
-**Expected:** Last block is exactly: "These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions." — character-for-character.
+**Expected:** Last block is exactly: "These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions." - character-for-character.
 
 **Why human:** LLMs can paraphrase even when instructed not to. The disclaimer text is embedded verbatim in Phase D, but live invocation is required to confirm it is emitted without modification.
 
-### 4. macOS Date Compatibility — pulse-history Filename (Scenario 9)
+### 4. macOS Date Compatibility - pulse-history Filename (Scenario 9)
 
 **Test:** Before running Scenario 9, run `date +%Y-W%V` in terminal. Then run `/team-health:pulse` on a fresh install (no pulse-history directory).
 

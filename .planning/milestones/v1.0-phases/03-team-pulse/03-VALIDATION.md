@@ -7,7 +7,7 @@ wave_0_complete: false
 created: 2026-03-13
 ---
 
-# Phase 3 — Validation Strategy
+# Phase 3 - Validation Strategy
 
 > Per-phase validation contract for feedback sampling during execution.
 
@@ -17,7 +17,7 @@ created: 2026-03-13
 
 | Property | Value |
 |----------|-------|
-| **Framework** | None — pure markdown/JSON command file, no runnable code |
+| **Framework** | None - pure markdown/JSON command file, no runnable code |
 | **Config file** | n/a |
 | **Quick run command** | Manual: invoke `/team-health:pulse` in Claude Code with GitHub MCP configured |
 | **Full suite command** | Manual: run all 10 PULSE scenarios in a project with Phase 1 setup complete and at least one MCP source available |
@@ -56,11 +56,11 @@ created: 2026-03-13
 
 ## Wave 0 Requirements
 
-- [ ] `docs/testing/phase-3-smoke-tests.md` — step-by-step manual test procedure for all 10 PULSE scenarios
-- [ ] Verify `date +%Y-W%V` works on target OS (macOS) — add to Wave 0 checklist
+- [ ] `docs/testing/phase-3-smoke-tests.md` - step-by-step manual test procedure for all 10 PULSE scenarios
+- [ ] Verify `date +%Y-W%V` works on target OS (macOS) - add to Wave 0 checklist
 - [ ] Verify `Bash(mkdir -p .team-health/pulse-history)` is supported in `allowed-tools` Bash scoping
 
-*No automated framework — no runnable code; all tests are manual CLI invocations.*
+*No automated framework - no runnable code; all tests are manual CLI invocations.*
 
 ---
 

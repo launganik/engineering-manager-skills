@@ -11,7 +11,7 @@ requires:
   - phase: 01-foundation-02
     provides: SIGNALS.md and reference docs that SKILL.md describes
 provides:
-  - SKILL.md at project root — human-facing installation guide and command reference
+  - SKILL.md at project root - human-facing installation guide and command reference
   - Front-door document for EMs discovering the skill
   - MCP prerequisites table with install commands for all 4 sources
   - Complete command reference for all 6 planned commands with availability status
@@ -24,7 +24,7 @@ tech-stack:
   added: []
   patterns:
     - "SKILL.md as human-facing front door (not Claude Code command invocation file)"
-    - "Phase status labels on future commands (Status: Phase N — not yet available)"
+    - "Phase status labels on future commands (Status: Phase N - not yet available)"
     - "Privacy-first framing: behavioral observations not diagnoses"
 
 key-files:
@@ -33,7 +33,7 @@ key-files:
   modified: []
 
 key-decisions:
-  - "SKILL.md has no YAML front matter — it is a human document, not a Claude Code command file"
+  - "SKILL.md has no YAML front matter - it is a human document, not a Claude Code command file"
   - "All 6 planned commands documented upfront with phase availability labels so EMs know the roadmap before committing to install"
   - "Privacy section explicit and prominent: local-only storage, no DM content, behavioral observations not diagnoses"
 
@@ -82,13 +82,13 @@ completed: 2026-03-11
 
 ## Decisions Made
 
-- SKILL.md has no YAML front matter — it is a pure markdown human document, not a Claude Code command invocation file (unlike `.claude/commands/team-health/setup.md`)
+- SKILL.md has no YAML front matter - it is a pure markdown human document, not a Claude Code command invocation file (unlike `.claude/commands/team-health/setup.md`)
 - All 6 planned commands documented upfront with phase availability labels so EMs understand the full roadmap before installing, even though only `/team-health:setup` is available in Phase 1
 - Privacy section made prominent and explicit because the skill handles sensitive people management data
 
 ## Deviations from Plan
 
-None — plan executed exactly as written.
+None - plan executed exactly as written.
 
 ## Issues Encountered
 
@@ -96,11 +96,11 @@ None.
 
 ## User Setup Required
 
-None — no external service configuration required.
+None - no external service configuration required.
 
 ## Next Phase Readiness
 
-- SKILL.md is ready for Phase 2 — when `/team-health:log` is implemented, update its "Status: Phase 2 (not yet available)" label to remove the status note
+- SKILL.md is ready for Phase 2 - when `/team-health:log` is implemented, update its "Status: Phase 2 (not yet available)" label to remove the status note
 - The command reference structure established here should be maintained for each new command added in subsequent phases
 - No blockers for Phase 2 work
 

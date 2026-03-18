@@ -18,7 +18,7 @@ tech-stack:
   added: []
   patterns:
     - "schema_version: '1' required in all three .team-health/ state files"
-    - "State schemas locked in Wave 0 — changes require schema_version bump and migration note"
+    - "State schemas locked in Wave 0 - changes require schema_version bump and migration note"
 
 key-files:
   created:
@@ -27,7 +27,7 @@ key-files:
   modified: []
 
 key-decisions:
-  - "Smoke tests are exclusively manual — no automated test runner for pure markdown/JSON skill"
+  - "Smoke tests are exclusively manual - no automated test runner for pure markdown/JSON skill"
   - "state-schemas.json is the single locked reference for schema_version and required_fields; executors consult it before writing commands that create or read state files"
 
 patterns-established:
@@ -55,7 +55,7 @@ completed: 2026-03-10
 
 ## Accomplishments
 - Created fully executable manual test procedure with step-by-step instructions, exact pass criteria (including inline Python assertions), and a test matrix for all 10 Phase 1 scenarios
-- Created locked canonical state schemas for `config.json`, `people/<slug>.json`, and `baselines.json` — complete with `required_fields` lists, `valid_categories` for person entries, and full example objects with `schema_version: "1"`
+- Created locked canonical state schemas for `config.json`, `people/<slug>.json`, and `baselines.json` - complete with `required_fields` lists, `valid_categories` for person entries, and full example objects with `schema_version: "1"`
 - Established the Wave 0 verification contract that gates all subsequent Phase 1 command implementation
 
 ## Task Commits
@@ -72,12 +72,12 @@ Each task was committed atomically:
 - `.planning/phases/01-foundation/state-schemas.json` - Canonical locked JSON schemas for config, person, and baselines state files; includes required_fields, valid_categories, and full example objects
 
 ## Decisions Made
-- Smoke tests are exclusively manual — no automated test runner is appropriate for a pure markdown/JSON skill. The smoke test doc is the verification contract.
+- Smoke tests are exclusively manual - no automated test runner is appropriate for a pure markdown/JSON skill. The smoke test doc is the verification contract.
 - state-schemas.json is locked as of 2026-03-10. Any future schema changes must bump schema_version and include a migration note. This prevents schema drift between the setup command (which writes) and later commands (which read).
 
 ## Deviations from Plan
 
-None — plan executed exactly as written.
+None - plan executed exactly as written.
 
 ## Issues Encountered
 

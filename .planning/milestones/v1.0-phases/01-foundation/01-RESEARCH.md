@@ -2,15 +2,15 @@
 
 **Researched:** 2026-03-10
 **Domain:** Claude Code skill authoring, file-based state schemas, MCP availability detection, reference document patterns
-**Confidence:** HIGH — All critical questions verified against current official Claude Code documentation (code.claude.com/docs, March 2026)
+**Confidence:** HIGH - All critical questions verified against current official Claude Code documentation (code.claude.com/docs, March 2026)
 
 ---
 
 ## Summary
 
-Phase 1 delivers the structural skeleton every subsequent phase depends on: command files registered as Claude Code skills, locked JSON state schemas, a first-run setup flow, MCP capability detection, and four reference documents encoding shared domain logic. Nothing else can be built until this layer exists — state schema drift and missing setup gates are the two failure modes most likely to require rewrites later.
+Phase 1 delivers the structural skeleton every subsequent phase depends on: command files registered as Claude Code skills, locked JSON state schemas, a first-run setup flow, MCP capability detection, and four reference documents encoding shared domain logic. Nothing else can be built until this layer exists - state schema drift and missing setup gates are the two failure modes most likely to require rewrites later.
 
-The prior project research flagged two questions as needing verification before Phase 1 shipped: (1) whether `allowed-tools` is the correct YAML front matter key, and (2) whether `.claude/commands/team-health/*.md` creates the `/team-health:` namespace. Both are now confirmed. The `allowed-tools` key is correct per current Claude Code skill documentation. The subdirectory-to-colon-namespace mapping is confirmed: `.claude/commands/team-health/prep.md` registers as `/team-health:prep`. Additionally, the ecosystem has evolved — skills (`.claude/skills/<name>/SKILL.md`) are now the preferred authoring format, but the old `.claude/commands/` path continues to work and both are equivalent. This phase should adopt the skills format for new files to access supporting-file bundling, while understanding that legacy command files are still valid.
+The prior project research flagged two questions as needing verification before Phase 1 shipped: (1) whether `allowed-tools` is the correct YAML front matter key, and (2) whether `.claude/commands/team-health/*.md` creates the `/team-health:` namespace. Both are now confirmed. The `allowed-tools` key is correct per current Claude Code skill documentation. The subdirectory-to-colon-namespace mapping is confirmed: `.claude/commands/team-health/prep.md` registers as `/team-health:prep`. Additionally, the ecosystem has evolved - skills (`.claude/skills/<name>/SKILL.md`) are now the preferred authoring format, but the old `.claude/commands/` path continues to work and both are equivalent. This phase should adopt the skills format for new files to access supporting-file bundling, while understanding that legacy command files are still valid.
 
 The primary design choice for Phase 1 is whether to use `.claude/commands/team-health/*.md` (legacy, simpler) or `.claude/skills/team-health-*/SKILL.md` (modern, supports bundled supporting files). The skills format is recommended for this phase because reference documents can be co-located as supporting files rather than requiring a separate `.claude/team-health/` directory tree. This reduces install surface.
 
@@ -31,7 +31,7 @@ The primary design choice for Phase 1 is whether to use `.claude/commands/team-h
 | REF-01 | `SIGNALS.md` reference document defines each signal, how it's computed, and thresholds | Reference doc authored in this phase; loaded by later command skills |
 | REF-02 | `BASELINES.md` reference document defines rolling 8-week baseline computation methodology | Reference doc authored in this phase; provides inline computation instructions for Claude |
 | REF-03 | `PRIVACY.md` reference document encodes output language rules | Reference doc authored in this phase; loaded by every command skill that generates output |
-| REF-04 | `SKILL.md` installation guide covers MCP prerequisites, first-run steps, and what each command does | Top-level `SKILL.md` (or `README.md`) for the skill repo — human-facing, not loaded by Claude Code natively |
+| REF-04 | `SKILL.md` installation guide covers MCP prerequisites, first-run steps, and what each command does | Top-level `SKILL.md` (or `README.md`) for the skill repo - human-facing, not loaded by Claude Code natively |
 </phase_requirements>
 
 ---
@@ -42,17 +42,17 @@ The primary design choice for Phase 1 is whether to use `.claude/commands/team-h
 
 | Technology | Version | Purpose | Why Standard |
 |------------|---------|---------|--------------|
-| Claude Code Skills (SKILL.md files) | Current (code.claude.com) | Slash command registration | Native mechanism — directory of .md files IS the skill; no runtime, no build, no package |
-| YAML front matter in SKILL.md | n/a | Command metadata: description, allowed-tools, argument-hint, disable-model-invocation | Controls skill behavior, autocomplete hints, tool restrictions — verified against official docs |
+| Claude Code Skills (SKILL.md files) | Current (code.claude.com) | Slash command registration | Native mechanism - directory of .md files IS the skill; no runtime, no build, no package |
+| YAML front matter in SKILL.md | n/a | Command metadata: description, allowed-tools, argument-hint, disable-model-invocation | Controls skill behavior, autocomplete hints, tool restrictions - verified against official docs |
 | JSON files in `.team-health/` | n/a | Structured state: config, baselines, pulse history | Machine-readable by Claude, human-inspectable, no infrastructure required |
 | Markdown files in `.team-health/people/` | n/a | People logs (longitudinal notes per person) | Human-readable, appendable, appropriate for free-form managerial notes |
-| `.gitignore` entry for `.team-health/` | n/a | Privacy invariant: people data never in VCS | Required — logs contain personal employment observations |
+| `.gitignore` entry for `.team-health/` | n/a | Privacy invariant: people data never in VCS | Required - logs contain personal employment observations |
 
 ### Supporting
 
 | Technology | Version | Purpose | When to Use |
 |------------|---------|---------|-------------|
-| `!`bash-command`` syntax in SKILL.md | n/a | Dynamic context injection at invocation time | Use sparingly — runs before Claude sees the prompt; good for injecting current date, reading a file pre-load |
+| `!`bash-command`` syntax in SKILL.md | n/a | Dynamic context injection at invocation time | Use sparingly - runs before Claude sees the prompt; good for injecting current date, reading a file pre-load |
 | `$ARGUMENTS` / `$0`, `$1` | n/a | Pass invocation arguments to skill content | Use in skills that take a person name argument: `/team-health:prep alex` |
 | `${CLAUDE_SKILL_DIR}` | n/a | Reference skill-bundled files by absolute path | Use in skills that reference supporting files co-located with SKILL.md |
 
@@ -61,9 +61,9 @@ The primary design choice for Phase 1 is whether to use `.claude/commands/team-h
 | Instead of | Could Use | Tradeoff |
 |------------|-----------|----------|
 | `.claude/skills/team-health-{cmd}/SKILL.md` | `.claude/commands/team-health/{cmd}.md` | Legacy command files work identically but cannot bundle supporting files in the same directory. Skills format preferred for new development. |
-| Separate `.claude/team-health/` reference dir | Supporting files in skill directory | Skills format lets reference docs live alongside SKILL.md, reducing install surface. But: reference docs shared by multiple skills cannot be co-located — put them in `.claude/team-health/` or reference them via relative paths from each skill's directory. |
+| Separate `.claude/team-health/` reference dir | Supporting files in skill directory | Skills format lets reference docs live alongside SKILL.md, reducing install surface. But: reference docs shared by multiple skills cannot be co-located - put them in `.claude/team-health/` or reference them via relative paths from each skill's directory. |
 
-**Installation — no package needed:**
+**Installation - no package needed:**
 
 ```bash
 # Clone the skill repo into the manager's project directory
@@ -157,7 +157,7 @@ Prompt instructions here...
 
 **For team-health commands:** All setup/config-modifying commands should use `disable-model-invocation: true` to prevent Claude from running them automatically. Information-only commands (prep, pulse) can use defaults.
 
-**Example — setup command:**
+**Example - setup command:**
 
 ```yaml
 ---
@@ -195,7 +195,7 @@ Before doing anything else:
 3. If setup_complete is true, continue.
 ```
 
-**Why not a shared include:** Claude Code skill files are self-contained — one skill cannot `import` another. The gate must be copy-pasted into each command file. This is intentional; reference docs (read at runtime) carry shared logic, but the gate is load-bearing prompt structure.
+**Why not a shared include:** Claude Code skill files are self-contained - one skill cannot `import` another. The gate must be copy-pasted into each command file. This is intentional; reference docs (read at runtime) carry shared logic, but the gate is load-bearing prompt structure.
 
 ### Pattern 3: MCP Availability Detection
 
@@ -205,7 +205,7 @@ Before doing anything else:
 - Claude Code reads MCP server configurations at session start
 - Each configured MCP server's tools are loaded into Claude's available tool list
 - If a server is not configured or fails to connect, none of its tools appear
-- Claude cannot call a tool that is not in its tool list — attempting to would fail at the tool invocation level
+- Claude cannot call a tool that is not in its tool list - attempting to would fail at the tool invocation level
 
 **Detection approach:** The setup flow instructs Claude to attempt a minimal call to each MCP's most-fundamental tool and observe whether it succeeds or returns a "tool not found" / connection error. Write results to `config.json`'s `sources` block.
 
@@ -217,22 +217,22 @@ For each source, attempt the listed probe and record the result:
 1. GitHub: Use the github MCP list_repositories tool (or equivalent minimal read tool).
    - If it succeeds: sources.github = true
    - If the tool does not exist or errors: sources.github = false
-   - Note: "GitHub MCP not connected — PR/commit signals will be unavailable."
+   - Note: "GitHub MCP not connected - PR/commit signals will be unavailable."
 
 2. Jira: Use the jira MCP list_projects tool.
    - If it succeeds: sources.jira = true
    - If the tool does not exist or errors: sources.jira = false
-   - Note: "Jira MCP not connected — ticket velocity/blocker signals will be unavailable."
+   - Note: "Jira MCP not connected - ticket velocity/blocker signals will be unavailable."
 
 3. Slack: Use the slack MCP list_channels tool.
    - If it succeeds: sources.slack = true
    - If the tool does not exist or errors: sources.slack = false
-   - Note: "Slack MCP not connected — participation metadata signals will be unavailable."
+   - Note: "Slack MCP not connected - participation metadata signals will be unavailable."
 
 4. Calendar: Use the gcal or google-calendar MCP list_events tool.
    - If it succeeds: sources.calendar = true
    - If the tool does not exist or errors: sources.calendar = false
-   - Note: "Calendar MCP not connected — meeting load and 1:1 adherence signals will be unavailable."
+   - Note: "Calendar MCP not connected - meeting load and 1:1 adherence signals will be unavailable."
 
 After probing all sources, present a capabilities summary to the user before proceeding.
 ```
@@ -251,11 +251,11 @@ After probing all sources, present a capabilities summary to the user before pro
 ## Required Reference Reads
 
 Before doing any analysis, read these files using the Read tool:
-- .claude/team-health/SIGNALS.md — signal taxonomy, scoring weights, and thresholds
-- .claude/team-health/PRIVACY.md — mandatory output language rules
+- .claude/team-health/SIGNALS.md - signal taxonomy, scoring weights, and thresholds
+- .claude/team-health/PRIVACY.md - mandatory output language rules
 
 If this command computes or reads baselines, also read:
-- .claude/team-health/BASELINES.md — baseline computation and comparison methodology
+- .claude/team-health/BASELINES.md - baseline computation and comparison methodology
 ```
 
 ### Pattern 5: Progressive Setup Disclosure
@@ -284,7 +284,7 @@ If this command computes or reads baselines, also read:
 | Problem | Don't Build | Use Instead | Why |
 |---------|-------------|-------------|-----|
 | Rolling mean/stddev computation | Python script, external service | Claude inline arithmetic over `baselines.json` window array | The PROJECT.md explicitly rules out Python. Claude handles simple statistics over ≤8 values × ≤15 people × ≤10 signals = ≤1,200 data points without accuracy concerns. |
-| Slash command registration | Custom CLI tooling, npm package | `.claude/commands/team-health/*.md` files | This IS how Claude Code skills work — markdown files are the registration mechanism |
+| Slash command registration | Custom CLI tooling, npm package | `.claude/commands/team-health/*.md` files | This IS how Claude Code skills work - markdown files are the registration mechanism |
 | MCP server configuration | In-skill config wizard | User's own `claude mcp add` commands + documented in SKILL.md | MCP config is a user/workspace concern, not a skill concern. The skill detects what's there; it doesn't configure it. |
 | People data database | SQLite, Postgres, external API | Flat JSON + Markdown in `.team-health/` | No infrastructure, no auth, human-inspectable, works offline, keeps data with the manager |
 | Schema validation | Zod, JSON Schema library | Explicit field checks in each read instruction + `schema_version` field | Claude can validate field presence inline; no library needed for this data volume |
@@ -351,7 +351,7 @@ These schemas are locked in Phase 1. All subsequent phases read/write these exac
       "id": "2026-03-15-001",
       "date": "2026-03-15",
       "category": "feedback-given",
-      "content": "Gave specific positive feedback on the auth refactor PR — clean API design.",
+      "content": "Gave specific positive feedback on the auth refactor PR - clean API design.",
       "tags": ["technical", "positive"],
       "created_at": "2026-03-15T14:32:00Z"
     }
@@ -420,8 +420,8 @@ These schemas are locked in Phase 1. All subsequent phases read/write these exac
 **Notes on schema design:**
 - `window` arrays hold at most `window_weeks` values; oldest is dropped when a new value is added
 - `mean` and `stddev` are precomputed and stored to avoid recomputation on every read
-- `computed_from` / `computed_to` provide provenance — if MCP data was partial, this is auditable
-- `source` lists which MCPs contributed to this baseline — if a source is removed, downstream reads know the baseline may be stale
+- `computed_from` / `computed_to` provide provenance - if MCP data was partial, this is auditable
+- `source` lists which MCPs contributed to this baseline - if a source is removed, downstream reads know the baseline may be stale
 
 ---
 
@@ -435,7 +435,7 @@ These schemas are locked in Phase 1. All subsequent phases read/write these exac
 
 **How to avoid:** Lock the schemas above before writing any command SKILL.md. Commands reference the canonical schema in this document. Changes to schema require a version bump (`schema_version: "2"`) and a migration note.
 
-**Warning signs:** A command reads a field that is undefined — particularly `config.setup_complete` vs `config.setup_complete` vs a nested path.
+**Warning signs:** A command reads a field that is undefined - particularly `config.setup_complete` vs `config.setup_complete` vs a nested path.
 
 ### Pitfall 2: Setup Gate Missing from a Command
 
@@ -443,7 +443,7 @@ These schemas are locked in Phase 1. All subsequent phases read/write these exac
 
 **Why it happens:** Each command is written in isolation; the gate block is not copy-pasted in.
 
-**How to avoid:** The "Pre-flight Check" block above is mandatory in every command SKILL.md. Treat it as boilerplate — include it verbatim, do not paraphrase.
+**How to avoid:** The "Pre-flight Check" block above is mandatory in every command SKILL.md. Treat it as boilerplate - include it verbatim, do not paraphrase.
 
 ### Pitfall 3: Using `disable-model-invocation: false` on State-Writing Commands
 
@@ -490,7 +490,7 @@ disable-model-invocation: true
 [prompt body here]
 ```
 
-Source: [code.claude.com/docs/en/skills — Frontmatter reference](https://code.claude.com/docs/en/skills)
+Source: [code.claude.com/docs/en/skills - Frontmatter reference](https://code.claude.com/docs/en/skills)
 
 ### Colon-Namespace from Subdirectory
 
@@ -535,7 +535,7 @@ Current date: !`date +%Y-%m-%d`
 Run the weekly team health pulse...
 ```
 
-Source: [code.claude.com/docs/en/skills — Inject dynamic context](https://code.claude.com/docs/en/skills)
+Source: [code.claude.com/docs/en/skills - Inject dynamic context](https://code.claude.com/docs/en/skills)
 
 ---
 
@@ -545,7 +545,7 @@ Source: [code.claude.com/docs/en/skills — Inject dynamic context](https://code
 |--------------|------------------|--------------|--------|
 | `.claude/commands/*.md` flat files | `.claude/skills/<name>/SKILL.md` directory structure | 2025-2026 | Skills support bundled supporting files; commands format still works and is equivalent for basic use |
 | Separate `SKILL.md` concept in older GSD framework | SKILL.md is now the native Claude Code skill entry point | 2025 | SKILL.md as skill manifest is now official, not just a GSD convention |
-| Manual MCP tool permission approval per use | `allowed-tools` in front matter pre-approves tool use | Confirmed current | Critical for skills that call MCP tools repeatedly — prevents approval dialogs per call |
+| Manual MCP tool permission approval per use | `allowed-tools` in front matter pre-approves tool use | Confirmed current | Critical for skills that call MCP tools repeatedly - prevents approval dialogs per call |
 | Plugin namespace: `plugin-name:skill-name` | Colon namespace from subdirectory in commands format | Confirmed current | `/team-health:prep` pattern confirmed via subdirectory structure |
 
 **Key clarification:** SKILL.md (the file at the root of this repo used as an installation guide) and SKILL.md (the entry point file in a `.claude/skills/<name>/` directory) are now the same concept. The GSD framework's convention and the Claude Code native format have converged. The top-level `SKILL.md` in the skill repo serves as both a human-readable installation guide and, if placed correctly, can be Claude Code's skill entrypoint.
@@ -560,7 +560,7 @@ Source: [code.claude.com/docs/en/skills — Inject dynamic context](https://code
 
 | Property | Value |
 |----------|-------|
-| Framework | None detected — this is a pure markdown/JSON skill with no runnable code |
+| Framework | None detected - this is a pure markdown/JSON skill with no runnable code |
 | Config file | n/a |
 | Quick run command | Manual: invoke each command in Claude Code and verify output |
 | Full suite command | Manual: run all commands in a fresh project with no config, then with full config |
@@ -588,12 +588,12 @@ Source: [code.claude.com/docs/en/skills — Inject dynamic context](https://code
 
 ### Wave 0 Gaps
 
-All tests are manual in this phase — there is no automated test runner for a pure markdown skill.
+All tests are manual in this phase - there is no automated test runner for a pure markdown skill.
 
-- [ ] Smoke test script checklist: `docs/testing/phase-1-smoke-tests.md` — step-by-step manual test procedure for all 10 scenarios above
-- [ ] JSON schema reference: `.planning/phases/01-foundation/state-schemas.json` — canonical schemas the planner can reference to verify task outputs
+- [ ] Smoke test script checklist: `docs/testing/phase-1-smoke-tests.md` - step-by-step manual test procedure for all 10 scenarios above
+- [ ] JSON schema reference: `.planning/phases/01-foundation/state-schemas.json` - canonical schemas the planner can reference to verify task outputs
 
-*(No automated framework install needed — no runnable code in Phase 1)*
+*(No automated framework install needed - no runnable code in Phase 1)*
 
 ---
 
@@ -601,7 +601,7 @@ All tests are manual in this phase — there is no automated test runner for a p
 
 1. **Colon namespace vs hyphen namespace: which does the project want?**
    - What we know: `.claude/commands/team-health/prep.md` gives `/team-health:prep` (colon); `.claude/skills/team-health-prep/SKILL.md` gives `/team-health-prep` (hyphen)
-   - What's unclear: PROJECT.md and REQUIREMENTS.md use colon syntax (`/team-health:prep`) consistently — this locks the format to `.claude/commands/team-health/` (legacy commands path)
+   - What's unclear: PROJECT.md and REQUIREMENTS.md use colon syntax (`/team-health:prep`) consistently - this locks the format to `.claude/commands/team-health/` (legacy commands path)
    - Recommendation: Use `.claude/commands/team-health/` for command files, `.claude/team-health/` for reference docs. The legacy format is fully supported and produces the desired colon-namespace UX.
 
 2. **Where do reference documents live?**
@@ -612,7 +612,7 @@ All tests are manual in this phase — there is no automated test runner for a p
 3. **MCP tool names for probe calls**
    - What we know: Claude only sees tools from configured MCP servers; if a server is absent, its tools simply don't appear
    - What's unclear: Exact tool names differ by MCP implementation. Official GitHub MCP at `api.githubcopilot.com/mcp/` may expose different tool names than `@modelcontextprotocol/server-github`
-   - Recommendation: Write probe instructions that are implementation-agnostic — instruct Claude to check whether any github-namespaced tool is available, rather than calling a specific tool name
+   - Recommendation: Write probe instructions that are implementation-agnostic - instruct Claude to check whether any github-namespaced tool is available, rather than calling a specific tool name
 
 ---
 
@@ -620,28 +620,28 @@ All tests are manual in this phase — there is no automated test runner for a p
 
 ### Primary (HIGH confidence)
 
-- [code.claude.com/docs/en/skills](https://code.claude.com/docs/en/skills) — Official Claude Code skills documentation (March 2026): full frontmatter reference, SKILL.md structure, skills vs commands equivalence, `allowed-tools` syntax confirmed, `disable-model-invocation` behavior
-- [code.claude.com/docs/en/mcp](https://code.claude.com/docs/en/mcp) — Official Claude Code MCP documentation (March 2026): MCP tool availability at runtime, probe call behavior, configuration scopes, `/mcp` command
+- [code.claude.com/docs/en/skills](https://code.claude.com/docs/en/skills) - Official Claude Code skills documentation (March 2026): full frontmatter reference, SKILL.md structure, skills vs commands equivalence, `allowed-tools` syntax confirmed, `disable-model-invocation` behavior
+- [code.claude.com/docs/en/mcp](https://code.claude.com/docs/en/mcp) - Official Claude Code MCP documentation (March 2026): MCP tool availability at runtime, probe call behavior, configuration scopes, `/mcp` command
 
 ### Secondary (MEDIUM confidence)
 
-- [danielcorin.com/til/anthropic/custom-slash-commands-hierarchy](https://www.danielcorin.com/til/anthropic/custom-slash-commands-hierarchy/) — Subdirectory-to-colon-namespace mapping confirmed: `.claude/commands/posts/new.md` → `/posts:new`
+- [danielcorin.com/til/anthropic/custom-slash-commands-hierarchy](https://www.danielcorin.com/til/anthropic/custom-slash-commands-hierarchy/) - Subdirectory-to-colon-namespace mapping confirmed: `.claude/commands/posts/new.md` → `/posts:new`
 - WebSearch cross-reference: multiple independent sources confirm `allowed-tools: Read, Write, Bash(gh *)` syntax; glob-style tool scoping confirmed
 
-### Tertiary (LOW confidence — verify at implementation)
+### Tertiary (LOW confidence - verify at implementation)
 
-- Community MCP server tool names for GitHub, Jira, Slack, Calendar — exact tool names differ by implementation; verify at Phase 3 when MCP-calling commands are built
-- `.mcp.json` project-scope config path — confirmed in MCP docs but exact behavior when both user-scope and project-scope are configured needs validation
+- Community MCP server tool names for GitHub, Jira, Slack, Calendar - exact tool names differ by implementation; verify at Phase 3 when MCP-calling commands are built
+- `.mcp.json` project-scope config path - confirmed in MCP docs but exact behavior when both user-scope and project-scope are configured needs validation
 
 ---
 
 ## Metadata
 
 **Confidence breakdown:**
-- Standard stack: HIGH — official docs verified, both commands and skills paths confirmed
-- Architecture: HIGH — file structure, front matter keys, colon namespace all verified against current Claude Code documentation
-- State schemas: HIGH — derived from project requirements and standard JSON state patterns; no external dependency to verify
-- MCP detection pattern: MEDIUM-HIGH — confirmed that Claude only sees tools from configured servers; specific probe tool names are LOW confidence until verified at Phase 3
+- Standard stack: HIGH - official docs verified, both commands and skills paths confirmed
+- Architecture: HIGH - file structure, front matter keys, colon namespace all verified against current Claude Code documentation
+- State schemas: HIGH - derived from project requirements and standard JSON state patterns; no external dependency to verify
+- MCP detection pattern: MEDIUM-HIGH - confirmed that Claude only sees tools from configured servers; specific probe tool names are LOW confidence until verified at Phase 3
 
 **Research date:** 2026-03-10
-**Valid until:** 2026-06-10 (stable platform — skills API unlikely to break, but verify front matter keys if Claude Code has a major release)
+**Valid until:** 2026-06-10 (stable platform - skills API unlikely to break, but verify front matter keys if Claude Code has a major release)

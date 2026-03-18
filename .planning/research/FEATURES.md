@@ -2,7 +2,7 @@
 
 **Domain:** Engineering Manager productivity / people analytics Claude Code skill
 **Researched:** 2026-03-09
-**Confidence:** MEDIUM — grounded in EM practice knowledge; web research tools unavailable, so claims based on training data rather than current sources. Core EM practice is stable; specific tool comparisons would benefit from live verification.
+**Confidence:** MEDIUM - grounded in EM practice knowledge; web research tools unavailable, so claims based on training data rather than current sources. Core EM practice is stable; specific tool comparisons would benefit from live verification.
 
 ---
 
@@ -14,9 +14,9 @@ Features users expect. Missing = the skill is useless or no better than a blank 
 |---------|--------------|------------|-------|
 | 1:1 prep sheet generation | EMs prep before every 1:1; a skill that doesn't help here has no obvious entry point | Medium | Needs: recent commits, open PRs, Jira velocity, previous topics from people log |
 | Per-person signal summary | "Tell me what's going on with X" is the atomic unit of EM cognition | Medium | Must surface *changes* vs. baseline, not raw counts |
-| Recent work summary | What shipped, what's blocked, what's in-flight — the factual layer every 1:1 starts with | Low | GitHub + Jira. Purely factual; low risk |
+| Recent work summary | What shipped, what's blocked, what's in-flight - the factual layer every 1:1 starts with | Low | GitHub + Jira. Purely factual; low risk |
 | Standing topics / follow-up tracking | EMs keep mental queues of things promised, things to revisit | Low | From people log: open items, manager commitments, IC asks |
-| Tone calibration — signal, not diagnosis | Outputs framed as "signals to explore" not "this person is burned out" | Low (design) | Non-negotiable for legal/ethical safety |
+| Tone calibration - signal, not diagnosis | Outputs framed as "signals to explore" not "this person is burned out" | Low (design) | Non-negotiable for legal/ethical safety |
 | Team roster config | Skill is useless without knowing who the team is | Low | First-run setup: names, roles, 1:1 cadence |
 | Graceful degradation to available tools | EM may only have GitHub; skill shouldn't fail if Jira/Slack absent | Medium | Capability detection on first run, clear gap reporting |
 
@@ -33,7 +33,7 @@ Features that set this apart from a shared Notion template or a generic AI promp
 | Longitudinal people log with structured categories | Wins, growth edges, stated preferences, life context, manager commitments, career goals | Medium | The memory layer that makes 1:1s feel human. Structured so Claude can query across time |
 | Attrition / disengagement early warning | Composite signal: PR review lag increase + meeting camera off trend + decreased async participation + reduced initiative | High | This is the killer feature. Requires multi-source data and multi-week patterns |
 | Upward reporting mode (skip-level brief) | Converts team data into the format a VP/director wants: delivery health, risks, team mood, asks | Medium | Separates what's for skip-level (themes, not people) from what stays in people log |
-| Sprint retro seeding from real data | Pre-populates retro with: cycle time, PR review wait, blocked tickets, recurring failure modes — not blank sticky notes | Medium | Turns retro from memory exercise into evidence-based conversation |
+| Sprint retro seeding from real data | Pre-populates retro with: cycle time, PR review wait, blocked tickets, recurring failure modes - not blank sticky notes | Medium | Turns retro from memory exercise into evidence-based conversation |
 | Privacy-gated skip-level output | People log entries explicitly excluded from skip-level unless EM chooses to include them | Low (design) | Differentiates from naive "summarize everything" approaches |
 | Calendar-aware prep timing | Knows when 1:1 is scheduled; can be triggered day-before automatically | Low | Calendar MCP integration |
 | Named signal definitions, not opaque scores | Every flag explains *which signals* contributed and *why* they're notable | Medium (prompt design) | Transparency is the trust mechanism. "PR review lag: +3.2 days vs 8wk avg" not "health score: 4/10" |
@@ -50,7 +50,7 @@ Things to deliberately NOT build. Explicit scope exclusions that protect legal s
 | Hard attrition probability scores ("72% likely to quit") | Creates liability; false precision; EMs act on it inappropriately | Frame as "pattern warranting a conversation": list the signals, suggest talking point |
 | Team-relative scoring ("bottom 20% of team") | Surveillance/ranking; damages team culture if ever surfaced | Personal baseline only: each person measured against their own historical norm |
 | Automated direct-report-facing output | This is a manager tool; IC trust requires they not feel surveilled | All outputs are manager-side only, never shown to ICs without explicit EM decision |
-| Psychological labeling | "Alex seems depressed" is not EM's job and creates legal risk | "Multiple signals suggest Alex may be struggling — worth a direct check-in" |
+| Psychological labeling | "Alex seems depressed" is not EM's job and creates legal risk | "Multiple signals suggest Alex may be struggling - worth a direct check-in" |
 | Performance rating automation | Replaces manager judgment; creates compliance/fairness issues | Surface relevant evidence; EM writes the actual review |
 | Persistent tracking of DM content | No DM content, ever. Not stored, not summarized, not referenced | Metadata patterns only: timing, frequency, not content |
 | Cross-team benchmarking | Comparing your team's velocity to other teams is politically loaded and context-free | Intra-team historical trends only |
@@ -88,7 +88,7 @@ Pulse dashboard
 - PR count and merge rate vs. personal 8-week baseline
 - PR review turnaround time (submitted to first review, submitted to merge)
 - Review participation: PRs reviewed for others vs. baseline
-- Commit frequency pattern (not count — pattern: burst-then-silence vs. steady)
+- Commit frequency pattern (not count - pattern: burst-then-silence vs. steady)
 - After-hours commit timestamps (trend, not single instances)
 - PR size trends (very large PRs = possible scope creep or isolation behavior)
 
@@ -120,11 +120,11 @@ Pulse dashboard
 
 The 1:1 prep sheet should be structured as a briefing, not a data dump:
 
-1. **Status snapshot** — 2-3 sentence narrative of what this person has been up to
-2. **Signal flags** — Bulleted notable changes with the specific metric and delta (only items outside normal range)
-3. **Standing items** — Open manager commitments + IC asks from people log
-4. **Suggested talking points** — 2-4 concrete questions to explore flagged signals
-5. **Context reminders** — Life/career context from people log worth keeping in mind
+1. **Status snapshot** - 2-3 sentence narrative of what this person has been up to
+2. **Signal flags** - Bulleted notable changes with the specific metric and delta (only items outside normal range)
+3. **Standing items** - Open manager commitments + IC asks from people log
+4. **Suggested talking points** - 2-4 concrete questions to explore flagged signals
+5. **Context reminders** - Life/career context from people log worth keeping in mind
 
 ---
 
@@ -178,7 +178,7 @@ The 1:1 prep sheet should be structured as a briefing, not a data dump:
 | Life context | Caregiver situation, health thing, family change, timezone constraint | Contextualizing signal anomalies |
 | Manager commitments | "I will get you access to X", "I'll raise your case in promo cycle" | Trust maintenance; most important to track |
 | IC asks / open items | "they want more design exposure", "wants to pair with platform team" | Follow-through = manager credibility |
-| Difficult conversations | Themes, outcomes, what was agreed — not verbatim | Pattern recognition, HR documentation if needed |
+| Difficult conversations | Themes, outcomes, what was agreed - not verbatim | Pattern recognition, HR documentation if needed |
 | Stated preferences | "prefers async feedback", "wants direct delivery", "morning person" | Personalization of management approach |
 
 ### How to structure them
@@ -186,7 +186,7 @@ The 1:1 prep sheet should be structured as a briefing, not a data dump:
 - Timestamped entries, not a single blob
 - Each entry: date, category tag, free-text note
 - Query patterns: "last 3 months of wins for perf review", "all open manager commitments", "growth thread for Alex"
-- No minimum length — "acknowledged shipping X" is a valid entry
+- No minimum length - "acknowledged shipping X" is a valid entry
 
 ---
 
@@ -196,12 +196,12 @@ The 1:1 prep sheet should be structured as a briefing, not a data dump:
 
 Based on what engineering VPs and directors actually ask for:
 
-1. **Delivery status** — Are we on track for the quarter? Any risks to committed work?
-2. **Team health summary** — General mood/energy, not individual flags. "Team is heads-down post-launch, energy is good but vacation backlog is real"
-3. **Staffing risks** — Open headcount, retention concerns (stated as themes, not named individuals unless EM chooses)
-4. **Top asks / blockers requiring escalation** — What does the EM need from their manager to succeed
-5. **Team wins** — What shipped, what's worth celebrating at the org level
-6. **Upcoming needs** — Interviews, promo cases in flight, org changes anticipated
+1. **Delivery status** - Are we on track for the quarter? Any risks to committed work?
+2. **Team health summary** - General mood/energy, not individual flags. "Team is heads-down post-launch, energy is good but vacation backlog is real"
+3. **Staffing risks** - Open headcount, retention concerns (stated as themes, not named individuals unless EM chooses)
+4. **Top asks / blockers requiring escalation** - What does the EM need from their manager to succeed
+5. **Team wins** - What shipped, what's worth celebrating at the org level
+6. **Upcoming needs** - Interviews, promo cases in flight, org changes anticipated
 
 ### Privacy gate
 
@@ -227,11 +227,11 @@ The value is converting the sprint from memory-dependent to evidence-seeded.
 
 **Output format:**
 
-1. **Sprint facts** — Velocity, carry-over count, PR merge distribution (front-loaded vs. last-day crunch)
-2. **What went well (seeded)** — Tickets shipped, reviews completed promptly, collab patterns
-3. **What was hard (seeded)** — Blocks, late merges, carry-overs with root causes
-4. **Patterns to name** — "Third sprint in a row with carry-over from X component" — signal for structural conversation
-5. **Blank space** — Retro is still a team conversation; data seeds, not determines
+1. **Sprint facts** - Velocity, carry-over count, PR merge distribution (front-loaded vs. last-day crunch)
+2. **What went well (seeded)** - Tickets shipped, reviews completed promptly, collab patterns
+3. **What was hard (seeded)** - Blocks, late merges, carry-overs with root causes
+4. **Patterns to name** - "Third sprint in a row with carry-over from X component" - signal for structural conversation
+5. **Blank space** - Retro is still a team conversation; data seeds, not determines
 
 ---
 
@@ -239,25 +239,25 @@ The value is converting the sprint from memory-dependent to evidence-seeded.
 
 Build in this order:
 
-1. **People log** (`/team-health:log`) — The memory layer. Low complexity, high daily value, no MCP required. Proves out the state storage and log querying pattern.
-2. **1:1 prep** (`/team-health:prep`) — The entry point. Combines people log + GitHub signals. Immediately useful, demonstrates the synthesis value.
-3. **Team pulse** (`/team-health:pulse`) — Requires baseline computation and multi-source MCP. Build after single-person prep is solid.
-4. **Retro prep** (`/team-health:retro-prep`) — Depends on Jira + pulse patterns. Lower frequency need but high-value moments.
-5. **Skip-level brief** (`/team-health:skip-level`) — Builds on pulse + people log; needs the privacy gate logic proven first.
+1. **People log** (`/team-health:log`) - The memory layer. Low complexity, high daily value, no MCP required. Proves out the state storage and log querying pattern.
+2. **1:1 prep** (`/team-health:prep`) - The entry point. Combines people log + GitHub signals. Immediately useful, demonstrates the synthesis value.
+3. **Team pulse** (`/team-health:pulse`) - Requires baseline computation and multi-source MCP. Build after single-person prep is solid.
+4. **Retro prep** (`/team-health:retro-prep`) - Depends on Jira + pulse patterns. Lower frequency need but high-value moments.
+5. **Skip-level brief** (`/team-health:skip-level`) - Builds on pulse + people log; needs the privacy gate logic proven first.
 
 Defer:
-- Calendar integration — adds value but GitHub+Jira+people-log already deliver core value
-- After-hours commit analysis — high sensitivity feature; needs the multi-signal convergence logic mature before introducing
+- Calendar integration - adds value but GitHub+Jira+people-log already deliver core value
+- After-hours commit analysis - high sensitivity feature; needs the multi-signal convergence logic mature before introducing
 
 ---
 
 ## Sources
 
-Note: Web research tools were unavailable during this research session. Findings are grounded in training knowledge of EM practice, people management literature, and the engineering productivity tooling space (Waydev, LinearB, Swarmia, Jellyfish, Lattice, Leapsome feature sets as of training cutoff August 2025). Confidence is MEDIUM — EM practice fundamentals are stable; specific tool comparisons or recent feature additions should be verified against current sources.
+Note: Web research tools were unavailable during this research session. Findings are grounded in training knowledge of EM practice, people management literature, and the engineering productivity tooling space (Waydev, LinearB, Swarmia, Jellyfish, Lattice, Leapsome feature sets as of training cutoff August 2025). Confidence is MEDIUM - EM practice fundamentals are stable; specific tool comparisons or recent feature additions should be verified against current sources.
 
 Key reference frameworks this draws on:
 - Manager Tools "One-on-One" methodology (high-confidence, long-established practice)
-- DORA metrics (cycle time, deployment frequency, change failure rate) — HIGH confidence
-- Engineering productivity signal literature (Forsgren et al., "Accelerate") — HIGH confidence
-- People management frameworks from Lara Hogan, Will Larson ("An Elegant Puzzle") — HIGH confidence for people log categories
-- Attrition signal patterns from HR analytics practice — MEDIUM confidence (domain is well-established; specific thresholds are opinionated)
+- DORA metrics (cycle time, deployment frequency, change failure rate) - HIGH confidence
+- Engineering productivity signal literature (Forsgren et al., "Accelerate") - HIGH confidence
+- People management frameworks from Lara Hogan, Will Larson ("An Elegant Puzzle") - HIGH confidence for people log categories
+- Attrition signal patterns from HR analytics practice - MEDIUM confidence (domain is well-established; specific thresholds are opinionated)

@@ -1,4 +1,4 @@
-# Team Health — Baseline Computation Reference
+# Team Health - Baseline Computation Reference
 
 Loaded by: /team-health:pulse (read and follow before computing any baselines)
 Purpose: Instructions for computing and updating 8-week rolling baselines inline.
@@ -12,7 +12,7 @@ For each person × metric pair, the baseline is:
 - Precomputed mean and standard deviation stored in `.team-health/baselines.json`
 - A deviation threshold: current value vs mean ± N*stddev determines flag status
 
-Baselines are personal — Alice's baseline is derived from Alice's history only, never the team average. Do not mix person-level data when computing baselines.
+Baselines are personal - Alice's baseline is derived from Alice's history only, never the team average. Do not mix person-level data when computing baselines.
 
 ---
 
@@ -33,16 +33,16 @@ Baselines are personal — Alice's baseline is derived from Alice's history only
 }
 ```
 
-- `window` — array of weekly values, oldest first, at most `window_weeks` entries long
-- `mean` — precomputed arithmetic mean of the window values
-- `stddev` — precomputed population standard deviation of the window values
-- `last_value` — the most recent value added (same as the last element of the window)
+- `window` - array of weekly values, oldest first, at most `window_weeks` entries long
+- `mean` - precomputed arithmetic mean of the window values
+- `stddev` - precomputed population standard deviation of the window values
+- `last_value` - the most recent value added (same as the last element of the window)
 
 **Step 4:** Use `mean` and `stddev` directly for flag determination. Do not recompute from the window unless you are also updating it.
 
 **If a person has no entry in baselines.json:** They have no baseline history. See "First-Run Baseline" section below.
 
-**If a metric is missing from a person's entry:** That metric has never been computed for them. Treat the same as no history — do not flag, surface raw value only.
+**If a metric is missing from a person's entry:** That metric has never been computed for them. Treat the same as no history - do not flag, surface raw value only.
 
 ---
 
@@ -82,7 +82,7 @@ Follow these steps exactly, in order, for each person × metric pair after fetch
 
 ---
 
-## Worked Example — Full Baseline Update
+## Worked Example - Full Baseline Update
 
 **Scenario:** Alice Chen, metric `github_prs_merged_per_week`, window size 8.
 
@@ -98,15 +98,15 @@ Follow these steps exactly, in order, for each person × metric pair after fetch
 
 **Current week's observed value:** 1 merged PR.
 
-**Step 3 — Append:** `[2, 3, 1, 2, 2, 3, 2, 2, 1]` (9 elements)
+**Step 3 - Append:** `[2, 3, 1, 2, 2, 3, 2, 2, 1]` (9 elements)
 
-**Step 4 — Trim oldest (window_weeks=8):** `[3, 1, 2, 2, 3, 2, 2, 1]` (8 elements)
+**Step 4 - Trim oldest (window_weeks=8):** `[3, 1, 2, 2, 3, 2, 2, 1]` (8 elements)
 
-**Step 5 — Recompute mean:**
+**Step 5 - Recompute mean:**
 - Sum: `3+1+2+2+3+2+2+1 = 16`
 - Mean: `16 / 8 = 2.0`
 
-**Step 6 — Recompute stddev:**
+**Step 6 - Recompute stddev:**
 - `(3-2)^2 = 1`
 - `(1-2)^2 = 1`
 - `(2-2)^2 = 0`
@@ -119,7 +119,7 @@ Follow these steps exactly, in order, for each person × metric pair after fetch
 - Variance: `4 / 8 = 0.5`
 - Stddev: `sqrt(0.5) ≈ 0.71`
 
-**Step 7 — last_value:** `1`
+**Step 7 - last_value:** `1`
 
 **After update:**
 ```json
@@ -170,11 +170,11 @@ When a person has no entries in baselines.json yet:
 
 **When baselines become meaningful:**
 - After 3 or more weeks of data, the window has enough variance information to be useful.
-- Before 3 weeks: surface raw values in the pulse output labeled as "new — no baseline yet". Do not show flag status.
+- Before 3 weeks: surface raw values in the pulse output labeled as "new - no baseline yet". Do not show flag status.
 - After 3 weeks: begin computing deviation scores and applying thresholds.
 - After 8 weeks: full rolling window baseline is in effect.
 
-**Implementation note for pulse command:** When generating output, check `len(window)` before using the baseline. If `len < 3`, display raw value only with the label "(baseline pending — N weeks of data)".
+**Implementation note for pulse command:** When generating output, check `len(window)` before using the baseline. If `len < 3`, display raw value only with the label "(baseline pending - N weeks of data)".
 
 ---
 
@@ -191,10 +191,10 @@ When writing any person's entry in `baselines.json`, always include these fields
 }
 ```
 
-- `computed_from` — ISO date (YYYY-MM-DD) of the earliest week in the current window
-- `computed_to` — ISO date of the most recent week (today's date at time of update)
-- `source` — array of MCP source names that contributed data to this person's baselines in this session (e.g., `["github", "jira"]`). If a source was unavailable this run, do not include it — the absence is informative.
-- `window_weeks` — the window size configured in config.json at time of computation; stored here for auditability
+- `computed_from` - ISO date (YYYY-MM-DD) of the earliest week in the current window
+- `computed_to` - ISO date of the most recent week (today's date at time of update)
+- `source` - array of MCP source names that contributed data to this person's baselines in this session (e.g., `["github", "jira"]`). If a source was unavailable this run, do not include it - the absence is informative.
+- `window_weeks` - the window size configured in config.json at time of computation; stored here for auditability
 
 **Why provenance matters:** If a source is removed from config.json later, the `source` array shows which baselines were computed with that source's data. If `source` no longer includes `"github"`, the GitHub metrics in the window are stale and should be noted as such in pulse output.
 

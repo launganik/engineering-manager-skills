@@ -18,10 +18,10 @@ Before doing anything else:
 
 ## Name Resolution
 
-1. Extract the person name from $ARGUMENTS. The name is everything before the first query keyword or question mark — if $ARGUMENTS is just a name, the entire value is the name.
+1. Extract the person name from $ARGUMENTS. The name is everything before the first query keyword or question mark - if $ARGUMENTS is just a name, the entire value is the name.
 2. Do NOT re-derive the slug from the argument text. Instead: read the `team` array from config.json (already read in Pre-flight Check), find the entry whose `name` field is a case-insensitive prefix match for the typed name. Use the `slug` field from that config entry. This guarantees slug consistency with setup.
 3. Fuzzy prefix matching: "alice" matches "Alice Chen"; "alice chen" matches "Alice Chen". Match is case-insensitive. If multiple team members match (e.g. two people named "Alex"), list them and ask the manager to clarify.
-4. If no match found: "No team member matching '[typed name]' found. Configured team: [list all names from config]. Did you mean one of these?" — stop.
+4. If no match found: "No team member matching '[typed name]' found. Configured team: [list all names from config]. Did you mean one of these?" - stop.
 5. File path: `.team-health/people/<slug>.json`
 
 ## Mode Detection
@@ -48,7 +48,7 @@ Answer the question using ALL of:
 - career_context object (stated_goals, last_promo_discussion, notes)
 
 Be specific: include dates, category labels, and quoted content where relevant.
-Format the answer as a short, direct response — no headers, no markdown tables unless the answer is a list.
+Format the answer as a short, direct response - no headers, no markdown tables unless the answer is a list.
 
 Do NOT prompt for a new entry after answering. Stop after answering the question.
 
@@ -88,8 +88,8 @@ If entries array has 1 or more entries:
 
   ---
   Recent entries for [Name]:
-  [YYYY-MM-DD] · [category] — [content]
-  [YYYY-MM-DD] · [category] — [content]
+  [YYYY-MM-DD] · [category] - [content]
+  [YYYY-MM-DD] · [category] - [content]
   ...
   ---
 
@@ -149,5 +149,5 @@ Inference behavior:
    - Set career_context.last_promo_discussion to today's date (YYYY-MM-DD)
 8. Set last_updated to today's date.
 9. Write the full updated object to .team-health/people/<slug>.json using the Write tool.
-   IMPORTANT: Write the complete file — do not truncate or omit existing entries.
+   IMPORTANT: Write the complete file - do not truncate or omit existing entries.
 10. Confirm: "Logged [category] entry for [Name]." (one line, no extra detail)

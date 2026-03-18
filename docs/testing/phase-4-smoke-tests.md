@@ -1,6 +1,6 @@
-# Phase 4 — 1:1 Prep: Manual Smoke Tests
+# Phase 4 - 1:1 Prep: Manual Smoke Tests
 
-**Phase: 4** — 1:1 Prep
+**Phase: 4** - 1:1 Prep
 **Command under test:** `/team-health:prep <name>`
 **Document status:** Wave 0 validation contract (written before command implementation)
 **Purpose:** This document is the verification anchor for Plan 04-01. The executor of the prep command verifies their work against these scenarios.
@@ -11,9 +11,9 @@
 
 Before running any scenario, confirm all of the following:
 
-1. Phase 1 setup is complete — `.team-health/config.json` exists with `setup_complete: true`
+1. Phase 1 setup is complete - `.team-health/config.json` exists with `setup_complete: true`
 2. Phase 2 people log exists for at least one person with entries, `open_commitments`, and `career_context` populated
-3. Phase 3 baselines exist — `.team-health/baselines.json` exists with baseline data for at least one person
+3. Phase 3 baselines exist - `.team-health/baselines.json` exists with baseline data for at least one person
 4. At least one MCP source is configured (`github: true` by default in fixtures)
 5. A live Claude Code session is open with the project loaded
 
@@ -27,7 +27,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 |------|------|-----------------|-------------------|
 | Alice Chen | `alice-chen` | 8 weeks of data present | Full data (entries + open commitments + career context) |
 | Bob Smith | `bob-smith` | 8 weeks of data present | Partial (entries, no open commitments) |
-| Carol Davis | `carol-davis` | NEW — no baseline entry | No people log file |
+| Carol Davis | `carol-davis` | NEW - no baseline entry | No people log file |
 
 **Source configuration (default for most scenarios):**
 
@@ -56,7 +56,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
       "id": "2026-03-08-001",
       "date": "2026-03-08",
       "category": "concern",
-      "content": "Alice seemed quieter than usual in team sync — may be stretched thin",
+      "content": "Alice seemed quieter than usual in team sync - may be stretched thin",
       "created_at": "2026-03-08T14:00:00Z"
     },
     {
@@ -77,7 +77,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
       "id": "2026-02-20-001",
       "date": "2026-02-20",
       "category": "career",
-      "content": "Alice confirmed she's targeting Staff Engineer track — wants to lead a project by Q3",
+      "content": "Alice confirmed she's targeting Staff Engineer track - wants to lead a project by Q3",
       "created_at": "2026-02-20T11:00:00Z"
     }
   ],
@@ -135,7 +135,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 1 — PREP-01: Prep sheet generated and scannable
+## Scenario 1 - PREP-01: Prep sheet generated and scannable
 
 **Requirement:** PREP-01
 
@@ -154,7 +154,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 1. Output contains the header `1:1 Prep: Alice Chen`
 2. Output contains a lookback line referencing the period start date (e.g., "since last 1:1 on 2026-03-10")
 3. Output is structured with exactly 5 numbered section headers
-4. Total output fits within approximately 60 lines (the "2-minute scan" test — not a hard character count, but the overall length should feel like a briefing, not a data dump)
+4. Total output fits within approximately 60 lines (the "2-minute scan" test - not a hard character count, but the overall length should feel like a briefing, not a data dump)
 5. After the output is fully rendered, the people log file `.team-health/people/alice-chen.json` has a `prep_run` field set to today's date (`YYYY-MM-DD`)
 
 **Fail indicators:**
@@ -165,7 +165,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 2 — PREP-02: All five output sections present
+## Scenario 2 - PREP-02: All five output sections present
 
 **Requirement:** PREP-02
 
@@ -194,7 +194,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 3 — PREP-03: GitHub signals in prep output
+## Scenario 3 - PREP-03: GitHub signals in prep output
 
 **Requirement:** PREP-03
 
@@ -222,7 +222,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 4 — PREP-04: Jira signals when available, degradation when not
+## Scenario 4 - PREP-04: Jira signals when available, degradation when not
 
 **Requirement:** PREP-04
 
@@ -230,7 +230,7 @@ This scenario requires two sub-tests.
 
 ---
 
-### Sub-test A — Jira source disabled (default fixture)
+### Sub-test A - Jira source disabled (default fixture)
 
 **Precondition:** `sources.jira = false` (default in canonical fixtures)
 
@@ -240,7 +240,7 @@ This scenario requires two sub-tests.
 ```
 
 **Pass criteria:**
-1. Output contains the exact degradation phrase: "Jira signals are unavailable — Jira MCP is not configured. Ticket velocity and blocked-ticket data cannot be included."
+1. Output contains the exact degradation phrase: "Jira signals are unavailable - Jira MCP is not configured. Ticket velocity and blocked-ticket data cannot be included."
 2. The phrase matches PRIVACY.md Graceful Degradation Language character-for-character
 3. No Jira ticket data is fabricated or inferred
 
@@ -251,7 +251,7 @@ This scenario requires two sub-tests.
 
 ---
 
-### Sub-test B — Jira source enabled
+### Sub-test B - Jira source enabled
 
 **Precondition:** `sources.jira = true`, Jira MCP is active and reachable
 
@@ -271,7 +271,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 5 — PREP-05: Calendar signals when available, degradation when not
+## Scenario 5 - PREP-05: Calendar signals when available, degradation when not
 
 **Requirement:** PREP-05
 
@@ -279,7 +279,7 @@ This scenario requires two sub-tests.
 
 ---
 
-### Sub-test A — Calendar source disabled (default fixture)
+### Sub-test A - Calendar source disabled (default fixture)
 
 **Precondition:** `sources.calendar = false` (default in canonical fixtures)
 
@@ -289,7 +289,7 @@ This scenario requires two sub-tests.
 ```
 
 **Pass criteria:**
-1. Output contains the exact degradation phrase: "Calendar signals are unavailable — Calendar MCP is not configured. Meeting load and 1:1 adherence cannot be checked."
+1. Output contains the exact degradation phrase: "Calendar signals are unavailable - Calendar MCP is not configured. Meeting load and 1:1 adherence cannot be checked."
 2. Phrase matches PRIVACY.md Graceful Degradation Language character-for-character
 3. No meeting load or 1:1 adherence data is fabricated
 
@@ -299,7 +299,7 @@ This scenario requires two sub-tests.
 
 ---
 
-### Sub-test B — Calendar source enabled
+### Sub-test B - Calendar source enabled
 
 **Precondition:** `sources.calendar = true`, Calendar MCP active
 
@@ -319,7 +319,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 6 — PREP-06: Slack metadata only (no DM content)
+## Scenario 6 - PREP-06: Slack metadata only (no DM content)
 
 **Requirement:** PREP-06
 
@@ -327,7 +327,7 @@ This scenario requires two sub-tests.
 
 ---
 
-### Sub-test A — Slack source disabled (default fixture)
+### Sub-test A - Slack source disabled (default fixture)
 
 **Precondition:** `sources.slack = false` (default in canonical fixtures)
 
@@ -337,7 +337,7 @@ This scenario requires two sub-tests.
 ```
 
 **Pass criteria:**
-1. Output contains the exact degradation phrase: "Slack signals are unavailable — Slack MCP is not configured. Channel participation and response latency cannot be included."
+1. Output contains the exact degradation phrase: "Slack signals are unavailable - Slack MCP is not configured. Channel participation and response latency cannot be included."
 2. Phrase matches PRIVACY.md Graceful Degradation Language character-for-character
 3. No Slack activity data is fabricated
 
@@ -347,7 +347,7 @@ This scenario requires two sub-tests.
 
 ---
 
-### Sub-test B — Slack source enabled
+### Sub-test B - Slack source enabled
 
 **Precondition:** `sources.slack = true`, Slack MCP active
 
@@ -370,7 +370,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 7 — PREP-07: Open commitments surfaced
+## Scenario 7 - PREP-07: Open commitments surfaced
 
 **Requirement:** PREP-07
 
@@ -387,7 +387,7 @@ This scenario requires two sub-tests.
 1. Section 3 (Standing Items from People Log) contains an "Open commitments" sub-header or label
 2. The commitment content "Will introduce Alice to the platform team lead" appears in the output
 3. The commitment date (2026-03-05) is shown
-4. A days-open count is shown (e.g., "12 days open" — calculated from 2026-03-05 to today's date)
+4. A days-open count is shown (e.g., "12 days open" - calculated from 2026-03-05 to today's date)
 
 **Fail indicators:**
 - Open commitments not surfaced in Section 3
@@ -397,7 +397,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 8 — PREP-08: Career context surfaced
+## Scenario 8 - PREP-08: Career context surfaced
 
 **Requirement:** PREP-08
 
@@ -424,7 +424,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 9 — PREP-09: No diagnosis language
+## Scenario 9 - PREP-09: No diagnosis language
 
 **Requirement:** PREP-09
 
@@ -463,7 +463,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 10 — PREP-10: Graceful degradation with all sources disabled
+## Scenario 10 - PREP-10: Graceful degradation with all sources disabled
 
 **Requirement:** PREP-10
 
@@ -478,13 +478,13 @@ This scenario requires two sub-tests.
 
 **Pass criteria:**
 1. All 4 unavailable sources are named using the exact PRIVACY.md degradation phrasing:
-   - "GitHub signals are unavailable — GitHub MCP is not configured. PR and commit data cannot be included."
-   - "Jira signals are unavailable — Jira MCP is not configured. Ticket velocity and blocked-ticket data cannot be included."
-   - "Slack signals are unavailable — Slack MCP is not configured. Channel participation and response latency cannot be included."
-   - "Calendar signals are unavailable — Calendar MCP is not configured. Meeting load and 1:1 adherence cannot be checked."
-2. Section 2 (Signal Flags) states "No signals available — all MCP sources are unconfigured" or equivalent
+   - "GitHub signals are unavailable - GitHub MCP is not configured. PR and commit data cannot be included."
+   - "Jira signals are unavailable - Jira MCP is not configured. Ticket velocity and blocked-ticket data cannot be included."
+   - "Slack signals are unavailable - Slack MCP is not configured. Channel participation and response latency cannot be included."
+   - "Calendar signals are unavailable - Calendar MCP is not configured. Meeting load and 1:1 adherence cannot be checked."
+2. Section 2 (Signal Flags) states "No signals available - all MCP sources are unconfigured" or equivalent
 3. Sections 3–5 still render from people log data only: open commitments appear in Section 3, career context in Section 5, log entries in Section 3/5
-4. Section 4 (Suggested Talking Points) generates 3–5 talking points sourced from people log data alone (commitments, career context, log patterns) — not from MCP signals
+4. Section 4 (Suggested Talking Points) generates 3–5 talking points sourced from people log data alone (commitments, career context, log patterns) - not from MCP signals
 5. The verbatim disclaimer appears at the end:
 
    > These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions.
@@ -500,7 +500,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 11 — First use: no people log file
+## Scenario 11 - First use: no people log file
 
 **Precondition:**
 - Carol Davis is in `config.json` (slug `carol-davis`)
@@ -514,11 +514,11 @@ This scenario requires two sub-tests.
 ```
 
 **Pass criteria:**
-1. Command does not error — output is generated without a stack trace or failure message
+1. Command does not error - output is generated without a stack trace or failure message
 2. Section 3 shows "No people log entries recorded" (or equivalent)
 3. Section 5 shows "No people log entries recorded" (or equivalent)
 4. Lookback defaults to 14 days (no `last_1on1_date` and no `prep_run` to read from)
-5. The header includes "(14-day default — no prior 1:1 date recorded)" or equivalent language indicating the fallback window was used
+5. The header includes "(14-day default - no prior 1:1 date recorded)" or equivalent language indicating the fallback window was used
 
 **Fail indicators:**
 - Command errors because no people log file exists
@@ -528,7 +528,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 12 — Lookback from prep_run (no last_1on1_date)
+## Scenario 12 - Lookback from prep_run (no last_1on1_date)
 
 **Precondition:**
 - Bob Smith, canonical fixture
@@ -542,7 +542,7 @@ This scenario requires two sub-tests.
 
 **Pass criteria:**
 1. Lookback header shows "since last prep on 2026-03-12" (or equivalent language referencing the `prep_run` date)
-2. Signal queries (GitHub, etc.) cover the period from 2026-03-12 to today — not a fixed 7-day or 14-day window
+2. Signal queries (GitHub, etc.) cover the period from 2026-03-12 to today - not a fixed 7-day or 14-day window
 
 **Fail indicators:**
 - Lookback falls back to 14-day default when `prep_run` is present and should be used
@@ -550,7 +550,7 @@ This scenario requires two sub-tests.
 
 ---
 
-## Scenario 13 — Lookback from last_1on1_date
+## Scenario 13 - Lookback from last_1on1_date
 
 **Precondition:**
 - Alice Chen, canonical fixture
@@ -563,8 +563,8 @@ This scenario requires two sub-tests.
 ```
 
 **Pass criteria:**
-1. Lookback header shows "since last 1:1 on 2026-03-10" (or equivalent — "since 2026-03-10" is acceptable)
-2. Signal queries cover the period from 2026-03-10 to today — `last_1on1_date` takes priority over `prep_run` when both are present
+1. Lookback header shows "since last 1:1 on 2026-03-10" (or equivalent - "since 2026-03-10" is acceptable)
+2. Signal queries cover the period from 2026-03-10 to today - `last_1on1_date` takes priority over `prep_run` when both are present
 
 **Fail indicators:**
 - Lookback uses `prep_run` or a default window instead of `last_1on1_date`
@@ -574,16 +574,16 @@ This scenario requires two sub-tests.
 
 ## Footer
 
-**Testing environment:** All tests are manual — invoke `/team-health:prep <name>` in a live Claude Code session with Phase 1, 2, and 3 setup complete.
+**Testing environment:** All tests are manual - invoke `/team-health:prep <name>` in a live Claude Code session with Phase 1, 2, and 3 setup complete.
 
-**State files location:** `.team-health/` directory (gitignored — this directory is never committed)
+**State files location:** `.team-health/` directory (gitignored - this directory is never committed)
 
-**Schema reference:** `.planning/phases/01-foundation/state-schemas.json` — locked canonical schemas for `config.json`, `baselines.json`, and `people/<slug>.json`
+**Schema reference:** `.planning/phases/01-foundation/state-schemas.json` - locked canonical schemas for `config.json`, `baselines.json`, and `people/<slug>.json`
 
 **Reference documents:**
-- `.claude/team-health/SIGNALS.md` — 11 signals, thresholds, two-signal rule, severity levels
-- `.claude/team-health/BASELINES.md` — rolling baseline computation algorithm, first-run behavior, provenance fields
-- `.claude/team-health/PRIVACY.md` — output language rules, required disclaimer, graceful degradation language
+- `.claude/team-health/SIGNALS.md` - 11 signals, thresholds, two-signal rule, severity levels
+- `.claude/team-health/BASELINES.md` - rolling baseline computation algorithm, first-run behavior, provenance fields
+- `.claude/team-health/PRIVACY.md` - output language rules, required disclaimer, graceful degradation language
 
 **Lookback window logic:** `last_1on1_date` → `prep_run` → 14-day default (in priority order). See CONTEXT.md and RESEARCH.md for full derivation notes.
 
@@ -604,6 +604,6 @@ This scenario requires two sub-tests.
 | 8 | PREP-08 | Career goals + last promo discussion date + months-ago in Section 5 |
 | 9 | PREP-09 | Zero prohibited diagnosis words; talking points are questions |
 | 10 | PREP-10 | All 4 sources named as unavailable; Sections 3–5 render from people log |
-| 11 | — | First use: no people log → no error; 14-day default disclosed in header |
-| 12 | — | Lookback from prep_run when no last_1on1_date |
-| 13 | — | Lookback from last_1on1_date takes priority over prep_run |
+| 11 | - | First use: no people log → no error; 14-day default disclosed in header |
+| 12 | - | Lookback from prep_run when no last_1on1_date |
+| 13 | - | Lookback from last_1on1_date takes priority over prep_run |

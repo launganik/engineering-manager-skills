@@ -1,6 +1,6 @@
-# Phase 3 — Team Pulse: Manual Smoke Tests
+# Phase 3 - Team Pulse: Manual Smoke Tests
 
-**Phase:** 3 — Team Pulse
+**Phase:** 3 - Team Pulse
 **Command under test:** `/team-health:pulse`
 **Document status:** Wave 0 validation contract (written before command implementation)
 **Purpose:** This document is the verification anchor for Plan 03-01. The executor of the pulse command verifies their work against these scenarios.
@@ -11,7 +11,7 @@
 
 Before running any scenario, confirm all of the following:
 
-1. Phase 1 setup is complete — `.team-health/config.json` exists with `setup_complete: true`
+1. Phase 1 setup is complete - `.team-health/config.json` exists with `setup_complete: true`
 2. At least two team members are configured in `config.json`
 3. `.claude/team-health/SIGNALS.md`, `BASELINES.md`, and `PRIVACY.md` all exist
 4. A live Claude Code session is open with the project loaded
@@ -26,7 +26,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 |------|------|-----------------|-----------------|
 | Alice Chen | `alice-chen` | `achen` | 8 weeks of data present |
 | Bob Smith | `bob-smith` | `bsmith` | 8 weeks of data present |
-| Carol Davis | `carol-davis` | `cdavis` | NEW — no baseline entry |
+| Carol Davis | `carol-davis` | `cdavis` | NEW - no baseline entry |
 
 **Source configuration (default for most scenarios):**
 
@@ -38,7 +38,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 1 — PULSE-01: Command scans all configured team members
+## Scenario 1 - PULSE-01: Command scans all configured team members
 
 **Requirement:** PULSE-01
 
@@ -56,7 +56,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 **Pass criteria:**
 1. Output includes a summary table listing all 3 team members: Alice Chen, Bob Smith, and Carol Davis
 2. No team member is silently skipped or omitted from the output
-3. Carol Davis's row in the summary table shows "(baseline pending — 0 weeks of data)" instead of a green/yellow/red status indicator
+3. Carol Davis's row in the summary table shows "(baseline pending - 0 weeks of data)" instead of a green/yellow/red status indicator
 4. Alice and Bob show status indicators (GREEN, YELLOW, or RED) based on their actual baseline comparison
 
 **Fail indicators:**
@@ -66,7 +66,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 2 — PULSE-02: Scoring uses personal baseline, not team averages
+## Scenario 2 - PULSE-02: Scoring uses personal baseline, not team averages
 
 **Requirement:** PULSE-02
 
@@ -88,9 +88,9 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 1. Alice is flagged (YELLOW or RED) due to the PR review count drop relative to her own 4.0/week baseline
 2. Bob is NOT flagged (GREEN) despite reviewing the same absolute number of PRs as Alice
 3. Alice's detail section references "8-week avg 4.0/week" or similar language specific to her baseline
-4. Bob's row references his own "8-week avg 1.0/week" (or similar) — NOT Alice's values
+4. Bob's row references his own "8-week avg 1.0/week" (or similar) - NOT Alice's values
 5. Output contains NO phrase like "team average", "compared to team", "team benchmark", or "team norm"
-6. All comparisons are phrased as "[person] vs. their own baseline" — never "[person A] vs. [person B]"
+6. All comparisons are phrased as "[person] vs. their own baseline" - never "[person A] vs. [person B]"
 
 **Fail indicators:**
 - Both Alice and Bob show GREEN (missed Alice's significant drop)
@@ -99,7 +99,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 3 — PULSE-03: Correct signals tracked per available source
+## Scenario 3 - PULSE-03: Correct signals tracked per available source
 
 **Requirement:** PULSE-03
 
@@ -114,14 +114,14 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 **Pass criteria:**
 1. Output includes a "Sources active: GitHub" header line (or equivalent)
-2. Output explicitly names Jira, Slack, and Calendar as unavailable — they must not be silently absent
+2. Output explicitly names Jira, Slack, and Calendar as unavailable - they must not be silently absent
 3. The 4 GitHub signals are checked for each team member:
    - PR merges per week (`github_prs_merged_per_week`)
    - PR review count per week (`github_pr_review_count_per_week`)
    - PR review lag in days (`github_pr_review_lag_days`)
    - Commit days per week (`github_commit_days_per_week`)
 4. Output does NOT claim to have checked Jira, Slack, or Calendar signals
-5. The 7 signals from Jira/Slack/Calendar appear in the output as unavailable/not checked — not silently omitted
+5. The 7 signals from Jira/Slack/Calendar appear in the output as unavailable/not checked - not silently omitted
 
 **Fail indicators:**
 - No mention of which sources are active or unavailable
@@ -131,7 +131,7 @@ All scenarios use these fixtures unless overridden in the scenario preconditions
 
 ---
 
-## Scenario 4 — PULSE-04: Conservative two-signal flagging rule
+## Scenario 4 - PULSE-04: Conservative two-signal flagging rule
 
 **Requirement:** PULSE-04
 
@@ -139,7 +139,7 @@ This scenario requires three sub-tests run back-to-back with different `baseline
 
 ---
 
-### Sub-test A — Should NOT flag (one signal at moderate deviation)
+### Sub-test A - Should NOT flag (one signal at moderate deviation)
 
 **Setup:** Modify Bob's baselines.json entry so that:
 - `github_pr_review_count_per_week`: current week = 2, mean = 3.2, stddev = 0.8 → deviation = −1.5 stddev
@@ -161,7 +161,7 @@ This scenario requires three sub-tests run back-to-back with different `baseline
 
 ---
 
-### Sub-test B — Should flag YELLOW (two signals at ≥1 stddev)
+### Sub-test B - Should flag YELLOW (two signals at ≥1 stddev)
 
 **Setup:** Modify Bob's baselines.json entry so that:
 - `github_pr_review_count_per_week`: current week = 2, mean = 4.0, stddev = 1.0 → deviation = −2.0 stddev
@@ -180,13 +180,13 @@ This scenario requires three sub-tests run back-to-back with different `baseline
 4. Reasoning: 2 signals at ≥1 stddev each → meets the two-signal rule → YELLOW flag
 
 **Fail indicators:**
-- Bob shows GREEN (false negative — missed two-signal pattern)
+- Bob shows GREEN (false negative - missed two-signal pattern)
 - Bob shows RED when only YELLOW criteria are met
 - Detail section missing or shows only one of the two triggering signals
 
 ---
 
-### Sub-test C — Should flag RED (one signal at ≥2 stddev)
+### Sub-test C - Should flag RED (one signal at ≥2 stddev)
 
 **Setup:** Modify Bob's baselines.json entry so that:
 - `github_pr_review_count_per_week`: current week = 0, mean = 4.2, stddev = 0.7 → deviation = (0−4.2)/0.7 = −6.0 stddev
@@ -210,7 +210,7 @@ This scenario requires three sub-tests run back-to-back with different `baseline
 
 ---
 
-## Scenario 5 — PULSE-05: Summary table includes all members; detail sections for flagged only
+## Scenario 5 - PULSE-05: Summary table includes all members; detail sections for flagged only
 
 **Requirement:** PULSE-05
 
@@ -225,7 +225,7 @@ This scenario requires three sub-tests run back-to-back with different `baseline
 ```
 
 **Pass criteria:**
-1. The summary table has exactly 3 rows — one for each team member
+1. The summary table has exactly 3 rows - one for each team member
 2. Bob Smith has a detail section below the summary table
 3. Alice Chen does NOT have a detail section (GREEN members have table row only)
 4. Carol Davis does NOT have a detail section (baseline-pending members have table row only, with pending label)
@@ -239,7 +239,7 @@ This scenario requires three sub-tests run back-to-back with different `baseline
 
 ---
 
-## Scenario 6 — PULSE-06: Flagged signal output states metric, delta, and source
+## Scenario 6 - PULSE-06: Flagged signal output states metric, delta, and source
 
 **Requirement:** PULSE-06
 
@@ -255,11 +255,11 @@ This scenario requires three sub-tests run back-to-back with different `baseline
 
 **Pass criteria:** Bob's detail section must contain ALL of the following elements:
 
-1. **Metric name:** "PR review count" (or `github_pr_review_count_per_week` — human-readable form required)
+1. **Metric name:** "PR review count" (or `github_pr_review_count_per_week` - human-readable form required)
 2. **Current value:** "0 reviews this week" (explicit zero, not omitted)
-3. **Baseline average:** "8-week avg 3.8/week" (or equivalent — must reference the 8-week window)
+3. **Baseline average:** "8-week avg 3.8/week" (or equivalent - must reference the 8-week window)
 4. **Absolute delta:** "−3.8" (negative delta from baseline mean)
-5. **Standard deviation delta:** "−9.5 stddev" (or similar — stddev units must be present)
+5. **Standard deviation delta:** "−9.5 stddev" (or similar - stddev units must be present)
 6. **Source attribution:** "GitHub MCP" (identifies which data source provided this signal)
 
 Output must NOT:
@@ -280,11 +280,11 @@ Output must NOT:
 
 ---
 
-## Scenario 7 — PULSE-07: Disclaimer appears verbatim at end of every output
+## Scenario 7 - PULSE-07: Disclaimer appears verbatim at end of every output
 
 **Requirement:** PULSE-07
 
-**Precondition:** Use any valid pulse run state — Scenario 1's setup (3 team members, GitHub only, Carol baseline-pending) is sufficient.
+**Precondition:** Use any valid pulse run state - Scenario 1's setup (3 team members, GitHub only, Carol baseline-pending) is sufficient.
 
 **Invocation:**
 ```
@@ -296,7 +296,7 @@ Output must NOT:
 
    > These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions.
 
-2. No paraphrase is accepted — the text must match character-for-character (punctuation included)
+2. No paraphrase is accepted - the text must match character-for-character (punctuation included)
 3. The disclaimer appears even when all team members are GREEN
 4. The disclaimer appears after any detail sections, not before the summary table
 
@@ -310,7 +310,7 @@ Output must NOT:
 
 ---
 
-## Scenario 8 — PULSE-08: baselines.json written with provenance fields after each run
+## Scenario 8 - PULSE-08: baselines.json written with provenance fields after each run
 
 **Requirement:** PULSE-08
 
@@ -342,7 +342,7 @@ Output must NOT:
 - `stddev`: numeric
 - `last_value`: this week's observed value
 
-**Carol's entry (`people.carol-davis`) — first-run behavior:**
+**Carol's entry (`people.carol-davis`) - first-run behavior:**
 - Entry is CREATED in baselines.json (Carol did not exist before)
 - `window`: array with exactly 1 element (this week's value)
 - `mean`: equals `window[0]` (the single observed value)
@@ -360,7 +360,7 @@ Output must NOT:
 
 ---
 
-## Scenario 9 — PULSE-09: Pulse history snapshot written to pulse-history/
+## Scenario 9 - PULSE-09: Pulse history snapshot written to pulse-history/
 
 **Requirement:** PULSE-09
 
@@ -383,11 +383,11 @@ Output must NOT:
    - Summary table with all team members and their status
    - Detail section for any flagged member (YELLOW or RED)
    - The verbatim disclaimer at the end
-4. Running pulse again the FOLLOWING week creates a NEW file (`2026-W12.md`) — it does NOT overwrite the previous week's file
+4. Running pulse again the FOLLOWING week creates a NEW file (`2026-W12.md`) - it does NOT overwrite the previous week's file
 
 **How to verify week-over-week:** After running once, manually verify the filename matches today's ISO week. Then note the filename and confirm the next week's run produces a different filename.
 
-**macOS date compatibility note:** Before running this scenario, verify that `date +%Y-W%V` produces a valid ISO week number in your terminal. On macOS (BSD `date`), `%V` may not be supported — if `date +%Y-W%V` returns an error or unexpected output (e.g., `%V` literal), the pulse command will use a fallback format. Note the actual filename format used in your test result. If the fallback format is used, document it (e.g., `2026-W11-fallback`) and verify it is consistent across runs.
+**macOS date compatibility note:** Before running this scenario, verify that `date +%Y-W%V` produces a valid ISO week number in your terminal. On macOS (BSD `date`), `%V` may not be supported - if `date +%Y-W%V` returns an error or unexpected output (e.g., `%V` literal), the pulse command will use a fallback format. Note the actual filename format used in your test result. If the fallback format is used, document it (e.g., `2026-W11-fallback`) and verify it is consistent across runs.
 
 **Fail indicators:**
 - `.team-health/pulse-history/` not created on first run
@@ -398,7 +398,7 @@ Output must NOT:
 
 ---
 
-## Scenario 10 — PULSE-10: Graceful degradation names all unavailable sources
+## Scenario 10 - PULSE-10: Graceful degradation names all unavailable sources
 
 **Requirement:** PULSE-10
 
@@ -414,8 +414,8 @@ Output must NOT:
 **Pass criteria:**
 1. Output does NOT error, crash, or produce a stack trace
 2. Output explicitly names ALL 4 unavailable sources: GitHub, Jira, Slack, Calendar
-3. Each unavailable source uses the degradation phrasing from `.claude/team-health/PRIVACY.md` — not invented or paraphrased language
-4. Summary table still renders — showing "no signals available" or "baseline pending" (or equivalent) for each person since no source data was collected
+3. Each unavailable source uses the degradation phrasing from `.claude/team-health/PRIVACY.md` - not invented or paraphrased language
+4. Summary table still renders - showing "no signals available" or "baseline pending" (or equivalent) for each person since no source data was collected
 5. The verbatim disclaimer appears at the end:
    > These signals are indicators, not diagnoses. Always talk to your people before drawing conclusions.
 
@@ -432,18 +432,18 @@ Output must NOT:
 
 ## Footer
 
-**Testing environment:** All tests are manual — invoke `/team-health:pulse` in a live Claude Code session with Phase 1 and Phase 2 setup complete.
+**Testing environment:** All tests are manual - invoke `/team-health:pulse` in a live Claude Code session with Phase 1 and Phase 2 setup complete.
 
-**State files location:** `.team-health/` directory (gitignored — this directory is never committed)
+**State files location:** `.team-health/` directory (gitignored - this directory is never committed)
 
-**Schema reference:** `.planning/phases/01-foundation/state-schemas.json` — locked canonical schemas for `config.json`, `baselines.json`, and `people/<slug>.json`
+**Schema reference:** `.planning/phases/01-foundation/state-schemas.json` - locked canonical schemas for `config.json`, `baselines.json`, and `people/<slug>.json`
 
 **Reference documents:**
-- `.claude/team-health/SIGNALS.md` — 11 signals, thresholds, two-signal rule, severity levels
-- `.claude/team-health/BASELINES.md` — rolling baseline computation algorithm, first-run behavior, provenance fields
-- `.claude/team-health/PRIVACY.md` — output language rules, required disclaimer, graceful degradation language
+- `.claude/team-health/SIGNALS.md` - 11 signals, thresholds, two-signal rule, severity levels
+- `.claude/team-health/BASELINES.md` - rolling baseline computation algorithm, first-run behavior, provenance fields
+- `.claude/team-health/PRIVACY.md` - output language rules, required disclaimer, graceful degradation language
 
-**macOS date compatibility note:** Before running Scenario 9, verify `date +%Y-W%V` produces correct ISO week numbers in your terminal. BSD `date` (macOS) differs from GNU `date` (Linux). If `%V` is unsupported, the pulse command's history filename will use a fallback format — note this in your test result and confirm the format is consistent across weekly runs.
+**macOS date compatibility note:** Before running Scenario 9, verify `date +%Y-W%V` produces correct ISO week numbers in your terminal. BSD `date` (macOS) differs from GNU `date` (Linux). If `%V` is unsupported, the pulse command's history filename will use a fallback format - note this in your test result and confirm the format is consistent across weekly runs.
 
 **Traceability:**
 

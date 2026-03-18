@@ -11,7 +11,7 @@ requires:
   - phase: 01-foundation
     provides: state-schemas.json (config.json + baselines.json schemas), setup.md and log.md command patterns
 provides:
-  - /team-health:pulse slash command — full weekly team health scan pipeline
+  - /team-health:pulse slash command - full weekly team health scan pipeline
   - Per-person baseline comparison with two-signal flagging rule
   - Graceful degradation for absent MCP sources
   - Atomic baselines.json update with provenance fields
@@ -37,7 +37,7 @@ key-files:
 
 key-decisions:
   - "Output before state writes: Phase D (dashboard) completes before Phase E (baselines.json + snapshot) to avoid corrupting deviation calculations with the current week's value"
-  - "Atomic baselines.json write: entire file built in memory then written in a single Write tool call — prevents partial-write data corruption"
+  - "Atomic baselines.json write: entire file built in memory then written in a single Write tool call - prevents partial-write data corruption"
   - "Flag status PENDING distinct from GREEN: baseline-pending states never get a flag color, shown as PENDING with weeks-of-data label"
   - "Two-signal rule faithfully transcribed: RED on single signal >=2 stddev; YELLOW on 2+ signals each >=1 stddev; stddev==0 edge case handled"
 
@@ -55,7 +55,7 @@ completed: 2026-03-17
 
 # Phase 3 Plan 01: Team Pulse Summary
 
-**Slash command /team-health:pulse implementing full weekly scan pipeline — per-person MCP signal collection, personal baseline comparison with two-signal flagging rule, flagged-only detail sections, and atomic state writes for baselines.json and pulse-history snapshots**
+**Slash command /team-health:pulse implementing full weekly scan pipeline - per-person MCP signal collection, personal baseline comparison with two-signal flagging rule, flagged-only detail sections, and atomic state writes for baselines.json and pulse-history snapshots**
 
 ## Performance
 
@@ -69,7 +69,7 @@ completed: 2026-03-17
 
 - Complete /team-health:pulse command file covering all 10 PULSE requirements (PULSE-01 through PULSE-10)
 - Faithful implementation of two-signal flagging rule: RED on single >=2 stddev signal, YELLOW on 2+ signals each >=1 stddev
-- Phase D output strictly before Phase E state writes — prevents baseline corruption by keeping current week's value out of comparison window
+- Phase D output strictly before Phase E state writes - prevents baseline corruption by keeping current week's value out of comparison window
 - Graceful degradation for all 4 MCP sources with PRIVACY.md-anchored language
 
 ## Task Commits
@@ -82,18 +82,18 @@ Each task was committed atomically:
 
 ## Files Created/Modified
 
-- `.claude/commands/team-health/pulse.md` — Complete /team-health:pulse slash command: Pre-flight Check, Required Reference Reads, Phase A (setup/degradation), Phase B (per-person signal collection for all 4 MCP sources), Phase C (baseline comparison + two-signal flagging), Phase D (dashboard + flagged detail sections + verbatim disclaimer), Phase E (atomic baselines.json write + pulse-history snapshot)
+- `.claude/commands/team-health/pulse.md` - Complete /team-health:pulse slash command: Pre-flight Check, Required Reference Reads, Phase A (setup/degradation), Phase B (per-person signal collection for all 4 MCP sources), Phase C (baseline comparison + two-signal flagging), Phase D (dashboard + flagged detail sections + verbatim disclaimer), Phase E (atomic baselines.json write + pulse-history snapshot)
 
 ## Decisions Made
 
 - Output before state writes: Phase D (dashboard) completes before Phase E (baselines.json + snapshot) to avoid corrupting deviation calculations with the current week's value
-- Atomic baselines.json write: entire file built in memory then written in a single Write tool call — prevents partial-write data corruption
+- Atomic baselines.json write: entire file built in memory then written in a single Write tool call - prevents partial-write data corruption
 - Flag status PENDING distinct from GREEN: baseline-pending states never get a flag color, shown as PENDING with weeks-of-data label
 - Two-signal rule faithfully transcribed: RED on single signal >=2 stddev; YELLOW on 2+ signals each >=1 stddev; stddev==0 edge case handled
 
 ## Deviations from Plan
 
-None — plan executed exactly as written. The pulse.md command was built section by section following the exact instructions in the plan, including verbatim copy of the front matter, Pre-flight Check boilerplate, and disclaimer text.
+None - plan executed exactly as written. The pulse.md command was built section by section following the exact instructions in the plan, including verbatim copy of the front matter, Pre-flight Check boilerplate, and disclaimer text.
 
 ## Issues Encountered
 
@@ -101,13 +101,13 @@ None.
 
 ## User Setup Required
 
-None — no external service configuration required for this plan. The command itself will prompt users to run /team-health:setup before proceeding.
+None - no external service configuration required for this plan. The command itself will prompt users to run /team-health:setup before proceeding.
 
 ## Next Phase Readiness
 
 - /team-health:pulse command is ready for Phase 3 manual smoke tests (docs/testing/phase-3-smoke-tests.md)
 - All 10 scenarios can be run in a live Claude Code session with Phase 1 setup complete and GitHub MCP configured
-- Phase 3 is complete as of this plan — remaining phases (04, 05) can proceed
+- Phase 3 is complete as of this plan - remaining phases (04, 05) can proceed
 
 ---
 *Phase: 03-team-pulse*

@@ -1,6 +1,6 @@
 # Phase 1 Smoke Tests
 
-> Manual test procedure for all Phase 1 requirements. Run this end-to-end before marking Phase 1 complete. No automated test runner — pure markdown/JSON skill verification is manual.
+> Manual test procedure for all Phase 1 requirements. Run this end-to-end before marking Phase 1 complete. No automated test runner - pure markdown/JSON skill verification is manual.
 
 ---
 
@@ -8,28 +8,28 @@
 
 Before starting any test scenario:
 
-1. **A git-initialized project directory** — This must be a directory *other than* the skill repo itself. Example: `mkdir ~/test-project && cd ~/test-project && git init`
-2. **Claude Code installed** — Confirm with `claude --version`.
-3. **Skill files installed in the project** — Copy or symlink the skill files into your test project:
+1. **A git-initialized project directory** - This must be a directory *other than* the skill repo itself. Example: `mkdir ~/test-project && cd ~/test-project && git init`
+2. **Claude Code installed** - Confirm with `claude --version`.
+3. **Skill files installed in the project** - Copy or symlink the skill files into your test project:
    ```bash
    # From the antigravity-skills repo root:
    cp -r .claude ~/test-project/.claude
    cp SKILL.md ~/test-project/SKILL.md
    ```
-4. **No prior team-health state** — Confirm `.team-health/` does not exist: `ls ~/test-project/.team-health 2>&1` should return "No such file or directory".
-5. **Claude Code open in the test project** — Open Claude Code with the `~/test-project` directory as the working directory before running any commands.
+4. **No prior team-health state** - Confirm `.team-health/` does not exist: `ls ~/test-project/.team-health 2>&1` should return "No such file or directory".
+5. **Claude Code open in the test project** - Open Claude Code with the `~/test-project` directory as the working directory before running any commands.
 
 ---
 
 ## Test Scenarios
 
-### Scenario 1 — MCP detection: no MCPs configured (SETUP-01)
+### Scenario 1 - MCP detection: no MCPs configured (SETUP-01)
 
 **Requirement:** SETUP-01
 
 **Setup:**
 1. Confirm no GitHub, Jira, Slack, or Calendar MCP servers are configured in Claude Code.
-2. Run `claude mcp list` — the output should show no team-health-relevant MCPs (github, jira, slack, or google-calendar entries).
+2. Run `claude mcp list` - the output should show no team-health-relevant MCPs (github, jira, slack, or google-calendar entries).
 3. If any are configured, remove them: `claude mcp remove <name>` for each.
 4. Ensure `.team-health/` does not exist in the test project (delete if present: `rm -rf ~/test-project/.team-health`).
 
@@ -60,7 +60,7 @@ print('PASS: all four sources are false')
 
 ---
 
-### Scenario 2 — MCP detection: GitHub MCP configured (SETUP-01)
+### Scenario 2 - MCP detection: GitHub MCP configured (SETUP-01)
 
 **Requirement:** SETUP-01
 
@@ -103,13 +103,13 @@ claude mcp remove github
 
 ---
 
-### Scenario 3 — Setup writes correct config.json (SETUP-02)
+### Scenario 3 - Setup writes correct config.json (SETUP-02)
 
 **Requirement:** SETUP-02
 
 **Setup:**
 1. Remove any existing `.team-health/` directory: `rm -rf ~/test-project/.team-health`.
-2. Ensure at least one MCP is absent (or all absent is fine — sources accuracy was tested above).
+2. Ensure at least one MCP is absent (or all absent is fine - sources accuracy was tested above).
 
 **Action:**
 1. Run `/team-health:setup`.
@@ -149,7 +149,7 @@ print(f'PASS: valid config.json with {len(d[\"team\"])} team members, schema_ver
 
 ---
 
-### Scenario 4 — Setup gate routes to setup (SETUP-03)
+### Scenario 4 - Setup gate routes to setup (SETUP-03)
 
 **Requirement:** SETUP-03
 
@@ -180,12 +180,12 @@ print(f'PASS: valid config.json with {len(d[\"team\"])} team members, schema_ver
 
 ---
 
-### Scenario 5 — All state files have schema_version (SETUP-04)
+### Scenario 5 - All state files have schema_version (SETUP-04)
 
 **Requirement:** SETUP-04
 
 **Setup:**
-1. Complete setup first (run Scenario 3 steps if not already done — config.json must exist with `setup_complete: true`).
+1. Complete setup first (run Scenario 3 steps if not already done - config.json must exist with `setup_complete: true`).
 2. Run `/team-health:pulse` once to generate `baselines.json`. Confirm the run completes.
 3. Run `/team-health:log alice` (or the slug for a team member you added) to generate a people entry. Add any note when prompted.
 
@@ -229,13 +229,13 @@ for f in files:
 
 ---
 
-### Scenario 6 — .team-health/ is gitignored (SETUP-05)
+### Scenario 6 - .team-health/ is gitignored (SETUP-05)
 
 **Requirement:** SETUP-05
 
 **Setup:**
 1. Use a fresh git-initialized project that has skill files installed but NO prior `.team-health/` or `.gitignore` content from the skill.
-2. Confirm `git status` shows a clean working tree (or only untracked skill files — NOT `.team-health/`).
+2. Confirm `git status` shows a clean working tree (or only untracked skill files - NOT `.team-health/`).
 
 **Action:**
 1. Run `/team-health:setup` in the test project.
@@ -258,7 +258,7 @@ cd ~/test-project && git status --short | grep ".team-health" && echo "FAIL: .te
 
 ---
 
-### Scenario 7 — SIGNALS.md exists and is substantive (REF-01)
+### Scenario 7 - SIGNALS.md exists and is substantive (REF-01)
 
 **Requirement:** REF-01
 
@@ -274,26 +274,26 @@ cd ~/test-project && git status --short | grep ".team-health" && echo "FAIL: .te
 **Expected:**
 The file exists and contains all four signal source sections:
 
-1. **GitHub signals** — must describe:
+1. **GitHub signals** - must describe:
    - PR frequency (PRs merged per week)
    - Review participation (review comments or approvals per week)
    - Commit days per week
    - How each signal is computed (what data query/MCP call to use)
    - Threshold guidance (e.g., what delta from baseline is notable)
 
-2. **Jira signals** — must describe:
+2. **Jira signals** - must describe:
    - Tickets closed per week
    - Open blockers/impediments
    - How each signal is computed
    - Threshold guidance
 
-3. **Slack signals** — must describe:
+3. **Slack signals** - must describe:
    - Channel participation (messages per week in team channels)
    - Response latency (avg time to reply to mentions)
    - How each signal is computed
    - Threshold guidance
 
-4. **Calendar signals** — must describe:
+4. **Calendar signals** - must describe:
    - Meeting load (hours/week in meetings)
    - 1:1 adherence (% of scheduled 1:1s held)
    - How each signal is computed
@@ -308,7 +308,7 @@ The file exists and contains all four signal source sections:
 
 ---
 
-### Scenario 8 — BASELINES.md exists and is substantive (REF-02)
+### Scenario 8 - BASELINES.md exists and is substantive (REF-02)
 
 **Requirement:** REF-02
 
@@ -325,7 +325,7 @@ The file exists and contains all four signal source sections:
 The file exists and contains:
 - Explanation of the rolling 8-week window concept
 - Step-by-step instructions for computing mean (arithmetic, written out)
-- Step-by-step instructions for computing standard deviation (arithmetic, written out — suitable for inline computation by Claude without external libraries)
+- Step-by-step instructions for computing standard deviation (arithmetic, written out - suitable for inline computation by Claude without external libraries)
 - The two-sigma flag threshold rule (when to flag a metric as anomalous)
 - At least one worked example with real numbers showing the computation end-to-end
 
@@ -340,7 +340,7 @@ The file exists and contains:
 
 ---
 
-### Scenario 9 — PRIVACY.md exists and is substantive (REF-03)
+### Scenario 9 - PRIVACY.md exists and is substantive (REF-03)
 
 **Requirement:** REF-03
 
@@ -356,13 +356,13 @@ The file exists and contains:
 **Expected:**
 The file exists and contains all four privacy categories from REQUIREMENTS.md:
 
-1. **Behavioral observation language** — rule against diagnostic or psychological labeling; approved phrasing examples (e.g., "commit frequency dropped 40% vs. baseline") and prohibited phrasing examples (e.g., "seems burned out", "appears disengaged")
+1. **Behavioral observation language** - rule against diagnostic or psychological labeling; approved phrasing examples (e.g., "commit frequency dropped 40% vs. baseline") and prohibited phrasing examples (e.g., "seems burned out", "appears disengaged")
 
-2. **DM content exclusion** — explicit rule that Slack DM content is never to be read or cited; only public channel participation metadata
+2. **DM content exclusion** - explicit rule that Slack DM content is never to be read or cited; only public channel participation metadata
 
-3. **No team-relative scoring** — rule against comparing individuals to each other (no "Alice is the lowest performer"); comparisons are only against the individual's own baseline
+3. **No team-relative scoring** - rule against comparing individuals to each other (no "Alice is the lowest performer"); comparisons are only against the individual's own baseline
 
-4. **No psychological labels** — explicit prohibition of clinical or quasi-clinical terms (burnout, anxiety, disengagement as diagnostic conclusions)
+4. **No psychological labels** - explicit prohibition of clinical or quasi-clinical terms (burnout, anxiety, disengagement as diagnostic conclusions)
 
 **Pass criteria (human review):**
 - [ ] File exists at `.claude/team-health/PRIVACY.md`
@@ -373,7 +373,7 @@ The file exists and contains all four privacy categories from REQUIREMENTS.md:
 
 ---
 
-### Scenario 10 — SKILL.md installation guide is accurate (REF-04)
+### Scenario 10 - SKILL.md installation guide is accurate (REF-04)
 
 **Requirement:** REF-04
 
@@ -416,16 +416,16 @@ The file exists and contains all four privacy categories from REQUIREMENTS.md:
 
 | Scenario | Requirement | Status |
 |----------|-------------|--------|
-| 1 — MCP detection (no MCPs) | SETUP-01 | ⬜ |
-| 2 — MCP detection (GitHub MCP) | SETUP-01 | ⬜ |
-| 3 — Config.json written correctly | SETUP-02 | ⬜ |
-| 4 — Setup gate routes | SETUP-03 | ⬜ |
-| 5 — schema_version in all state files | SETUP-04 | ⬜ |
-| 6 — .team-health/ gitignored | SETUP-05 | ⬜ |
-| 7 — SIGNALS.md substantive | REF-01 | ⬜ |
-| 8 — BASELINES.md substantive | REF-02 | ⬜ |
-| 9 — PRIVACY.md substantive | REF-03 | ⬜ |
-| 10 — SKILL.md accurate | REF-04 | ⬜ |
+| 1 - MCP detection (no MCPs) | SETUP-01 | ⬜ |
+| 2 - MCP detection (GitHub MCP) | SETUP-01 | ⬜ |
+| 3 - Config.json written correctly | SETUP-02 | ⬜ |
+| 4 - Setup gate routes | SETUP-03 | ⬜ |
+| 5 - schema_version in all state files | SETUP-04 | ⬜ |
+| 6 - .team-health/ gitignored | SETUP-05 | ⬜ |
+| 7 - SIGNALS.md substantive | REF-01 | ⬜ |
+| 8 - BASELINES.md substantive | REF-02 | ⬜ |
+| 9 - PRIVACY.md substantive | REF-03 | ⬜ |
+| 10 - SKILL.md accurate | REF-04 | ⬜ |
 
 ---
 

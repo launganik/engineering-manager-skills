@@ -1,16 +1,16 @@
-# Team Health — Signal Reference
+# Team Health - Signal Reference
 
 Loaded by: /team-health:pulse, /team-health:prep
 Purpose: Defines each tracked signal, its data source, how it is computed, and the threshold that triggers a flag.
 Last updated: 2026-03-10
 
-> When computing signal scores, follow this document exactly. Thresholds here are the defaults. They may be overridden in config.json (future feature — not yet implemented).
+> When computing signal scores, follow this document exactly. Thresholds here are the defaults. They may be overridden in config.json (future feature - not yet implemented).
 
 ---
 
 ## Section 1: GitHub Signals
 
-If `sources.github` is false in config.json, skip all signals in this section and note: "GitHub signals are unavailable — GitHub MCP is not configured. PR and commit data cannot be included."
+If `sources.github` is false in config.json, skip all signals in this section and note: "GitHub signals are unavailable - GitHub MCP is not configured. PR and commit data cannot be included."
 
 ---
 
@@ -60,9 +60,9 @@ If `sources.github` is false in config.json, skip all signals in this section an
 - Flag if `current_value > (baseline_mean + 2 * baseline_stddev)`
 - Interpretation: Taking significantly longer to review PRs than their norm may indicate overload.
 
-**Flag threshold (absolute — no baseline needed):**
+**Flag threshold (absolute - no baseline needed):**
 - Also flag if any individual PR assigned to this person for review has been open for >48 hours with no review from them.
-- This is an absolute threshold — applies even if they have no baseline history.
+- This is an absolute threshold - applies even if they have no baseline history.
 
 ---
 
@@ -78,13 +78,13 @@ If `sources.github` is false in config.json, skip all signals in this section an
 
 **Flag threshold:**
 - Flag if `current_value < (baseline_mean - 2 * baseline_stddev)`
-- Interpretation: A drop in commit activity can indicate blockers, context-switching overload, or disengagement — but it is a weak signal alone.
+- Interpretation: A drop in commit activity can indicate blockers, context-switching overload, or disengagement - but it is a weak signal alone.
 
 ---
 
 ## Section 2: Jira Signals
 
-If `sources.jira` is false in config.json, skip all signals in this section and note: "Jira signals are unavailable — Jira MCP is not configured. Ticket velocity and blocker data cannot be included."
+If `sources.jira` is false in config.json, skip all signals in this section and note: "Jira signals are unavailable - Jira MCP is not configured. Ticket velocity and blocker data cannot be included."
 
 ---
 
@@ -114,7 +114,7 @@ If `sources.jira` is false in config.json, skip all signals in this section and 
 4. Count tickets where `days_in_progress > (sprint_cadence_weeks * 2 * 7)`.
 
 **Flag threshold:**
-- Flag if `count >= 1` (absolute threshold — any stuck ticket is worth surfacing)
+- Flag if `count >= 1` (absolute threshold - any stuck ticket is worth surfacing)
 - No baseline comparison needed; persistent in-progress tickets are inherently worth flagging regardless of historical pattern.
 
 ---
@@ -122,7 +122,7 @@ If `sources.jira` is false in config.json, skip all signals in this section and 
 ### Signal: `jira_blocked_tickets`
 
 **Source:** Jira MCP
-**What it measures:** Count of Jira tickets assigned to this person currently in a Blocked status (or equivalent — check the Jira instance's status naming).
+**What it measures:** Count of Jira tickets assigned to this person currently in a Blocked status (or equivalent - check the Jira instance's status naming).
 **How to compute it:**
 1. Query the Jira MCP for all tickets assigned to this person with a status of Blocked (or Impediment, or equivalent blocking status used in this Jira instance).
 2. Count the total.
@@ -135,9 +135,9 @@ If `sources.jira` is false in config.json, skip all signals in this section and 
 
 ## Section 3: Slack Signals
 
-If `sources.slack` is false in config.json, skip all signals in this section and note: "Slack signals are unavailable — Slack MCP is not configured. Participation metadata cannot be included."
+If `sources.slack` is false in config.json, skip all signals in this section and note: "Slack signals are unavailable - Slack MCP is not configured. Participation metadata cannot be included."
 
-> **Privacy note:** Slack signals use metadata only — channel participation counts and response latency in public channels. DM content is never accessed. This is not configurable; DM content access is permanently out of scope.
+> **Privacy note:** Slack signals use metadata only - channel participation counts and response latency in public channels. DM content is never accessed. This is not configurable; DM content access is permanently out of scope.
 
 ---
 
@@ -147,7 +147,7 @@ If `sources.slack` is false in config.json, skip all signals in this section and
 **What it measures:** Count of distinct public channels where this person posted at least one message in the past 7 calendar days.
 **How to compute it:**
 1. Query the Slack MCP for message events in the past 7 days attributed to this person's `slack_user_id` (from config.json).
-2. Restrict to public channels only — do not include DMs, group DMs, or private channels.
+2. Restrict to public channels only - do not include DMs, group DMs, or private channels.
 3. Count the number of distinct channel IDs in the result.
 4. Compare to this person's 8-week rolling baseline.
 
@@ -166,7 +166,7 @@ If `sources.slack` is false in config.json, skip all signals in this section and
 2. For each @-mention, find the first message posted by this person in that same channel thread after the mention.
 3. Compute `response_time = first_response_timestamp - mention_timestamp` in fractional hours.
 4. Take the median across all qualifying @-mention events.
-5. If fewer than 3 qualifying @-mention events exist, do not compute this signal — insufficient data.
+5. If fewer than 3 qualifying @-mention events exist, do not compute this signal - insufficient data.
 6. Compare to this person's 8-week rolling baseline.
 
 **Flag threshold:**
@@ -177,7 +177,7 @@ If `sources.slack` is false in config.json, skip all signals in this section and
 
 ## Section 4: Calendar Signals
 
-If `sources.calendar` is false in config.json, skip all signals in this section and note: "Calendar signals are unavailable — Calendar MCP is not configured. Meeting load and 1:1 adherence data cannot be included."
+If `sources.calendar` is false in config.json, skip all signals in this section and note: "Calendar signals are unavailable - Calendar MCP is not configured. Meeting load and 1:1 adherence data cannot be included."
 
 ---
 
@@ -192,7 +192,7 @@ If `sources.calendar` is false in config.json, skip all signals in this section 
 4. Compute `meeting_load_percent = (total_meeting_minutes / 2700) * 100`.
 
 **Flag threshold:**
-- Flag if `meeting_load_percent > 60` (absolute threshold — no baseline comparison)
+- Flag if `meeting_load_percent > 60` (absolute threshold - no baseline comparison)
 - Interpretation: More than 60% of working hours in meetings is inherently unsustainable for an individual contributor. This threshold is fixed and does not require a personal baseline.
 
 ---
@@ -209,14 +209,14 @@ If `sources.calendar` is false in config.json, skip all signals in this section 
 
 **Flag threshold:**
 - Flag if no qualifying 1:1 event found in the expected window
-- Interpretation: A missed 1:1 cycle is worth surfacing — it may indicate scheduling pressure or an unintentional lapse in manager commitment.
+- Interpretation: A missed 1:1 cycle is worth surfacing - it may indicate scheduling pressure or an unintentional lapse in manager commitment.
 
 ---
 
 ## Section 5: Two-Signal Rule
 
 ```
-IMPORTANT — Flag Conservatively:
+IMPORTANT - Flag Conservatively:
 
 A person should only appear as flagged (yellow or red) if:
   (a) Two or more signals are below their individual thresholds, OR
@@ -245,11 +245,11 @@ When in doubt, do not flag. A false negative (missed flag) is preferable to a fa
 - `slack_response_latency_hours` (high = bad)
 
 **Absolute-threshold signals (no baseline needed):**
-- `jira_tickets_in_progress_over_2_sprints` — flag if count >= 1
-- `jira_blocked_tickets` — flag if count >= 1
-- `calendar_meeting_load_percent` — flag if > 60%
-- `calendar_1on1_adherence` — flag if 1:1 missed in expected window
-- `github_pr_review_lag_days` — also flag if any single PR open >48h with no review
+- `jira_tickets_in_progress_over_2_sprints` - flag if count >= 1
+- `jira_blocked_tickets` - flag if count >= 1
+- `calendar_meeting_load_percent` - flag if > 60%
+- `calendar_1on1_adherence` - flag if 1:1 missed in expected window
+- `github_pr_review_lag_days` - also flag if any single PR open >48h with no review
 
 ---
 

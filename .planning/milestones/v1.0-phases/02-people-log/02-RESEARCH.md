@@ -2,15 +2,15 @@
 
 **Researched:** 2026-03-13
 **Domain:** Claude Code command authoring, JSON state read/write, free-form note structuring, natural language query over flat JSON
-**Confidence:** HIGH — all critical patterns verified against Phase 1 implementation and locked schemas
+**Confidence:** HIGH - all critical patterns verified against Phase 1 implementation and locked schemas
 
 ---
 
 ## Summary
 
-Phase 2 delivers the `/team-health:log <name>` command — the longitudinal memory layer the whole skill depends on. It is a write-and-query command: the manager types free-form notes, the skill structures them into `people/<slug>.json` using the schema locked in Phase 1, and the same command can answer natural language questions about what was recorded.
+Phase 2 delivers the `/team-health:log <name>` command - the longitudinal memory layer the whole skill depends on. It is a write-and-query command: the manager types free-form notes, the skill structures them into `people/<slug>.json` using the schema locked in Phase 1, and the same command can answer natural language questions about what was recorded.
 
-The foundation is already in place. Phase 1 locked the canonical `person` schema in `state-schemas.json`, established the Pre-flight Check boilerplate, and implemented the setup command that the log command gates on. Phase 2 is a single command file — `.claude/commands/team-health/log.md` — that reads, appends to, and queries `.team-health/people/<slug>.json`. No new infrastructure is needed. The only new behavior is: (1) name resolution (argument → slug → file path), (2) first-time file creation, (3) context display (last 3–5 entries before prompting), (4) entry structuring (free-form → category + content + date), and (5) natural language query mode.
+The foundation is already in place. Phase 1 locked the canonical `person` schema in `state-schemas.json`, established the Pre-flight Check boilerplate, and implemented the setup command that the log command gates on. Phase 2 is a single command file - `.claude/commands/team-health/log.md` - that reads, appends to, and queries `.team-health/people/<slug>.json`. No new infrastructure is needed. The only new behavior is: (1) name resolution (argument → slug → file path), (2) first-time file creation, (3) context display (last 3–5 entries before prompting), (4) entry structuring (free-form → category + content + date), and (5) natural language query mode.
 
 The most important design decision is how the command decides whether the manager wants to add a note vs. query the log. The cleanest approach: if `$ARGUMENTS` contains a question mark, or starts with "when", "what", "show", "list", or "find", treat it as a query; otherwise treat it as an append session. This keeps a single command file and avoids a separate `/team-health:log-query` command.
 
@@ -23,11 +23,11 @@ The most important design decision is how the command decides whether the manage
 
 | ID | Description | Research Support |
 |----|-------------|-----------------|
-| LOG-01 | `/team-health:log <name>` appends timestamped, tagged entries to `.team-health/people/<name>.md` | Note: requirements doc says `.md` but state-schemas.json specifies `.json` — use `.json` (canonical schema wins; `.md` is likely a documentation error from requirements draft) |
-| LOG-02 | Entry categories supported: `feedback-given`, `feedback-received`, `career`, `commitment`, `concern`, `win`, `note` | Locked in state-schemas.json `valid_categories` — use those exact strings |
+| LOG-01 | `/team-health:log <name>` appends timestamped, tagged entries to `.team-health/people/<name>.md` | Note: requirements doc says `.md` but state-schemas.json specifies `.json` - use `.json` (canonical schema wins; `.md` is likely a documentation error from requirements draft) |
+| LOG-02 | Entry categories supported: `feedback-given`, `feedback-received`, `career`, `commitment`, `concern`, `win`, `note` | Locked in state-schemas.json `valid_categories` - use those exact strings |
 | LOG-03 | Manager types free-form notes; skill structures them into the log with date, category tag, and content | Standard prompt-engineering: Claude reads free-form input, infers category, asks for confirmation if ambiguous, writes structured entry |
 | LOG-04 | Opening the log shows the last 3–5 entries as context before prompting for new input | Read the file (or detect file doesn't exist), render last 3–5 entries from `entries` array, then prompt |
-| LOG-05 | Log supports natural language queries: "when did I last discuss promotion with Alex?", "what commitments have I made this quarter?" | Query mode: Claude reads the full `entries` array (and `open_commitments`) and answers inline — no search index needed at this data scale |
+| LOG-05 | Log supports natural language queries: "when did I last discuss promotion with Alex?", "what commitments have I made this quarter?" | Query mode: Claude reads the full `entries` array (and `open_commitments`) and answers inline - no search index needed at this data scale |
 | LOG-06 | Skill handles first-time log creation for a person gracefully | If file does not exist, create it with empty `entries`, `open_commitments`, and `career_context` per schema |
 </phase_requirements>
 
@@ -52,22 +52,22 @@ REQUIREMENTS.md (LOG-01) says `.team-health/people/<name>.md`. The state-schemas
 | `Read` tool | n/a | Read config.json (setup gate) and people/<slug>.json | Standard Claude Code tool, pre-approved in `allowed-tools` |
 | `Write` tool | n/a | Write people/<slug>.json (create new or overwrite with updated entries array) | Standard Claude Code tool, pre-approved in `allowed-tools` |
 | `Bash(date +%Y-%m-%dT%H:%M:%SZ)` | n/a | Get current timestamp for `created_at` field | Phase 1 pattern: `!`date +%Y-%m-%d`` for dynamic context injection |
-| `people/<slug>.json` schema | schema_version "1" | Per-person log file format | Locked in Phase 1 `state-schemas.json` — must not deviate |
+| `people/<slug>.json` schema | schema_version "1" | Per-person log file format | Locked in Phase 1 `state-schemas.json` - must not deviate |
 
 ### Supporting
 
 | Technology | Version | Purpose | When to Use |
 |------------|---------|---------|-------------|
-| `!`date +%Y-%m-%d`` pre-invocation bash | n/a | Inject current date into command context at invocation time | Use in front matter to give Claude today's date without a tool call — critical for entry `date` field accuracy |
-| `disable-model-invocation: true` | n/a | Prevent Claude from auto-running this command | Required for all state-writing commands — Phase 1 established this rule |
+| `!`date +%Y-%m-%d`` pre-invocation bash | n/a | Inject current date into command context at invocation time | Use in front matter to give Claude today's date without a tool call - critical for entry `date` field accuracy |
+| `disable-model-invocation: true` | n/a | Prevent Claude from auto-running this command | Required for all state-writing commands - Phase 1 established this rule |
 
 ### Alternatives Considered
 
 | Instead of | Could Use | Tradeoff |
 |------------|-----------|----------|
-| Single `log.md` command (append + query) | Separate `log.md` and `log-query.md` | Single file is cleaner UX — manager doesn't need to know which sub-command to use. Mode detection from argument text is simple and reliable at this scope. |
+| Single `log.md` command (append + query) | Separate `log.md` and `log-query.md` | Single file is cleaner UX - manager doesn't need to know which sub-command to use. Mode detection from argument text is simple and reliable at this scope. |
 | JSON file for people log | Markdown file (`.md`) | JSON is machine-queryable; Claude can reliably scan arrays and filter by category or date. Markdown is human-readable but harder to query structurally. JSON wins per state-schemas.json. |
-| Full file overwrite on append | Append-only log | JSON files must be fully re-written to add an entry — this is the only option with Claude's `Write` tool. The workflow is: Read → mutate entries array in memory → Write full file. |
+| Full file overwrite on append | Append-only log | JSON files must be fully re-written to add an entry - this is the only option with Claude's `Write` tool. The workflow is: Read → mutate entries array in memory → Write full file. |
 
 **No package installation needed.** This command uses only Claude's built-in tools.
 
@@ -81,13 +81,13 @@ REQUIREMENTS.md (LOG-01) says `.team-health/people/<name>.md`. The state-schemas
 .claude/
   commands/
     team-health/
-      setup.md          # Phase 1 — already exists
-      log.md            # Phase 2 — this phase creates this file
+      setup.md          # Phase 1 - already exists
+      log.md            # Phase 2 - this phase creates this file
 
 .team-health/           # Per-manager state (gitignored)
-  config.json           # Written by setup — log command reads this
+  config.json           # Written by setup - log command reads this
   people/
-    alice-chen.json     # Written by log command — created on first use
+    alice-chen.json     # Written by log command - created on first use
     bob-smith.json
 ```
 
@@ -117,13 +117,13 @@ Current date: !`date +%Y-%m-%d`
 
 **Resolution sequence:**
 1. Read `$ARGUMENTS` (everything after the command)
-2. If `$ARGUMENTS` contains a `?` or starts with a query word (`when`, `what`, `show`, `list`, `find`, `have`, `did`, `has`), extract the name from context — name is the first word(s) before the query begins, or the manager will be asked to clarify
-3. Otherwise, treat `$ARGUMENTS` as the person name (may include query text too — see Mode Detection below)
+2. If `$ARGUMENTS` contains a `?` or starts with a query word (`when`, `what`, `show`, `list`, `find`, `have`, `did`, `has`), extract the name from context - name is the first word(s) before the query begins, or the manager will be asked to clarify
+3. Otherwise, treat `$ARGUMENTS` as the person name (may include query text too - see Mode Detection below)
 4. Derive slug: lowercase all letters, replace spaces with hyphens, strip non-alphanumeric except hyphens
 5. Look up slug in `config.json`'s `team` array to confirm person exists
 6. File path: `.team-health/people/<slug>.json`
 
-**If name not found in config:** Report "No team member matching '[name]' found. Configured team: [list names]. Did you mean one of these?" — do not proceed.
+**If name not found in config:** Report "No team member matching '[name]' found. Configured team: [list names]. Did you mean one of these?" - do not proceed.
 
 **Why check config.json:** Prevents creating orphaned log files for names that aren't on the team roster. Forces the manager to add people through setup first.
 
@@ -137,7 +137,7 @@ Current date: !`date +%Y-%m-%d`
 After resolving the person name:
 
 If $ARGUMENTS (beyond the name) contains a question mark,
-or if the text after the name starts with: when, what, show, list, find, have, did, has, how many, which —
+or if the text after the name starts with: when, what, show, list, find, have, did, has, how many, which -
   → QUERY MODE: read the full log and answer the question. Stop after answering.
 
 Otherwise:
@@ -169,8 +169,8 @@ If entries array has entries:
   ---
   Recent log for [Name]:
 
-  [date] · [category] — [content]
-  [date] · [category] — [content]
+  [date] · [category] - [content]
+  [date] · [category] - [content]
   ...
   ---
 
@@ -213,7 +213,7 @@ If entries array is empty or file does not exist:
 **Behavior:**
 1. Check if `.team-health/people/<slug>.json` exists using Read tool
 2. If the Read returns an error or empty: create the file with the empty schema below, then proceed to append mode as normal
-3. Do NOT error or warn excessively — just mention "Starting a new log for Alice Chen."
+3. Do NOT error or warn excessively - just mention "Starting a new log for Alice Chen."
 
 **Empty file template (per state-schemas.json):**
 ```json
@@ -254,11 +254,11 @@ If entries array is empty or file does not exist:
 ### Anti-Patterns to Avoid
 
 - **Writing to `.team-health/people/<slug>.md`:** Use `.json` per the locked schema, not `.md` as written in the requirements text.
-- **Creating the log file before checking config.json:** Always run the Pre-flight Check and name resolution against config.json first — never create a log file for an unrecognized name.
+- **Creating the log file before checking config.json:** Always run the Pre-flight Check and name resolution against config.json first - never create a log file for an unrecognized name.
 - **Asking too many clarifying questions:** If category is inferable, infer it. Only ask when genuinely ambiguous. The log command should feel fast, not bureaucratic.
 - **Using `context: fork`:** This command writes state (JSON file). Forked subagents may not persist file writes correctly in all Claude Code contexts. Run inline.
 - **Truncating entries on write:** Read the full file, append to the entries array, write the full file. Never discard existing entries.
-- **Querying with Bash grep:** All querying should be done by Claude reading the JSON and answering inline — not by shelling out. The data volume (max ~15 people × years of entries) is manageable in context.
+- **Querying with Bash grep:** All querying should be done by Claude reading the JSON and answering inline - not by shelling out. The data volume (max ~15 people × years of entries) is manageable in context.
 
 ---
 
@@ -284,7 +284,7 @@ If entries array is empty or file does not exist:
 
 **Why it happens:** Inconsistent slug rules (e.g., one command strips apostrophes, another doesn't; one lowercases Unicode, another doesn't).
 
-**How to avoid:** Slug derivation rules must be verbatim-copied from setup.md into log.md. Do not paraphrase. The canonical rule: "lowercase all letters, replace spaces with hyphens, remove all special characters." The setup command already establishes the slug for each person and stores it in `config.json` — the log command should read the slug from `config.json` rather than re-deriving it from the argument, to guarantee consistency.
+**How to avoid:** Slug derivation rules must be verbatim-copied from setup.md into log.md. Do not paraphrase. The canonical rule: "lowercase all letters, replace spaces with hyphens, remove all special characters." The setup command already establishes the slug for each person and stores it in `config.json` - the log command should read the slug from `config.json` rather than re-deriving it from the argument, to guarantee consistency.
 
 **Warning signs:** "No previous entries" shown when entries exist; `prep` can't find people log data.
 
@@ -322,7 +322,7 @@ If entries array is empty or file does not exist:
 
 **Why it happens:** The Pre-flight Check boilerplate from Phase 1 was not included.
 
-**How to avoid:** The Pre-flight Check is mandatory boilerplate from Phase 1 — include it verbatim at the top of every command file, before any other logic.
+**How to avoid:** The Pre-flight Check is mandatory boilerplate from Phase 1 - include it verbatim at the top of every command file, before any other logic.
 
 ### Pitfall 6: Date Drift
 
@@ -338,7 +338,7 @@ If entries array is empty or file does not exist:
 
 Verified patterns from Phase 1 implementation and official sources:
 
-### Pre-flight Check (verbatim from Phase 1 — copy exactly)
+### Pre-flight Check (verbatim from Phase 1 - copy exactly)
 
 ```
 ## Pre-flight Check
@@ -375,7 +375,7 @@ Source: Phase 1 RESEARCH.md Pattern 1 (command file structure)
   "id": "2026-03-13-001",
   "date": "2026-03-13",
   "category": "feedback-given",
-  "content": "Gave specific positive feedback on the auth refactor PR — clean API design.",
+  "content": "Gave specific positive feedback on the auth refactor PR - clean API design.",
   "tags": [],
   "created_at": "2026-03-13T14:32:00Z"
 }
@@ -443,7 +443,7 @@ If entries array has 1 or more entries:
 
   ---
   Recent entries for [Name]:
-  [YYYY-MM-DD] · [category] — [content]
+  [YYYY-MM-DD] · [category] - [content]
   ---
 
   Then ask: "What would you like to log?"
@@ -463,10 +463,10 @@ If entries array is empty:
 | Separate `open_commitments` array | Commitments only in entries | Phase 1 schema design | Prep command can pull open commitments without scanning all entries for keyword matches |
 
 **Locked decisions from Phase 1 that constrain this phase:**
-- `.team-health/people/<slug>.json` — file extension is `.json`, not `.md`
-- `schema_version: "1"` — must be present in every file written
-- `disable-model-invocation: true` — required on this command
-- Pre-flight Check boilerplate — mandatory, copy verbatim
+- `.team-health/people/<slug>.json` - file extension is `.json`, not `.md`
+- `schema_version: "1"` - must be present in every file written
+- `disable-model-invocation: true` - required on this command
+- Pre-flight Check boilerplate - mandatory, copy verbatim
 - Slug derivation: lowercase, spaces → hyphens, strip special chars
 
 ---
@@ -481,7 +481,7 @@ If entries array is empty:
 2. **Should the log command update `career_context.last_promo_discussion` automatically?**
    - What we know: The schema has `last_promo_discussion` as a date field; LOG-03 says "structures them into the log"
    - What's unclear: whether automatic update of career_context is in scope for Phase 2 or Phase 4
-   - Recommendation: Yes, include it — if the inferred category is `career` and the content mentions "promotion" or "promo", update `last_promo_discussion` to today's date. Keeps Phase 4 prep data fresh without requiring a separate command.
+   - Recommendation: Yes, include it - if the inferred category is `career` and the content mentions "promotion" or "promo", update `last_promo_discussion` to today's date. Keeps Phase 4 prep data fresh without requiring a separate command.
 
 3. **What happens when a manager logs for someone who left the team?**
    - What we know: config.json `team` array is the canonical roster; if someone is removed from setup, their slug won't appear
@@ -498,7 +498,7 @@ If entries array is empty:
 
 | Property | Value |
 |----------|-------|
-| Framework | None — pure markdown/JSON skill, no runnable code |
+| Framework | None - pure markdown/JSON skill, no runnable code |
 | Config file | n/a |
 | Quick run command | Manual: invoke `/team-health:log <name>` in Claude Code and verify output |
 | Full suite command | Manual: run all log scenarios in a project with Phase 1 setup complete |
@@ -522,10 +522,10 @@ If entries array is empty:
 
 ### Wave 0 Gaps
 
-- [ ] `docs/testing/phase-2-smoke-tests.md` — step-by-step manual test procedure for all 6 LOG scenarios above
-- [ ] `.claude/commands/team-health/log.md` — the command file itself (this is the primary deliverable of Phase 2)
+- [ ] `docs/testing/phase-2-smoke-tests.md` - step-by-step manual test procedure for all 6 LOG scenarios above
+- [ ] `.claude/commands/team-health/log.md` - the command file itself (this is the primary deliverable of Phase 2)
 
-*(No automated framework needed — no runnable code; all tests are manual)*
+*(No automated framework needed - no runnable code; all tests are manual)*
 
 ---
 
@@ -533,30 +533,30 @@ If entries array is empty:
 
 ### Primary (HIGH confidence)
 
-- `.planning/phases/01-foundation/state-schemas.json` — locked canonical schemas; `valid_categories`, `entries` shape, `open_commitments` shape, `career_context` shape all taken directly from this file
-- `.planning/phases/01-foundation/01-RESEARCH.md` — established patterns (Pre-flight Check, front matter keys, `disable-model-invocation`, `!`date`` injection, colon-namespace commands, slug derivation)
-- `.claude/commands/team-health/setup.md` — reference implementation showing the exact command file format in use
+- `.planning/phases/01-foundation/state-schemas.json` - locked canonical schemas; `valid_categories`, `entries` shape, `open_commitments` shape, `career_context` shape all taken directly from this file
+- `.planning/phases/01-foundation/01-RESEARCH.md` - established patterns (Pre-flight Check, front matter keys, `disable-model-invocation`, `!`date`` injection, colon-namespace commands, slug derivation)
+- `.claude/commands/team-health/setup.md` - reference implementation showing the exact command file format in use
 
 ### Secondary (MEDIUM confidence)
 
-- `.planning/REQUIREMENTS.md` — LOG-01 through LOG-06 requirements text (note: `.md` vs `.json` discrepancy documented above; schema wins)
-- Phase 1 plan summaries (01-01-SUMMARY.md, 01-03-SUMMARY.md) — confirmed what was actually built in Phase 1 and what patterns are now in use
+- `.planning/REQUIREMENTS.md` - LOG-01 through LOG-06 requirements text (note: `.md` vs `.json` discrepancy documented above; schema wins)
+- Phase 1 plan summaries (01-01-SUMMARY.md, 01-03-SUMMARY.md) - confirmed what was actually built in Phase 1 and what patterns are now in use
 
-### Tertiary (LOW confidence — verify at implementation)
+### Tertiary (LOW confidence - verify at implementation)
 
-- Category inference keywords table above — reasonable heuristics based on common EM language; may need tuning after first use
-- Fuzzy name matching recommendation — reasonable UX choice; implementation details may need adjustment based on edge cases encountered
+- Category inference keywords table above - reasonable heuristics based on common EM language; may need tuning after first use
+- Fuzzy name matching recommendation - reasonable UX choice; implementation details may need adjustment based on edge cases encountered
 
 ---
 
 ## Metadata
 
 **Confidence breakdown:**
-- Command file format and front matter: HIGH — direct from Phase 1 implementation
-- State schema: HIGH — locked in state-schemas.json, no ambiguity
-- Mode detection pattern (append vs. query): MEDIUM-HIGH — logical design choice, not verified against an existing implementation; may need iteration
-- Category inference rules: MEDIUM — keyword heuristics, reasonable but may need tuning
-- Validation scenarios: HIGH — directly derived from LOG-01 through LOG-06 requirement text
+- Command file format and front matter: HIGH - direct from Phase 1 implementation
+- State schema: HIGH - locked in state-schemas.json, no ambiguity
+- Mode detection pattern (append vs. query): MEDIUM-HIGH - logical design choice, not verified against an existing implementation; may need iteration
+- Category inference rules: MEDIUM - keyword heuristics, reasonable but may need tuning
+- Validation scenarios: HIGH - directly derived from LOG-01 through LOG-06 requirement text
 
 **Research date:** 2026-03-13
 **Valid until:** 2026-06-13 (stable foundations; Claude Code skills API unlikely to change; state schema is locked until Phase 1 schema_version bump)
