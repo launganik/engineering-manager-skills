@@ -12,20 +12,20 @@ Help managers be MORE human — remembering what their people care about, notici
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ `/team-health:prep <name>` — 1:1 prep sheet from tool signals + people log context — v1.0
+- ✓ `/team-health:pulse` — weekly team health dashboard with per-person signal scoring vs. personal baselines — v1.0
+- ✓ `/team-health:log <name>` — append-to and query a structured longitudinal people log — v1.0
+- ✓ `/team-health:skip-level` — upward-facing team status brief for manager's own manager — v1.0
+- ✓ `/team-health:retro-prep` — sprint retrospective agenda seeded with real data — v1.0
+- ✓ Graceful degradation: detect available MCPs on first run, communicate capability gaps — v1.0
+- ✓ First-run setup flow: collect team roster, 1:1 cadence, source preferences — v1.0
+- ✓ Signal scoring vs. personal 8-week rolling baseline (not team averages), computed inline by Claude — v1.0
+- ✓ Privacy-first output: signals not diagnoses, no DM content, no auto-surfacing of people log in skip-level — v1.0
+- ✓ State storage in `.team-health/` directory within user's project — v1.0
 
 ### Active
 
-- [ ] `/team-health:prep <name>` — 1:1 prep sheet from tool signals + people log context
-- [ ] `/team-health:pulse` — weekly team health dashboard with per-person signal scoring vs. personal baselines
-- [ ] `/team-health:log <name>` — append-to and query a structured longitudinal people log
-- [ ] `/team-health:skip-level` — upward-facing team status brief for manager's own manager
-- [ ] `/team-health:retro-prep` — sprint retrospective agenda seeded with real data
-- [ ] Graceful degradation: detect available MCPs on first run, communicate capability gaps
-- [ ] First-run setup flow: collect team roster, 1:1 cadence, source preferences
-- [ ] Signal scoring vs. personal 8-week rolling baseline (not team averages), computed inline by Claude
-- [ ] Privacy-first output: signals not diagnoses, no DM content, no auto-surfacing of people log in skip-level
-- [ ] State storage in `.team-health/` directory within user's project
+(None — defining in next milestone)
 
 ### Out of Scope
 
@@ -37,13 +37,13 @@ Help managers be MORE human — remembering what their people care about, notici
 
 ## Context
 
-The skill is delivered as a set of markdown skill files (SKILL.md per command, reference docs, prompt templates). It uses MCP tool calls to pull data from GitHub, Jira, Slack, and Calendar. State is written to `.team-health/` in the user's project directory — people logs, baseline snapshots, pulse history, config.
+Shipped v1.0 with 16,117 LOC across 74 files (markdown skill files, reference docs, prompt templates, planning artifacts).
 
-Target team size: 3–15 direct reports (typical EM span of control).
+Tech stack: Claude Code slash commands (markdown), MCP tool calls (GitHub, Jira, Slack, Calendar), JSON state files in `.team-health/`.
 
-The skill must work across different team setups. Any EM should be able to install it and have it detect what's available and guide setup. Full functionality requires all four MCP sources; it degrades gracefully down to GitHub-only.
+All 6 commands delivered: `/team-health:setup`, `/team-health:log`, `/team-health:pulse`, `/team-health:prep`, `/team-health:skip-level`, `/team-health:retro-prep`.
 
-Baseline computation: Claude reads historical data from `.team-health/baselines.json` (maintained as a simple rolling window) and computes rolling averages + standard deviations inline. No external scripts.
+Target team size: 3–15 direct reports (typical EM span of control). Full functionality requires all four MCP sources; degrades gracefully to GitHub-only.
 
 ## Constraints
 
@@ -56,10 +56,13 @@ Baseline computation: Claude reads historical data from `.team-health/baselines.
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Claude computes baselines inline | Simpler, no Python dependency, works across any install | — Pending |
-| Shareable skill (not personal) | Broader value, forces good defaults and graceful degradation | — Pending |
-| Signals not diagnoses | Legal/ethical safety, preserves manager judgment | — Pending |
-| State in .team-health/ (user's project) | Keeps people data with the manager, not in skill install | — Pending |
+| Claude computes baselines inline | Simpler, no Python dependency, works across any install | ✓ Good — worked cleanly across all commands |
+| Shareable skill (not personal) | Broader value, forces good defaults and graceful degradation | ✓ Good — shaped design of setup flow and graceful degradation |
+| Signals not diagnoses | Legal/ethical safety, preserves manager judgment | ✓ Good — enforced via PRIVACY.md reference doc consumed by all commands |
+| State in .team-health/ (user's project) | Keeps people data with the manager, not in skill install | ✓ Good — gitignore guard added in Phase 1 |
+| Wave 0 smoke test contracts per phase | Establishes verification anchor before implementation | ✓ Good — each phase had explicit test scenarios to verify against |
+| Privacy gate in skip-level: no people log by default | People log is for EM context only; skip-level is upward-facing | ✓ Good — `--include-person` explicit opt-in pattern |
+| Work-item attribution in retro-prep (not person attribution) | Retro seeds should name PRs/tickets, not individuals | ✓ Good — enforced by command design |
 
 ---
-*Last updated: 2026-03-09 after initialization*
+*Last updated: 2026-03-18 after v1.0 milestone*
