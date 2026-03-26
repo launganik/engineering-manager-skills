@@ -1,4 +1,4 @@
-# team-health
+# engineering-manager-claude-skill
 
 A Claude Code skill for engineering managers that surfaces what a good manager with infinite attention span would already notice - without surveys, without surveillance, without extra process.
 
