@@ -45,6 +45,77 @@ The skill works without any MCP sources connected. GitHub-only is a fully suppor
 
 ---
 
+## Setting up MCP connectors (first-timers start here)
+
+MCP connectors are how Claude Code talks to GitHub, Jira, Slack, and the rest. If you have never set up MCP servers before, follow these steps **before** running `/team-health:setup`. If you already have your connectors working, skip to [Installation](#installation).
+
+### 1. Open Claude Code
+
+Launch Claude Code from your terminal:
+
+```bash
+claude
+```
+
+All MCP management happens inside the Claude Code session. You can type `/mcp` inside Claude Code to see the MCP management menu at any time.
+
+### 2. Add the connectors you need
+
+Run these commands **inside Claude Code** (or in a regular terminal — both work). You only need to add each connector once; it persists across sessions.
+
+**GitHub** (strongly recommended — provides the richest signals):
+
+```bash
+# Prerequisites: install the GitHub CLI and authenticate first
+brew install gh          # macOS — see https://cli.github.com for other platforms
+gh auth login            # follow the browser-based auth flow
+
+# Then add the GitHub MCP connector
+claude mcp add github -- gh copilot mcp
+```
+
+> If you see a permission error or "request failed" after adding GitHub, make sure `gh auth status` shows you are logged in. If it says "not logged in", run `gh auth login` again.
+
+**Atlassian (Jira + Confluence)**:
+
+```bash
+claude mcp add atlassian -- npx -y @anthropic/claude-atlassian-mcp
+```
+
+When prompted, authenticate via the browser. This single connector provides both Jira and Confluence access. After authenticating, Claude Code will detect Jira signals (ticket velocity, blocked tickets) and Confluence signals (pages authored, comments, mentions).
+
+**Slack**:
+
+```bash
+claude mcp add slack -- npx -y @anthropic/claude-slack-mcp
+```
+
+Authenticate via the browser when prompted. This provides channel participation metadata — message counts and response latency in public channels. DM content is never accessed.
+
+**Google Calendar**:
+
+```bash
+claude mcp add google-calendar -- npx -y @anthropic/claude-google-calendar-mcp
+```
+
+Authenticate via the browser when prompted. This provides meeting load percentage and focus time block data.
+
+### 3. Verify your connectors are active
+
+Inside Claude Code, run:
+
+```
+/mcp
+```
+
+You should see each connector you added listed with a green status. If a connector shows as unavailable, see [Troubleshooting](#troubleshooting) below.
+
+### 4. Now proceed to Installation
+
+Once your connectors are active, follow the [Installation](#installation) steps below. When you run `/team-health:setup`, it will automatically detect which connectors are available and configure the skill accordingly.
+
+---
+
 ## Installation
 
 ### Step 1 - Copy the skill files into your project
@@ -62,7 +133,7 @@ cp /path/to/antigravity-skills/SKILL.md ./
 
 ```bash
 ls .claude/commands/team-health/
-# setup.md  log.md  pulse.md  prep.md  skip-level.md  retro-prep.md
+# setup.md  onboard.md  log.md  summary.md  pulse.md  prep.md  skip-level.md  retro-prep.md  digest.md
 ```
 
 ### Step 3 - Run first-time setup
@@ -315,3 +386,58 @@ Before skip-level:
 Before sprint retro:
   /team-health:retro-prep         ← seed the agenda with real data
 ```
+
+---
+
+## Troubleshooting
+
+### "MCP servers are not available"
+
+This means Claude Code cannot find any MCP connectors. The most common causes:
+
+1. **No connectors added yet.** Run the commands in [Setting up MCP connectors](#setting-up-mcp-connectors-first-timers-start-here) above.
+2. **Connectors added outside Claude Code.** Some MCP config files (like `mmcp.json`) only take effect after restarting Claude Code. Exit with `/exit` and re-launch `claude`.
+3. **Authentication expired.** Run `/mcp` inside Claude Code to check connector status. If a connector shows as disconnected, remove and re-add it:
+   ```bash
+   claude mcp remove github
+   claude mcp add github -- gh copilot mcp
+   ```
+
+### GitHub: "request failed" or permission errors
+
+This usually means the GitHub CLI is not authenticated or not installed.
+
+```bash
+# Check if gh is installed
+gh --version
+
+# Check auth status
+gh auth status
+
+# If not logged in:
+gh auth login
+```
+
+After authenticating, restart Claude Code and try `/team-health:setup` again.
+
+### Atlassian: Jira detected but Confluence missing (or vice versa)
+
+The Atlassian MCP connector provides both Jira and Confluence through a single connection. If only one is detected during setup, your Atlassian account may not have access to both products. Check your Atlassian site permissions. You can re-run setup with `--reset` after fixing access:
+
+```
+/team-health:setup --reset
+```
+
+### Setup detects 0 sources but I added connectors
+
+Make sure you are running `/team-health:setup` **inside the same Claude Code session** where you added the connectors. If you added connectors in a terminal and then opened a new Claude Code session, the connectors should still persist — but try running `/mcp` first to confirm they are listed and active.
+
+### How do I add a connector later?
+
+You can add new MCP connectors at any time. After adding one, re-run setup to update your config:
+
+```
+/team-health:setup --reset
+```
+
+This will re-detect all available sources and update `.team-health/config.json` while preserving your team roster.
