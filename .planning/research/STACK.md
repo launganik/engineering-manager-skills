@@ -226,7 +226,7 @@ There is no package to install. The skill is installed by:
 
 ```bash
 # 1. Clone the skill repo (or copy the files)
-git clone https://github.com/your-org/antigravity-skills <target>
+git clone https://github.com/your-org/engineering-manager-skills <target>
 
 # 2. Copy command files to target project
 cp -r <target>/.claude/commands/team-health/ <your-project>/.claude/commands/team-health/

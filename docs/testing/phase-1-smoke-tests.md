@@ -12,7 +12,7 @@ Before starting any test scenario:
 2. **Claude Code installed** - Confirm with `claude --version`.
 3. **Skill files installed in the project** - Copy or symlink the skill files into your test project:
    ```bash
-   # From the antigravity-skills repo root:
+   # From the engineering-manager-skills repo root:
    cp -r .claude ~/test-project/.claude
    cp SKILL.md ~/test-project/SKILL.md
    ```
@@ -384,7 +384,7 @@ The file exists and contains all four privacy categories from REQUIREMENTS.md:
 **Action:**
 1. Open SKILL.md from the skill repo:
    ```bash
-   cat ~/path/to/antigravity-skills/SKILL.md
+   cat ~/path/to/engineering-manager-skills/SKILL.md
    ```
 2. Follow the installation steps **exactly as written**, step by step, in the fresh project directory.
 3. After completing the installation steps, open Claude Code in the new project directory.

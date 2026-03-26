@@ -67,10 +67,10 @@ The primary design choice for Phase 1 is whether to use `.claude/commands/team-h
 
 ```bash
 # Clone the skill repo into the manager's project directory
-git clone https://github.com/your-org/antigravity-skills .
+git clone https://github.com/your-org/engineering-manager-skills .
 
 # Or copy the skill files
-cp -r /path/to/antigravity-skills/.claude ./
+cp -r /path/to/engineering-manager-skills/.claude ./
 
 # Run first-time setup in Claude Code
 /team-health:setup
