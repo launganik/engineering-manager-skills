@@ -32,6 +32,7 @@ The skill works without any MCP sources - you will just have fewer signals. GitH
 | Jira MCP | Ticket velocity, blocked tickets, sprint carry-over | `claude mcp add jira ...` | Jira signals unavailable |
 | Slack MCP | Channel participation trend, response latency (metadata only, no DM content) | `claude mcp add slack ...` | Slack signals unavailable |
 | Google Calendar MCP | Meeting load %, 1:1 adherence | `claude mcp add google-calendar ...` | Calendar signals unavailable |
+| Atlassian/Confluence MCP | Pages authored, comments, @-mentions (informational, non-flagging) | `claude mcp add atlassian ...` | Confluence activity context unavailable |
 
 ---
 
@@ -83,7 +84,7 @@ The skill works without any MCP sources - you will just have fewer signals. GitH
 
 ### `/team-health:setup`
 
-First-time setup. Collects team roster, 1:1 cadences, and detects available MCP sources. Must be run before any other command.
+First-time setup. Collects team roster, 1:1 cadences, and detects available MCP sources (GitHub, Jira, Slack, Calendar, Confluence). Must be run before any other command.
 
 **Syntax:** `/team-health:setup`
 
@@ -95,6 +96,34 @@ First-time setup. Collects team roster, 1:1 cadences, and detects available MCP 
 ```
 /team-health:setup
 ```
+
+---
+
+### `/team-health:onboard <name>`
+
+Guided context capture for a new or existing direct report. Walks through 5 sections: career goals, current strengths, growth areas, working style, and manager commitments. Seeds the people log with structured entries and updates career context.
+
+**Syntax:** `/team-health:onboard alice`
+
+**Requires:** Setup complete. Can be run multiple times — preserves existing entries.
+
+**Example:**
+```
+/team-health:onboard alice
+# Walks through 5 guided sections, then saves everything to the people log
+```
+
+---
+
+### `/team-health:summary <name>`
+
+Read-only person profile. Shows everything you know: career goals, open commitments, signal trends over 8 weeks, Confluence activity, pulse flag history, and full log history. Makes zero state writes — safe to run any time without side effects.
+
+**Syntax:** `/team-health:summary alice`
+
+**Output:** 5-section profile (Profile, Career Context with coaching framework references, Open Commitments, Signal Trends, Log History)
+
+**Requires:** Setup complete. Richer with pulse history and people log data.
 
 ---
 
@@ -128,11 +157,11 @@ Weekly team health scan. Scores each person against their personal 8-week baseli
 
 ### `/team-health:prep <name>`
 
-Generate a 2-minute prep sheet for an upcoming 1:1. Synthesizes live tool signals against personal baselines and surfaces standing items from the people log.
+Generate a 2-minute prep sheet for an upcoming 1:1. Synthesizes live tool signals against personal baselines, surfaces standing items from the people log, includes Confluence activity context, and adds inline coaching hints to each talking point.
 
 **Syntax:** `/team-health:prep alice`
 
-**Output:** Status snapshot, signal flags, standing items, talking points, context reminders
+**Output:** Status snapshot, signal flags, Confluence activity, standing items, talking points with coaching hints, context reminders
 
 **Requires:** Setup complete. Pulse run at least once recommended.
 
@@ -160,6 +189,23 @@ Generate a data-seeded sprint retro agenda. Discussion seeds are attributed to w
 
 ---
 
+### `/team-health:digest`
+
+Automated weekly pulse with Slack delivery. Runs the full pulse analysis, saves a detailed report locally, and sends a condensed summary (team snapshot, attention items, quick actions, coaching tip of the week) to your Slack DM or a channel.
+
+**Syntax:** `/team-health:digest`
+
+**Flags:** `--dry-run` (output only), `--no-slack` (save locally, skip Slack), `--channel <name>` (post to channel instead of DM)
+
+**Requires:** Setup complete. Slack MCP recommended for delivery.
+
+**Schedule for every Friday:**
+```
+/schedule create --name "team-health-digest" --interval "weekly" --day "friday" --time "09:00" --command "/team-health:digest"
+```
+
+---
+
 ## Where Data Lives
 
 ```
@@ -173,10 +219,13 @@ Generate a data-seeded sprint retro agenda. Discussion seeds are attributed to w
 
 .claude/
   commands/team-health/    # Slash command files (safe to commit)
+    setup.md, onboard.md, log.md, summary.md, pulse.md, prep.md,
+    skip-level.md, retro-prep.md, digest.md
   team-health/             # Reference docs loaded by commands (safe to commit)
-    SIGNALS.md
-    BASELINES.md
-    PRIVACY.md
+    SIGNALS.md             # 14 signals (11 flag-eligible + 3 Confluence informational)
+    BASELINES.md           # Baseline computation methodology
+    PRIVACY.md             # Output language rules
+    COACHING.md            # 10 situational coaching frameworks
 ```
 
 The `.team-health/` directory is added to `.gitignore` automatically during setup. Skill files under `.claude/` are safe to commit and share with your team.

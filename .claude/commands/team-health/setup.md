@@ -31,7 +31,9 @@ Detect which MCP sources are available by attempting minimal tool calls for each
 
 **Calendar:** Attempt to call any tool whose name contains "gcal", "google_calendar", or "calendar". If any such tool responds (even with a non-fatal error), set `calendar = true`. If no calendar-namespaced tool exists, set `calendar = false`.
 
-After probing all four sources, present a capabilities summary before asking any questions:
+**Confluence:** Attempt to call any tool whose name contains "confluence" or "atlassian". If any such tool responds (even with a non-fatal error), set `confluence = true`. If no confluence/atlassian-namespaced tool exists, set `confluence = false`. Note: The Atlassian MCP often provides both Jira and Confluence tools — if Jira was detected via an atlassian-namespaced tool, also probe for Confluence-specific tools (getConfluencePage, searchConfluenceUsingCql, etc.).
+
+After probing all five sources, present a capabilities summary before asking any questions:
 
 ```
 MCP Sources Detected:
@@ -39,9 +41,10 @@ MCP Sources Detected:
 - Jira: [available / NOT AVAILABLE - ticket velocity signals will be absent]
 - Slack: [available / NOT AVAILABLE - participation metadata signals will be absent]
 - Calendar: [available / NOT AVAILABLE - meeting load signals will be absent]
+- Confluence: [available / NOT AVAILABLE - documentation activity signals will be absent]
 ```
 
-Note: Full functionality requires all four sources. The skill degrades gracefully - GitHub-only is a supported configuration.
+Note: Full functionality requires all five sources. The skill degrades gracefully - GitHub-only is a supported configuration. Confluence signals are informational (do not trigger flags) but provide valuable context about non-code contributions.
 
 ---
 
@@ -128,7 +131,8 @@ Fill in fields from the information collected in Steps 1–3:
     "github": <true or false from Step 1>,
     "jira": <true or false from Step 1>,
     "slack": <true or false from Step 1>,
-    "calendar": <true or false from Step 1>
+    "calendar": <true or false from Step 1>,
+    "confluence": <true or false from Step 1>
   },
   "baseline_window_weeks": 8,
   "github_org": "<github org or username from Step 2>",

@@ -10,16 +10,19 @@ It pulls real signals from the tools your team already uses (GitHub, Jira, Slack
 
 ## What it includes
 
-Six slash commands you run inside [Claude Code](https://claude.ai/code):
+Nine slash commands you run inside [Claude Code](https://claude.ai/code):
 
 | Command | What it does |
 |---------|-------------|
 | `/team-health:setup` | One-time setup: collect team roster, detect available MCP sources |
+| `/team-health:onboard <name>` | Guided context capture for a new direct report — career goals, strengths, growth areas, working style |
 | `/team-health:log <name>` | Append notes to a direct report's people log, or query their history |
-| `/team-health:pulse` | Weekly team health scan - scores everyone against their personal baseline |
-| `/team-health:prep <name>` | 2-minute 1:1 prep sheet with signals, standing items, and talking points |
+| `/team-health:summary <name>` | Read-only person profile — career goals, commitments, signal trends, log history, tenure |
+| `/team-health:pulse` | Weekly team health scan — scores everyone against their personal baseline |
+| `/team-health:prep <name>` | 2-minute 1:1 prep sheet with signals, standing items, talking points, and coaching hints |
 | `/team-health:skip-level` | Upward-facing team brief for your own manager, privacy-gated by default |
 | `/team-health:retro-prep` | Sprint retro agenda seeded with real data, attributed to work items not people |
+| `/team-health:digest` | Weekly pulse + condensed Slack summary — designed for scheduled Friday automation |
 
 ---
 
@@ -36,8 +39,9 @@ Six slash commands you run inside [Claude Code](https://claude.ai/code):
 | Jira MCP | Ticket velocity, blocked tickets, sprint carry-over |
 | Slack MCP | Channel participation trend, response latency (public channels only - no DM content) |
 | Google Calendar MCP | Meeting load %, focus time blocks |
+| Atlassian/Confluence MCP | Pages authored, comments, @-mentions — non-code contribution visibility |
 
-The skill works without any MCP sources connected. GitHub-only is a fully supported configuration.
+The skill works without any MCP sources connected. GitHub-only is a fully supported configuration. Confluence signals are informational (they provide context but don't trigger flags).
 
 ---
 
@@ -90,6 +94,28 @@ grep ".team-health" .gitignore
 
 ## Usage
 
+### Onboard a new direct report
+
+When someone joins your team (or when you want to backfill context for an existing report), run:
+
+```
+/team-health:onboard alice
+```
+
+This walks you through 5 sections: career goals, current strengths, growth areas, working style, and any commitments you've already made. Everything is saved to their people log and career context, making your first few 1:1s much richer.
+
+---
+
+### View a person summary (read-only)
+
+```
+/team-health:summary alice
+```
+
+Shows everything you know about a person in one view: profile, career goals, open commitments, signal trends over time, Confluence activity, and log history. This is read-only — it doesn't update any state, so you can look someone up at any time without side effects.
+
+---
+
 ### Keep a people log
 
 Run this any time you want to capture something about a direct report - feedback you gave, commitments you made, career conversations, wins, concerns:
@@ -130,12 +156,13 @@ Every run writes a snapshot to `.team-health/pulse-history/YYYY-WNN.md` for use 
 /team-health:prep alice
 ```
 
-Generates a 5-section prep sheet:
+Generates a 6-section prep sheet:
 
 1. **Status Snapshot** - overall signal status since last 1:1
 2. **Signal Flags** - any deviations from personal baseline (behavioral, not diagnostic)
+2b. **Confluence Activity** - non-code contributions (pages authored, comments, mentions)
 3. **Standing Items** - your open commitments and IC asks from the people log
-4. **Suggested Talking Points** - 3-5 questions prioritized by urgency (red flags → overdue commitments → career context)
+4. **Suggested Talking Points** - 3-5 questions prioritized by urgency, each with an inline coaching hint that tells you *how* to raise the topic (not just what to raise)
 5. **Context Reminders** - stated goals, last promo discussion date, recent log entries
 
 The lookback window is dynamic: it starts from the date of your last 1:1 (tracked automatically), falling back to last prep run, then a 14-day default.
@@ -175,6 +202,26 @@ The command makes no state writes - it is a pure read-and-generate operation.
 
 ---
 
+### Automated weekly digest
+
+```
+/team-health:digest
+```
+
+Runs the full pulse analysis, saves the detailed report locally, and sends a condensed summary to your Slack DM. Includes a team snapshot, attention items, quick actions, and a rotating coaching tip of the week.
+
+**Flags:**
+- `--dry-run` — generate the digest without saving files or sending to Slack
+- `--no-slack` — save locally only, skip Slack delivery
+- `--channel team-health` — post to a Slack channel instead of DM
+
+**Schedule it for every Friday morning:**
+```
+/schedule create --name "team-health-digest" --interval "weekly" --day "friday" --time "09:00" --command "/team-health:digest"
+```
+
+---
+
 ## Where data lives
 
 ```
@@ -186,13 +233,25 @@ The command makes no state writes - it is a pure read-and-generate operation.
     bob-smith.json
   pulse-history/
     2026-W11.md            ← weekly pulse snapshots consumed by skip-level/retro
+  digests/
+    2026-W11-digest.md     ← condensed weekly digests (from /team-health:digest)
 
 .claude/
   commands/team-health/    ← slash command files (safe to commit and share)
+    setup.md               ← first-time setup
+    onboard.md             ← guided context capture for new reports
+    log.md                 ← people log append/query
+    summary.md             ← read-only person profile
+    pulse.md               ← weekly team health scan
+    prep.md                ← 1:1 prep sheet with coaching hints
+    skip-level.md          ← upward-facing team brief
+    retro-prep.md          ← sprint retro agenda seeding
+    digest.md              ← automated weekly pulse + Slack delivery
   team-health/             ← reference docs loaded by commands (safe to commit)
-    SIGNALS.md             ← 11 signals, thresholds, two-signal flagging rule
+    SIGNALS.md             ← 14 signals (11 flag-eligible + 3 Confluence informational)
     BASELINES.md           ← baseline computation methodology
     PRIVACY.md             ← output language rules, degradation language
+    COACHING.md            ← 10 situational coaching frameworks for inline hints
 ```
 
 The `.team-health/` directory is gitignored automatically during setup. The `.claude/` skill files are safe to commit and share - they contain no personal data.
@@ -232,14 +291,23 @@ rm -rf .team-health/
 ## Typical weekly workflow
 
 ```
-Monday morning:
+New team member joins:
+  /team-health:onboard alice      ← guided context capture (career goals, strengths, style)
+
+Friday morning (automated):
+  /team-health:digest             ← pulse + Slack summary (schedule this!)
+
+Monday morning (if not using digest):
   /team-health:pulse              ← scan the whole team, update baselines
 
-Before each 1:1 (takes ~30 seconds):
-  /team-health:prep alice         ← generates prep sheet since last 1:1
+Any time — quick lookup:
+  /team-health:summary alice      ← read-only profile (no side effects)
+
+Before each 1:1 (~30 seconds):
+  /team-health:prep alice         ← prep sheet with coaching hints since last 1:1
 
 After 1:1 (30 seconds):
-  /team-health:log alice          ← log any commitments, feedback, or notes
+  /team-health:log alice          ← log commitments, feedback, or notes
 
 Before skip-level:
   /team-health:skip-level         ← team brief for your manager

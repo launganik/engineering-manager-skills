@@ -27,9 +27,10 @@ Before doing anything else:
 ## Required Reference Reads
 
 Before doing any analysis, read these files using the Read tool (in order):
-1. .claude/team-health/SIGNALS.md - 11 signals, thresholds, two-signal rule, severity levels
+1. .claude/team-health/SIGNALS.md - 14 signals (11 flag-eligible + 3 informational Confluence), thresholds, two-signal rule, severity levels
 2. .claude/team-health/BASELINES.md - baseline computation algorithm, first-run behavior, provenance fields
 3. .claude/team-health/PRIVACY.md - output language rules, required disclaimer, degradation language
+4. .claude/team-health/COACHING.md - situational coaching frameworks for inline hints in talking points
 
 Follow these documents exactly. Do not improvise signal thresholds, flagging rules, or output language.
 
@@ -100,7 +101,16 @@ Query the **primary calendar only** (exclude shared, subscribed, and delegated c
 - `calendar_meeting_load_pct`: meeting percentage since lookback_start
 - `calendar_1on1_adherence`: was 1:1 held within expected cadence window?
 
-For each collected signal, compare to baseline from CURRENT_BASELINES using BASELINES.md deviation algorithm:
+### Confluence signals (if sources.confluence is true, or if Atlassian/Confluence MCP tools are available):
+These are informational signals — they do NOT participate in flag determination.
+- `confluence_pages_authored_per_month`: count of pages created/edited by this person in the last 30 days (use their Atlassian account ID, same as jira_user_id from config)
+- `confluence_comments_per_month`: count of comments left on Confluence pages in the last 30 days
+- `confluence_mentions_per_month`: count of pages where this person is @-mentioned, modified in the last 30 days
+- Also collect: up to 5 most recent page titles authored or edited (titles only, no content)
+
+Store Confluence data separately from flag-eligible signals. It will be rendered in a dedicated block in the prep output.
+
+For each collected flag-eligible signal, compare to baseline from CURRENT_BASELINES using BASELINES.md deviation algorithm:
 1. Look up person's baseline entry: CURRENT_BASELINES.people[slug].metrics[metric_name]
 2. If no entry or window length < 3: label "(baseline pending - N weeks of data)", do NOT flag
 3. If window >= 3: compute deviation = (current_value - mean) / stddev
@@ -155,6 +165,26 @@ Available signals: [active sources] | Unavailable: [inactive sources with PRIVAC
 
 ---
 
+## 2b. Confluence Activity (Informational)
+
+[If Confluence signals were collected:]
+**Confluence activity (last 30 days):** [N] pages authored/edited, [M] comments, [P] pages mentioned in
+Recent pages:
+- [Page title 1]
+- [Page title 2]
+- [up to 5 titles]
+
+[If Confluence activity is notably higher than baseline while GitHub activity is lower than baseline:]
+*Note: Non-code contributions appear elevated while code metrics are lower — this may reflect design, documentation, or coordination work. See talking points for context.*
+
+[If Confluence MCP not available:]
+*Confluence activity unavailable — Atlassian MCP not configured.*
+
+[If Confluence MCP available but no activity found:]
+*No Confluence activity found in the last 30 days.*
+
+---
+
 ## 3. Standing Items from People Log
 
 [If open commitments exist:]
@@ -177,11 +207,16 @@ Available signals: [active sources] | Unavailable: [inactive sources with PRIVAC
 [Label each with source type: (signal), (commitment), (career), (pattern)]
 [Priority order: (1) RED flags, (2) overdue commitments >30 days, (3) YELLOW flags, (4) career context overdue >90 days since last promo discussion, (5) log patterns (same concern 3+ times in 6 weeks), (6) wins worth acknowledging]
 
-1. [Question] *(source: [type] - [brief context])*
-2. [Question] *(source: [type] - [brief context])*
-3. [Question] *(source: [type] - [brief context])*
+[COACHING HINTS: After each talking point, append an inline coaching hint from COACHING.md. Use the Framework Selection table in COACHING.md to determine which framework applies. Customize the hint with actual data from this person's signals and people log. Maximum one hint per talking point. If no framework clearly applies, omit the hint.]
 
-[COMPLIANCE CHECK: After generating talking points, review each against PRIVACY.md Rules 1 and 4. Rewrite any point containing diagnostic or psychological language. Every point must be a behavioral observation framed as a question.]
+1. [Question] *(source: [type] - [brief context])*
+   💡 *Coaching: [1-2 sentence hint from the matching COACHING.md framework, with placeholders replaced by actual data]*
+2. [Question] *(source: [type] - [brief context])*
+   💡 *Coaching: [hint]*
+3. [Question] *(source: [type] - [brief context])*
+   💡 *Coaching: [hint]*
+
+[COMPLIANCE CHECK: After generating talking points and coaching hints, review each against PRIVACY.md Rules 1 and 4. Rewrite any point or hint containing diagnostic or psychological language. Every point must be a behavioral observation framed as a question. Coaching hints must suggest HOW to ask, not WHAT to conclude.]
 
 [If fewer than 3 data sources have content: generate from available sources. Minimum 3 points even if all come from one source.]
 

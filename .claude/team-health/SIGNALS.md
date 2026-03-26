@@ -175,7 +175,77 @@ If `sources.slack` is false in config.json, skip all signals in this section and
 
 ---
 
-## Section 4: Calendar Signals
+## Section 4: Confluence Signals
+
+If `sources.confluence` is false in config.json (or no Atlassian/Confluence MCP is available), skip all signals in this section and note: "Confluence signals are unavailable - Atlassian MCP is not configured. Documentation and knowledge-sharing activity cannot be included."
+
+> **Note:** Confluence signals measure non-code contributions — design docs, RFCs, architecture reviews, onboarding guides, and cross-team knowledge sharing. These are valuable leading indicators of senior-level impact that do not appear in GitHub or Jira metrics.
+
+---
+
+### Signal: `confluence_pages_authored_per_month`
+
+**Source:** Confluence MCP (via Atlassian MCP)
+**What it measures:** Count of Confluence pages created or significantly edited by this person in the past 30 calendar days.
+**How to compute it:**
+1. Query the Atlassian MCP for Confluence pages where this person is the creator or last editor, modified in the past 30 days. Use their display name or Atlassian account ID (from config.json `jira_user_id` which is the same Atlassian account).
+2. "Significantly edited" means: the person is listed as the creator, OR the person made edits that changed more than a trivial amount of content (if edit history is available). If edit granularity is not available, count any page where they are listed as creator or last modifier.
+3. Count the total pages.
+4. Compare to this person's 8-week rolling baseline (using 4-week observation windows averaged to weekly equivalent for baseline consistency).
+
+**Flag threshold:**
+- This signal does NOT trigger flags on its own. It is an informational signal only.
+- It is surfaced in /team-health:summary and /team-health:prep as context, not as a flag input.
+- Rationale: Documentation cadence is highly variable and task-dependent. A drop in page creation does not reliably indicate a problem.
+
+---
+
+### Signal: `confluence_comments_per_month`
+
+**Source:** Confluence MCP (via Atlassian MCP)
+**What it measures:** Count of comments this person left on Confluence pages in the past 30 calendar days.
+**How to compute it:**
+1. Query the Atlassian MCP for Confluence comments authored by this person in the past 30 days.
+2. Count inline comments and footer comments separately if the API supports it; report the total.
+3. Compare to this person's rolling baseline.
+
+**Flag threshold:**
+- Informational signal only — does not trigger flags.
+- Surfaced in summary and prep for context on collaboration and review activity.
+
+---
+
+### Signal: `confluence_mentions_per_month`
+
+**Source:** Confluence MCP (via Atlassian MCP)
+**What it measures:** Count of Confluence pages published or updated in the past 30 calendar days where this person is @-mentioned in the body text.
+**How to compute it:**
+1. Query the Atlassian MCP using CQL: search for pages containing an @-mention of this person's display name or account ID, modified in the last 30 days.
+2. Count distinct pages (not mention occurrences — one count per page regardless of how many times they're mentioned).
+3. Compare to this person's rolling baseline.
+
+**Flag threshold:**
+- Informational signal only — does not trigger flags.
+- High mention counts may indicate this person is a go-to expert or decision-maker for certain areas. Surface as positive context.
+
+---
+
+### Confluence Signal Aggregation for Prep and Summary
+
+When surfacing Confluence data in /team-health:prep or /team-health:summary, aggregate the three Confluence signals into a single contextual block:
+
+```
+**Confluence activity (last 30 days):** [N] pages authored/edited, [M] comments, [P] pages mentioned in
+Recent pages: [list up to 5 most recent page titles authored or edited]
+```
+
+If Confluence activity is notably higher than baseline while GitHub activity is lower:
+- In prep: trigger the "Contribution Reframe" coaching hint from COACHING.md Framework 10.
+- In summary: note in Growth Context that non-code contributions are significant.
+
+---
+
+## Section 5: Calendar Signals
 
 If `sources.calendar` is false in config.json, skip all signals in this section and note: "Calendar signals are unavailable - Calendar MCP is not configured. Meeting load and 1:1 adherence data cannot be included."
 
@@ -213,7 +283,7 @@ If `sources.calendar` is false in config.json, skip all signals in this section 
 
 ---
 
-## Section 5: Two-Signal Rule
+## Section 6: Two-Signal Rule
 
 ```
 IMPORTANT - Flag Conservatively:
@@ -253,7 +323,7 @@ When in doubt, do not flag. A false negative (missed flag) is preferable to a fa
 
 ---
 
-## Section 6: Signal Availability Matrix
+## Section 7: Signal Availability Matrix
 
 | Signal | Source | Required MCP | Available without MCP? |
 |--------|--------|--------------|------------------------|
@@ -268,7 +338,12 @@ When in doubt, do not flag. A false negative (missed flag) is preferable to a fa
 | `slack_response_latency_hours` | Slack | slack | No |
 | `calendar_meeting_load_percent` | Calendar | calendar | No |
 | `calendar_1on1_adherence` | Calendar | calendar | No |
+| `confluence_pages_authored_per_month` | Confluence | atlassian | No (informational only) |
+| `confluence_comments_per_month` | Confluence | atlassian | No (informational only) |
+| `confluence_mentions_per_month` | Confluence | atlassian | No (informational only) |
 
-**Minimum viable set (GitHub-only):** With only the GitHub MCP configured, the pulse command can compute the 4 GitHub signals and apply the two-signal rule across that subset. The output will note that 7 of 11 signals are unavailable.
+**Total signals:** 14 (11 flag-eligible + 3 informational Confluence signals)
+
+**Minimum viable set (GitHub-only):** With only the GitHub MCP configured, the pulse command can compute the 4 GitHub signals and apply the two-signal rule across that subset. The output will note that 7 of 11 flag-eligible signals are unavailable. Confluence signals are informational and do not participate in flagging.
 
 **Fallback behavior:** If a signal cannot be computed due to missing MCP, absent data, or insufficient baseline history, omit it from the output rather than showing a zero or placeholder. State which signals were omitted and why.
