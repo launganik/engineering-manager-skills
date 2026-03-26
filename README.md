@@ -118,25 +118,77 @@ Once your connectors are active, follow the [Installation](#installation) steps 
 
 ## Installation
 
-### Step 1 - Copy the skill files into your project
+There are two ways to install: as a **plugin** (recommended) or by **cloning the repo** manually.
+
+### Option A: Plugin install (recommended)
+
+The plugin gives you all commands globally — no files copied into your project, no git pollution, and automatic MCP server prompts.
+
+**Forto engineers** already have the marketplace configured. Just install the plugin:
+
+```bash
+claude plugin install engineering-manager-skills@forto-marketplace
+```
+
+That's it. All `/team-health:*` commands are available immediately in any project directory. MCP servers (GitHub, Atlassian, Slack, Calendar) will prompt for approval on first use.
+
+**External users** need to add the marketplace first, then install:
+
+```bash
+# Add the marketplace (one-time)
+claude plugin marketplace add freight-hub/claude-marketplace
+
+# Install the plugin
+claude plugin install engineering-manager-skills@forto-marketplace
+```
+
+Then run first-time setup inside Claude Code:
+
+```
+/team-health:setup
+```
+
+You can also test locally without installing:
+
+```bash
+claude --plugin-dir /path/to/plugins/engineering-manager-skills
+```
+
+**Why plugin over manual install?**
+
+| | Plugin | Manual clone |
+|---|---|---|
+| Install | One command | Clone repo, copy files into each project |
+| Scope | Works globally across all projects | Only in the directory where you copied files |
+| Updates | Re-install to pick up new versions | Manual `cp -r` of updated files |
+| MCP servers | Auto-prompted via bundled config | Manual `claude mcp add` for each one |
+| Project repo | Zero files added | Adds `.claude/` dirs and `SKILL.md` |
+
+---
+
+### Option B: Manual install (clone this repo)
+
+Use this if you want to customize the skill files or can't use the marketplace.
+
+#### Step 1 - Copy the skill files into your project
 
 ```bash
 # Clone this repo into your project directory
-git clone https://github.com/your-org/engineering-manager-skill .
+git clone https://github.com/launganik/engineering-manager-skills .
 
 # Or copy just the skill files into an existing project
-cp -r /path/to/engineering-manager-skill/.claude ./
-cp /path/to/engineering-manager-skill/SKILL.md ./
+cp -r /path/to/engineering-manager-skills/.claude ./
+cp /path/to/engineering-manager-skills/SKILL.md ./
 ```
 
-### Step 2 - Verify the files are in place
+#### Step 2 - Verify the files are in place
 
 ```bash
 ls .claude/commands/team-health/
 # setup.md  onboard.md  log.md  summary.md  pulse.md  prep.md  skip-level.md  retro-prep.md  digest.md
 ```
 
-### Step 3 - Run first-time setup
+#### Step 3 - Run first-time setup
 
 Open Claude Code in your project directory:
 
@@ -151,7 +203,7 @@ The setup flow will:
 4. Save everything to `.team-health/config.json`
 5. Add `.team-health/` to `.gitignore` automatically
 
-### Step 4 - Confirm it worked
+#### Step 4 - Confirm it worked
 
 ```bash
 cat .team-health/config.json
