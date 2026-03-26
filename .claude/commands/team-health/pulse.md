@@ -97,9 +97,9 @@ For each team member in config.json team array (iterate in order):
   - slack_response_latency_trend: trend in response latency in public channels (up/stable/down or normalized score)
 
   ### Calendar signals (if sources.calendar is true):
-  Query the **primary calendar only** for this person (exclude shared, subscribed, and delegated calendars):
+  Query **this person's own calendar** using their email as calendarId (e.g., `gcal_list_events(calendarId="firstname.lastname@forto.com")`). If the person has an `email` field in config.json, use that. Otherwise, derive from their name: lowercase `firstname.lastname@forto.com`. Only include events with 2+ real participants that were accepted or tentatively accepted.
   - calendar_meeting_load_pct: percentage of working hours in meetings this week
-  - calendar_focus_time_blocks_per_week: count of uninterrupted blocks ≥90 minutes this week
+  - calendar_focus_time_blocks_per_week: count of uninterrupted blocks >=90 minutes this week
 
   Record all collected signal values as: { slug, metric_name, current_value, week_queried }
 

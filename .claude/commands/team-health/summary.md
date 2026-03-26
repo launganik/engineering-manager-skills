@@ -1,6 +1,6 @@
 ---
 description: "Read-only person profile: career goals, open commitments, signal trends, log history, and tenure — no state writes."
-argument-hint: "<name>"
+argument-hint: "<name> [from:\"DD-Mon-YYYY\"]"
 allowed-tools: Read, Bash(date +%Y-%m-%d), Bash(ls .team-health/pulse-history/), Bash(gh api *)
 disable-model-invocation: true
 ---
@@ -16,9 +16,17 @@ Before doing anything else:
    - Stop. Do not proceed with the rest of this command.
 3. If setup_complete is true, continue.
 
+## Argument Parsing
+
+Parse $ARGUMENTS for:
+1. **Person name:** everything before `from:` (or the entire string if no `from:` is present). Trim whitespace.
+2. **from date (optional):** if `from:"<date>"` or `from:<date>` is present, parse the date. Accepted formats: `DD-Mon-YYYY` (e.g., `01-Mar-2026`), `YYYY-MM-DD` (e.g., `2026-03-01`), or `DD/MM/YYYY`. Convert to YYYY-MM-DD and store as `FROM_DATE`.
+3. If no `from:` parameter is present, set `FROM_DATE` to null (default lookback windows apply: 7 days for GitHub, 30 days for Confluence).
+4. If `FROM_DATE` is set, it overrides both the GitHub lookback (replaces "7 days ago") and the Confluence lookback (replaces "30 days"). The `from:` date becomes the start of the query window for all live signal queries.
+
 ## Name Resolution
 
-1. Extract the person name from $ARGUMENTS.
+1. Extract the person name from the parsed arguments (the part before `from:`, or the full $ARGUMENTS if no `from:` was found).
 2. Do NOT re-derive the slug from the argument text. Instead: read the `team` array from config.json (already read in Pre-flight Check), find the entry whose `name` field is a case-insensitive prefix match for the typed name. Use the `slug` field from that config entry. This guarantees slug consistency with setup.
 3. Fuzzy prefix matching: "derese" matches "Derese Getachew"; "derese g" matches "Derese Getachew". Match is case-insensitive. If multiple team members match (e.g. two people named "Alex"), list them and ask the manager to clarify.
 4. If no match found: "No team member matching '[typed name]' found. Configured team: [list all names from config]. Did you mean one of these?" - stop.
@@ -93,37 +101,46 @@ If no pulse history: note "No pulse history available."
 
 ### A5 - Live GitHub signals (if sources include github)
 
-If `sources.github` is true in config.json, fetch current-week GitHub data for this person so that GitHub signals always appear in the Signal Trends section -- even if baselines.json has no GitHub history.
+If `sources.github` is true in config.json, fetch GitHub data for this person so that GitHub signals always appear in the Signal Trends section -- even if baselines.json has no GitHub history.
 
 Check `sources.github_method` in config.json. If "cli" or absent, use `gh api` commands. If "mcp", use GitHub MCP tools.
 
 **Using gh CLI (preferred):**
 
-Compute `7_days_ago` as YYYY-MM-DD from the injected current date.
+Determine the lookback start date:
+- If `FROM_DATE` is set: use `FROM_DATE` as `lookback_start`.
+- If `FROM_DATE` is null: compute `lookback_start` as 7 days before the injected current date (YYYY-MM-DD).
 
 - **github_prs_merged_per_week:** Run:
-  `gh api "search/issues?q=author:{github_username}+org:{github_org}+is:pr+is:merged+merged:>={7_days_ago}&per_page=100" --jq '.total_count'`
+  `gh api "search/issues?q=author:{github_username}+org:{github_org}+is:pr+is:merged+merged:>={lookback_start}&per_page=100" --jq '.total_count'`
 
 - **github_pr_review_count_per_week:** Run:
-  `gh api "search/issues?q=reviewed-by:{github_username}+org:{github_org}+is:pr+updated:>={7_days_ago}&per_page=100" --jq '.total_count'`
+  `gh api "search/issues?q=reviewed-by:{github_username}+org:{github_org}+is:pr+updated:>={lookback_start}&per_page=100" --jq '.total_count'`
 
 - **github_commit_days_per_week:** Run:
-  `gh api "search/commits?q=author:{github_username}+org:{github_org}+committer-date:>={7_days_ago}&per_page=100" --jq '[.items[].commit.committer.date[:10]] | unique | length'`
+  `gh api "search/commits?q=author:{github_username}+org:{github_org}+committer-date:>={lookback_start}&per_page=100" --jq '[.items[].commit.committer.date[:10]] | unique | length'`
 
 Store results as live GitHub signals. These will be rendered in the Signal Trends table alongside baseline data. If baselines.json also has GitHub metrics for this person, include both the live current value and the baseline avg/trend. If baselines.json has no GitHub metrics, show the live value with "no baseline" noted.
+
+If `FROM_DATE` was used, label the GitHub signals in the output as "since [FROM_DATE]" instead of "this week".
 
 If `sources.github` is false: note in output that GitHub signals are unavailable.
 
 ### A6 - Confluence activity (if sources include confluence)
 
 If the config.json sources object contains `confluence: true` (or if Atlassian/Confluence MCP tools are available):
-1. Query for pages authored/edited by this person in the last 30 days (by Atlassian account ID from `jira_user_id`, using CQL: `contributor = "<jira_user_id>" AND type = page AND lastModified >= now("-30d")`).
-2. Query for comments created by this person in the last 30 days (CQL: `creator = "<jira_user_id>" AND type = comment AND created >= now("-30d")`).
-3. Query for pages where this person is @-mentioned in the last 30 days (CQL: `type = page AND text ~ "<display_name>" AND lastModified >= now("-30d")`).
+
+Determine the Confluence lookback:
+- If `FROM_DATE` is set: compute the number of days between `FROM_DATE` and today. Use that as the CQL lookback (e.g., `now("-25d")` if FROM_DATE is 25 days ago).
+- If `FROM_DATE` is null: use the default 30-day lookback (`now("-30d")`).
+
+1. Query for pages authored/edited by this person (by Atlassian account ID from `jira_user_id`, using CQL: `contributor = "<jira_user_id>" AND type = page AND lastModified >= now("-<N>d")`).
+2. Query for comments created by this person (CQL: `creator = "<jira_user_id>" AND type = comment AND created >= now("-<N>d")`).
+3. Query for pages where this person is @-mentioned (CQL: `type = page AND text ~ "<display_name>" AND lastModified >= now("-<N>d")`).
 4. Aggregate: "N pages authored/edited, M comments, P pages mentioned in"
 5. List up to 5 most recent page titles (no content, titles only).
 
-These will be rendered in the Signal Trends section alongside other metrics.
+These will be rendered in the Signal Trends section alongside other metrics. If `FROM_DATE` was used, label Confluence signals as "since [FROM_DATE]" instead of "(30d)".
 
 If Confluence MCP is not available: note "Confluence signals unavailable - Atlassian MCP not configured."
 
@@ -134,6 +151,7 @@ Render the following profile. Output ALL of this. Make NO state writes afterward
 ```
 # Person Summary: [Full Name]
 *Generated [today YYYY-MM-DD] — read-only view, no state changes*
+[If FROM_DATE is set: "*Signal window: [FROM_DATE] to [today]*"]
 
 ---
 

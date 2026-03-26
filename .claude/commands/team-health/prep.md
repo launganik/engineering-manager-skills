@@ -119,9 +119,9 @@ PRIVACY CONSTRAINT: public channel metadata only. Do NOT request or use DM conte
 - `slack_response_latency`: median @-mention response time in public channels since lookback_start
 
 ### Calendar signals (if sources.calendar is true):
-Query the **primary calendar only** (exclude shared, subscribed, and delegated calendars):
+Query **this person's own calendar** using their email as calendarId (e.g., `gcal_list_events(calendarId="firstname.lastname@forto.com")`). If the person has an `email` field in config.json, use that. Otherwise, derive from their name: lowercase `firstname.lastname@forto.com`. Only include events with 2+ real participants that were accepted or tentatively accepted.
 - `calendar_meeting_load_pct`: meeting percentage since lookback_start
-- `calendar_1on1_adherence`: was 1:1 held within expected cadence window?
+- `calendar_1on1_adherence`: was 1:1 held within expected cadence window? (query the **manager's primary calendar** for this signal, since it measures the manager-IC meeting)
 
 ### Confluence signals (if sources.confluence is true, or if Atlassian/Confluence MCP tools are available):
 These are informational signals — they do NOT participate in flag determination.
