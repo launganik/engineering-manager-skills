@@ -1,5 +1,8 @@
 # team-health — people data must not be committed
 .team-health/
 
+# Team briefs — may contain PII
+team-brief-*.md
+
 # Claude Code local config
 .claude/settings.json
